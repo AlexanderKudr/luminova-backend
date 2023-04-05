@@ -1,13 +1,10 @@
 import express from "express";
 import cors from "cors";
-import fs from "fs";
-import * as dotenv from "dotenv";
-dotenv.config();
+import { router as imageRouter } from "./routes/api/images.js";
+import { config } from "./config/index.js";
 
 const app = express();
-const { PORT } = process.env;
-const corsOptions = { origin: "http://localhost:5173", credentials: true };
-
+const { port, corsOptions } = config;
 app.use(express.static("public"));
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));
@@ -15,14 +12,6 @@ app.use(express.json({ limit: "50mb" }));
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
+app.get("/api/images", imageRouter);
 
-app.get("/api/images", (req, res) => {
-  const directoryPath = "./public";
-  fs.readdir(directoryPath, (error, files) => {
-    error && console.log("Unable to scan directory: " + error);
-    const images = files.filter((file) => file.endsWith(".jpg"));
-    res.json(images);
-  });
-});
-
-app.listen(PORT, () => console.log(`Listening on port ${PORT}`));
+app.listen(port, () => console.log(`Listening on port ${port}`));
