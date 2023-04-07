@@ -5,13 +5,10 @@ import { config } from "./config/index.js";
 
 const app = express();
 const { port, corsOptions } = config;
+
 app.use(express.static("public"));
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));
-
-app.get("/", (req, res) => {
-  res.send("Hello World!");
-});
-app.get("/api/images", imageRouter);
+app.use("/api/images", imageRouter);
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
