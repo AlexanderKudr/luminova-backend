@@ -13,11 +13,11 @@ router.get("/", (req, res) => {
     .execute()
     .then((result) => res.json(result));
 });
-//debugging
+
 router.post("/", (req, res) => {
   const { title, url } = req.body;
   cloudinary.uploader
-    .upload(url, { filename_override: title })
+    .upload(url, { use_filename: true, public_id: title, folder: "gallery" })
     .then((result) => res.json(result))
     .catch((err) => console.log(err));
 });
