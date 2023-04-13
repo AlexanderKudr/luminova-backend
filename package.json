@@ -1,11 +1,12 @@
 {
-  "name": "create-express-ts",
+  "name": "unsplash-backend",
   "version": "1.0.0",
   "description": "",
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\""
+    "dev": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\"",
+    "build": "dist/main.js"
   },
   "keywords": [],
   "author": "",
