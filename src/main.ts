@@ -6,6 +6,7 @@ import { config } from "./config/index.js";
 const app = express();
 const { port, corsOptions } = config;
 
+
 app.use(express.static("public"));
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));
