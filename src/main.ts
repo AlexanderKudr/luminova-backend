@@ -12,4 +12,4 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));
 app.use("/api/images", imageRouter);
 
-app.listen(8080, () => console.log(`Listening on port ${8080}`));
+app.listen(port, () => console.log(`Listening on port ${port}`));
