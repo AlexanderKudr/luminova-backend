@@ -12,4 +12,5 @@ const config = {
     secure: true,
   },
 };
+
 export { config };
