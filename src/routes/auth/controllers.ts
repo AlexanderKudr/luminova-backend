@@ -1,10 +1,10 @@
 import { Request, Response } from "express";
-import { createSession, getUser, invalidateSession } from "./db.js";
+import { createSession, getUserBy, invalidateSession } from "./db.js";
 import { signJWT, verifyJWT } from "./utils.js";
-
+type UserData = { email: string; password: string };
 const createNewSession = (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  const user = getUser(email);
+  const { email, password }: UserData = req.body;
+  const user = getUserBy(email);
 
   if (!user || user.password !== password) {
     return res.status(401).send("Invalid email or password");
@@ -24,16 +24,11 @@ const createNewSession = (req: Request, res: Response) => {
     maxAge: 3.15e10,
     httpOnly: true,
   });
-  return res.send(verifyJWT(tokens.accessToken).payload);
-};
-const getSession = (req: Request, res: Response) => {
-  console.log("getSession");
-  //@ts-ignore
-  return res.send(req.user);
+  return res.send(verifyJWT(tokens.accessToken));
 };
 const deleteSession = (req: Request, res: Response) => {
   res.cookie("accessToken", "", { maxAge: 0, httpOnly: true });
   res.cookie("refreshToken", "", { maxAge: 0, httpOnly: true });
   return res.send({ success: true });
 };
-export { createNewSession, getSession, deleteSession };
+export { createNewSession, deleteSession };

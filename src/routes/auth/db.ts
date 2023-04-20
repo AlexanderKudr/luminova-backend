@@ -1,8 +1,10 @@
-const users = [
+export const users = [
   {
+    id: 1,
     email: "test@test.com",
     password: "password",
     name: "Jane Doe",
+    refreshToken: "",
   },
 ];
 type Sessions = { sessionId: string; email: string; valid: boolean };
@@ -34,6 +36,5 @@ export function createSession(email: string, name: string) {
   return session;
 }
 
-export function getUser(email: string) {
-  return users.find((user) => user.email === email);
-}
+const getUserBy = (userEmail: string) => users.find(({ email }) => email === userEmail);
+export { getUserBy };
