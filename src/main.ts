@@ -138,7 +138,6 @@ app.get("/protected", verifyToken, (req, res) => {
   // console.log(req.cookies.refreshToken, "req.cookies");
   // const userId = req.user.userId;
   // console.log(req.user, "req.user");
-  // Use userId to retrieve user data from database
   res.send({ message: "Protected data" });
 });
 
