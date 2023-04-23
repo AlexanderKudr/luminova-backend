@@ -20,6 +20,11 @@ app.use("/api/images", imageRouter);
 
 app.post("/register", async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };
+  const ifUserExists = users.some((user) => user.email === email);
+
+  if (ifUserExists) {
+    return res.status(400).send({ error: "User with this email already exists" });
+  }
   const salt = await bcrypt.genSalt(10);
   const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -30,6 +35,7 @@ app.post("/register", async (req, res) => {
     password: hashedPassword,
     name: "test",
     id: users.length + 1,
+    refreshToken: null,
   };
   // Generate JWT token
   const accessToken = jwt.sign({ userId: newUser.id }, privateKey, {
@@ -91,9 +97,12 @@ app.post("/login", async (req, res) => {
       algorithm: "RS256",
       expiresIn: 30000000,
     });
-    const updateUser = users.find((user) => user.email === email)!;
-    const updateTokens = (refreshToken: string) => {
-      updateUser.refreshToken = refreshToken;
+    const findUser = users.find((user) => user.email === email)!;
+    const updateTokens = (token: string) => {
+      let { refreshToken } = findUser;
+      if (refreshToken === null) {
+        refreshToken = token;
+      }
     };
     updateTokens(refreshToken);
     // Set JWT token in HttpOnly cookie and send response
@@ -104,7 +113,7 @@ app.post("/login", async (req, res) => {
       maxAge: 3 * 24 * 60 * 60 * 1000,
     });
     res.send({
-      message: "User logged in successfully",
+      message: `User ${findUser.email} logged in successfully`,
       user: users.find((user) => user.email === email),
       accessToken,
     });
@@ -161,7 +170,8 @@ app.post("/refresh", verifyToken, async (req, res) => {
     }
 
     const user = users.find((user) => user.refreshToken === refreshToken);
-
+    console.log( refreshToken, "refreshToken");
+    console.log (user, "user 173");
     if (!user) {
       console.log("User not found");
       return res.status(401).send({ error: "User not found" });
