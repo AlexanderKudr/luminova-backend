@@ -4,7 +4,7 @@ export const users = [
     email: "test@test.com",
     password: "password",
     name: "Jane Doe",
-    refreshToken: "",
+    refreshToken: null as string | null,
   },
 ];
 type Sessions = { sessionId: string; email: string; valid: boolean };
