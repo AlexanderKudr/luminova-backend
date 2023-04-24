@@ -152,7 +152,6 @@ app.get("/protected", verifyToken, (req, res) => {
 
 //client side
 app.post("/refresh", verifyToken, async (req, res) => {
-  console.log("fired");
   console.log(req.cookies.refreshToken, "req.cookies");
   try {
     const { refreshToken } = req.cookies;
