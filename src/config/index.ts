@@ -1,3 +1,5 @@
+import { privateKey } from "../routes/auth/keys/privateKey.js";
+import { publicKey } from "./../routes/auth/keys/publicKey.js";
 import * as dotenv from "dotenv";
 dotenv.config();
 
@@ -11,6 +13,8 @@ const config = {
     api_secret: CLOUDINARY_API_SECRET,
     secure: true,
   },
+  publicKey: publicKey,
+  privateKey: privateKey,
 };
 
 export { config };

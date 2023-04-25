@@ -1,20 +1,10 @@
 import jwt from "jsonwebtoken";
 import { privateKey } from "./keys/privateKey.js";
 import { publicKey } from "./keys/publicKey.js";
-
-const signJWT = (payload: object, expiresIn: string | number) => {
-  return jwt.sign(payload, privateKey, {
-    algorithm: "RS256",
-    expiresIn: expiresIn,
-  });
+import bcrypt from "bcrypt";
+const hashPassword = async (password: string) => {
+  const salt = await bcrypt.genSalt(10);
+  return await bcrypt.hash(password, salt);
 };
 
-const verifyJWT = (token: string) => {
-  try {
-    const decoded = jwt.verify(token, publicKey);
-    return { payload: decoded, expired: false };
-  } catch (error: any) {
-    return { payload: null, expired: error.message.includes("jwt expired") };
-  }
-};
-export { signJWT, verifyJWT };
+export { hashPassword };

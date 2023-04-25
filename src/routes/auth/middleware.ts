@@ -1,27 +1,23 @@
 // import { NextFunction, Request, Response } from "express";
-// import { verifyJWT } from "./utils.js";
+import jwt from "jsonwebtoken";
+import { Middleware } from "../../types/middlewares.js";
+import { config } from "../../config/index.js";
+const verifyToken: Middleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) {
+    return res.status(401).send({ error: "Authorization header missing" });
+  }
 
-// const deserializeUser = (req: Request, res: Response, next: NextFunction) => {
-//   console.log("deserializeUser");
-//   console.log(req.cookies, "req.cookies");
-//   const { accessToken } = req.cookies;
-//   if (!accessToken) {
-//     return next();
-//   }
-//   const { payload } = verifyJWT(accessToken);
-//   if (payload) {
-//     console.log(payload, "payload");
-//     //@ts-ignore
-//     req.user = payload;
-//     return next();
-//   }
-//   return next();
-// };
-// const requireUser = (req: Request, res: Response, next: NextFunction) => {
-//   //@ts-ignore
-//   if (!req.user) {
-//     return res.status(403).send("Unauthorized");
-//   }
-//   return next();
-// };
-// export { deserializeUser, requireUser };
+  const token = authHeader.split(" ")[1];
+  if (!token) {
+    return res.status(401).send({ error: "Access token is missing" });
+  }
+
+  try {
+    jwt.verify(token, config.publicKey);
+  } catch (error) {
+    return res.status(401).send({ error: "Invalid Access Token" });
+  }
+  next();
+};
+export { verifyToken };

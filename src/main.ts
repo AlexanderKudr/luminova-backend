@@ -9,6 +9,8 @@ import bcrypt from "bcrypt";
 import { getUserBy, users } from "./routes/auth/db.js";
 import { privateKey } from "./routes/auth/keys/privateKey.js";
 import { publicKey } from "./routes/auth/keys/publicKey.js";
+import { hashPassword } from "./routes/auth/utils.js";
+import { verifyToken } from "./routes/auth/middleware.js";
 
 const app = express();
 const { port, corsOptions } = config;
@@ -17,52 +19,44 @@ app.use(cors(corsOptions));
 app.use(express.json({ limit: "50mb" }));
 app.use(cookieParser());
 app.use("/api/images", imageRouter);
-
+const time30days = 60 * 60 * 24 * 30;
+const time5minutes = 60 * 5;
 app.post("/register", async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };
-  const ifUserExists = users.some((user) => user.email === email);
 
+  const ifUserExists = users.some((user) => user.email === email);
   if (ifUserExists) {
     return res.status(400).send({ error: "User with this email already exists" });
   }
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
 
-  // Create new user in database with hashed password
-  // const user = await User.create({ email, password: hashedPassword });]
   const newUser = {
-    email,
-    password: hashedPassword,
+    email: email,
+    password: await hashPassword(password),
     name: "test",
     id: users.length + 1,
     refreshToken: null,
   };
-  // Generate JWT token
+
   const accessToken = jwt.sign({ userId: newUser.id }, privateKey, {
     algorithm: "RS256",
-    expiresIn: 300000,
+    expiresIn: time5minutes,
   });
   const refreshToken = jwt.sign({ userId: newUser.id }, privateKey, {
     algorithm: "RS256",
-    expiresIn: 30000000,
+    expiresIn: time30days,
   });
   const addUser = users.push({
     email,
-    password: hashedPassword,
+    password: await hashPassword(password),
     name: "test",
     id: users.length + 1,
     refreshToken: refreshToken,
-  }) as unknown as {
-    email: string;
-    password: string;
-    name: string;
-    id: number;
-    refreshToken: string;
-  };
+  }) as unknown as typeof users;
+
   console.log(users, "allusers");
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
-    maxAge: 3 * 24 * 60 * 60 * 1000,
+    maxAge: time30days,
   });
   res.send({
     message: "User registered successfully",
@@ -73,15 +67,10 @@ app.post("/register", async (req, res) => {
 
 app.post("/login", async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };
-  console.log(email, password, "passed line 68");
-  // Find user by email in database
+
   const user = getUserBy(email);
-  console.log(user, "user");
-  // Verify password with bcrypt
   if (!user) {
-    console.log(user, "user");
-    res.status(401).send({ error: "Invalid email or password" });
-    return;
+    return res.status(401).send({ error: "Invalid email or password" });
   }
   console.log(password, user.password, "password");
   const passwordMatches = await bcrypt.compare(password, user.password);
@@ -91,26 +80,25 @@ app.post("/login", async (req, res) => {
     console.log(passwordMatches, "passwordMatches");
     const accessToken = jwt.sign({ userId: user!.id }, privateKey, {
       algorithm: "RS256",
-      expiresIn: 300000,
+      expiresIn: time5minutes,
     });
     const refreshToken = jwt.sign({ userId: user!.id }, privateKey, {
       algorithm: "RS256",
-      expiresIn: 30000000,
+      expiresIn: time30days,
     });
     const findUser = users.find((user) => user.email === email)!;
-    const updateTokens = (token: string) => {
-      let { refreshToken } = findUser;
-      if (refreshToken === null) {
-        refreshToken = token;
+    const updateTokens = (token: string) => {      
+      const index = users.findIndex((user) => user.email === email);
+      if (index === -1) {
+        throw new Error("User not found");
       }
+      users[index] = { ...users[index], refreshToken: token };
     };
     updateTokens(refreshToken);
-    // Set JWT token in HttpOnly cookie and send response
     console.log(users, "users");
-    // res.cookie("jwt_token", token, { httpOnly: true });
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      maxAge: 3 * 24 * 60 * 60 * 1000,
+      maxAge: time30days,
     });
     res.send({
       message: `User ${findUser.email} logged in successfully`,
@@ -122,75 +110,48 @@ app.post("/login", async (req, res) => {
   }
 });
 
-// Step 4: JWT verification middleware
-type Middleware = (req: Request, res: Response, next: NextFunction) => void;
-const verifyToken: Middleware = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (!authHeader) {
-    return res.status(401).send({ error: "Authorization header missing" });
-  }
-
-  const token = authHeader.split(" ")[1];
-  if (!token) {
-    return res.status(401).send({ error: "Token missing" });
-  }
-
-  try {
-    jwt.verify(token, publicKey);
-    next();
-  } catch (error) {
-    return res.status(401).send({ error: "Invalid token" });
-  }
-};
-
 app.get("/protected", verifyToken, (req, res) => {
-  // console.log(req.cookies.refreshToken, "req.cookies");
-  // const userId = req.user.userId;
-  // console.log(req.user, "req.user");
-  res.send({ message: "Protected data" });
+  try {
+    res.send({ message: "protected access" });
+  } catch (error) {
+    res.status(500).send({ error: "Something went wrong" });
+  }
 });
 
 //client side
 app.post("/refresh", verifyToken, async (req, res) => {
-  console.log(req.cookies.refreshToken, "req.cookies");
   try {
     const { refreshToken } = req.cookies;
-
     if (!refreshToken) {
       console.log(" no refreshToken");
       return res.status(401).send({ error: "Refresh token missing" });
     }
 
     const verify = jwt.verify(refreshToken, publicKey);
-
     if (!verify) {
       console.log("Invalid token");
-      return res.status(401).send({ error: "Invalid token" });
+      return res.status(401).send({ error: "Invalid refresh token" });
     }
-
     const user = users.find((user) => user.refreshToken === refreshToken);
-    console.log( refreshToken, "refreshToken");
-    console.log (user, "user 173");
+    console.log(users, "user 136 line");
     if (!user) {
-      console.log("User not found");
       return res.status(401).send({ error: "User not found" });
     }
-
     const accessToken = jwt.sign({ user: user.id }, privateKey, {
       algorithm: "RS256",
-      expiresIn: 300000,
+      expiresIn: time5minutes,
     });
 
     const newRefreshToken = jwt.sign({ user: user.id }, privateKey, {
       algorithm: "RS256",
-      expiresIn: 30000000,
+      expiresIn: time30days,
     });
-
+    console.log("cookie")
     res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true,
-      maxAge: 3 * 24 * 60 * 60 * 1000,
+      maxAge: time30days,
     });
-
+    console.log("sending")
     res.send({
       message: "User logged in successfully",
       user: users.find((user) => user.refreshToken === refreshToken),
@@ -200,6 +161,7 @@ app.post("/refresh", verifyToken, async (req, res) => {
     console.error(error);
     res.status(500).send({ error: "Server error" });
   }
+  
 });
 app.post("/logout", (req, res) => {
   res.clearCookie("refreshToken");
