@@ -14,7 +14,7 @@ const verifyToken: Middleware = (req, res, next) => {
   }
 
   try {
-    jwt.verify(token, config.publicKey);
+    jwt.verify(token, config.publicKey!);
   } catch (error) {
     return res.status(401).send({ error: "Invalid Access Token" });
   }

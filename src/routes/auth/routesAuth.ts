@@ -1,11 +1,11 @@
 import { Express } from "express";
-// import { requireUser } from "./middleware.js";
-const routes = (app: Express) => {
-  app.post("/api/session", );
-  app.delete("/api/session", );
-};
-const imagesRoutes = (app: Express) => {
-  // app.use("/images", function) 
+import { login, register } from "./controllers.js";
 
-}
-export { imagesRoutes, routes };
+
+const routesAuth = (app: Express) => {
+  const baseURL = "/auth";
+  app.post(`${baseURL}/register`, register);
+  app.delete(`${baseURL}/login`, login);
+};
+
+export { routesAuth };
