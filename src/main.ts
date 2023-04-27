@@ -1,13 +1,13 @@
 import jwt from "jsonwebtoken";
-import express, { NextFunction, Request, Response } from "express";
+import express from "express";
 import cors from "cors";
 import { router as imageRouter } from "./routes/api/images.js";
 import cookieParser from "cookie-parser";
 import { config } from "./config/index.js";
 import bcrypt from "bcrypt";
 import { getUserBy, users } from "./routes/auth/db.js";
-import { hashPassword } from "./routes/auth/utils.js";
-import { verifyToken } from "./routes/auth/middleware.js";
+import { hashPassword } from "./utils/index.js";
+import { verifyToken } from "./middlewares/verifytoken.js";
 
 const app = express();
 const { port, corsOptions, privateKey, publicKey } = config;

@@ -1,12 +1,12 @@
 import jwt from "jsonwebtoken";
-import { getUserBy, users } from "./db.js";
-import { config } from "../../config/index.js";
+import { getUserBy, users } from "../routes/auth/db.js";
+import { config } from "../config/index.js";
 import { Request, Response } from "express";
-import { hashPassword, time } from "./utils.js";
+import { time, hashPassword } from "../utils/index.js";
 import bcrypt from "bcrypt";
 
 const { time5minutes, time30days } = time;
-const { privateKey } = config;
+const { privateKey, publicKey } = config;
 const register = async (req: Request, res: Response) => {
   const { email, password } = req.body as { email: string; password: string };
 
@@ -50,6 +50,7 @@ const register = async (req: Request, res: Response) => {
     accessToken,
   });
 };
+
 const login = async (req: Request, res: Response) => {
   const { email, password } = req.body as { email: string; password: string };
 
@@ -93,5 +94,65 @@ const login = async (req: Request, res: Response) => {
   } else {
     res.status(401).send({ error: "Invalid email or password" });
   }
-}
-export { register, login };
+};
+
+const protectedAccess = (req: Request, res: Response) => {
+  try {
+    res.send({ message: "protected access" });
+  } catch (error) {
+    res.status(500).send({ error: "Something went wrong" });
+  }
+};
+
+const refreshTokens = (req: Request, res: Response) => {
+  const { refreshToken } = req.cookies;
+  try {
+    if (!refreshToken) {
+      console.log(" no refreshToken");
+      return res.status(401).send({ error: "Refresh token missing" });
+    }
+
+    const verify = jwt.verify(refreshToken, publicKey!);
+    if (!verify) {
+      console.log("Invalid token");
+      return res.status(401).send({ error: "Invalid refresh token" });
+    }
+    const user = users.find((user) => {
+      console.log(user.refreshToken, "here goes " + refreshToken);
+      return user.refreshToken === refreshToken;
+    });
+    console.log(users, "user 139 line");
+    if (!user) {
+      return res.status(401).send({ error: "User not found" });
+    }
+    const accessToken = jwt.sign({ user: user.id }, privateKey!, {
+      algorithm: "RS256",
+      expiresIn: time5minutes,
+    });
+
+    const newRefreshToken = jwt.sign({ user: user.id }, privateKey!, {
+      algorithm: "RS256",
+      expiresIn: time30days,
+    });
+    user.refreshToken = newRefreshToken;
+    res.cookie("refreshToken", newRefreshToken, {
+      httpOnly: true,
+      maxAge: time30days,
+    });
+    res.send({
+      message: "Token refreshed and user logged in successfully",
+      user: users.find((user) => user.refreshToken === refreshToken),
+      accessToken,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: "Server error" });
+  }
+};
+
+const logout = (req: Request, res: Response) => {
+  res.clearCookie("refreshToken");
+  res.send({ message: "User logged out successfully" });
+};
+
+export { register, login, protectedAccess, refreshTokens, logout };
