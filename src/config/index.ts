@@ -1,4 +1,5 @@
 import * as dotenv from "dotenv";
+import { privateKey, publicKey } from "./keys.js";
 dotenv.config();
 
 const {
@@ -6,8 +7,8 @@ const {
   CLOUDINARY_API_KEY,
   CLOUDINARY_API_SECRET,
   PORT,
-  PRIVATE_KEY,
-  PUBLIC_KEY,
+  // PRIVATE_KEY,
+  // PUBLIC_KEY,
 } = process.env;
 const config = {
   port: PORT,
@@ -18,8 +19,8 @@ const config = {
     api_secret: CLOUDINARY_API_SECRET,
     secure: true,
   },
-  publicKey: PUBLIC_KEY,
-  privateKey: PRIVATE_KEY,
+  publicKey: publicKey,
+  privateKey: privateKey,
 };
 
 export { config };
