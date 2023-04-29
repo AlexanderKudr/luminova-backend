@@ -168,4 +168,8 @@ app.post("/logout", (req, res) => {
   res.clearCookie("refreshToken");
   res.send({ message: "User logged out successfully" });
 });
+
+app.get("/", (req, res) => {
+  res.send("Hello World!");
+})
 app.listen(port, () => console.log(`Example app listening on port ${port}`));

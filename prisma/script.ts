@@ -4,11 +4,9 @@ const prisma = new PrismaClient();
 
 async function main() {
   const deletepost = await prisma.post.delete({
-    where: {
-      id: 1,
-    },
-  })
-  console.log(deletepost)
+    where: { id: 1 },
+  });
+  console.log(deletepost);
 }
 
 main()
