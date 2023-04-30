@@ -1,24 +1,10 @@
-import { v2 as cloudinary } from "cloudinary";
-import { config } from "../../config/index.js";
-import express from "express";
+import { Express } from "express";
+import { addImage, getImages } from "../../controllers/images.js";
 
-cloudinary.config(config.cloudinary);
-const router = express.Router();
+const routesImages = (app: Express) => {
+  const baseURL = "/api/images";
+  app.get(baseURL, getImages);
+  app.post(baseURL, addImage);
+};
 
-router.get("/", (req, res) => {
-  cloudinary.search
-    .expression("folder:gallery")
-    .sort_by("public_id", "desc")
-    .max_results(30) //temporary fix
-    .execute()
-    .then((result) => res.json(result));
-});
-
-router.post("/", (req, res) => {
-  const { title, url } = req.body;
-  cloudinary.uploader
-    .upload(url, { use_filename: true, public_id: title, folder: "gallery" })
-    .then((result) => res.json(result))
-    .catch((err) => console.log(err));
-});
-export { router };
+export { routesImages };

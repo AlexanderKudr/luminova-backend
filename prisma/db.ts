@@ -3,7 +3,7 @@ const users = [
     id: 1,
     email: "test@test.com",
     password: "password",
-    name: "Jane Doe",
+    accessToken: null as string | null,
     refreshToken: null as string | null,
   },
 ];

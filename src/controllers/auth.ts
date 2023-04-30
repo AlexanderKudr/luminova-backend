@@ -1,13 +1,14 @@
 import jwt from "jsonwebtoken";
-import { getUserBy, users } from "../routes/auth/db.js";
-import { config } from "../config/index.js";
-import { Request, Response } from "express";
-import { time, hashPassword } from "../utils/index.js";
 import bcrypt from "bcrypt";
+import { config } from "../config/index.js";
+import { Controller } from "../types/middlewares.js";
+import { getUserBy, users } from "../../prisma/db.js";
+import { time, hashPassword } from "../utils/index.js";
 
 const { time5minutes, time30days } = time;
 const { privateKey, publicKey } = config;
-const register = async (req: Request, res: Response) => {
+
+const register: Controller = async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };
 
   const ifUserExists = users.some((user) => user.email === email);
@@ -18,8 +19,8 @@ const register = async (req: Request, res: Response) => {
   const newUser = {
     email: email,
     password: await hashPassword(password),
-    name: "test",
     id: users.length + 1,
+    accessToken: null,
     refreshToken: null,
   };
 
@@ -31,11 +32,12 @@ const register = async (req: Request, res: Response) => {
     algorithm: "RS256",
     expiresIn: time30days,
   });
+
   users.push({
     email,
     password: await hashPassword(password),
-    name: "test",
     id: users.length + 1,
+    accessToken: accessToken,
     refreshToken: refreshToken,
   }) as unknown as typeof users;
 
@@ -51,7 +53,7 @@ const register = async (req: Request, res: Response) => {
   });
 };
 
-const login = async (req: Request, res: Response) => {
+const login: Controller = async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };
 
   const user = getUserBy(email);
@@ -73,14 +75,19 @@ const login = async (req: Request, res: Response) => {
       expiresIn: time30days,
     });
     const findUser = users.find((user) => user.email === email)!;
-    const updateTokens = (token: string) => {
+    type Tokens = {
+      accessToken: string;
+      refreshToken: string;
+    };
+    const updateTokens = ({ accessToken, refreshToken }: Tokens) => {
       const user = users.find((user) => user.email === email)!;
       if (!user) {
         throw new Error("User not found");
       }
-      user.refreshToken = token;
+      user.accessToken = accessToken;
+      user.refreshToken = refreshToken;
     };
-    updateTokens(refreshToken);
+    updateTokens({ accessToken, refreshToken });
     console.log(users, "users");
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
@@ -96,7 +103,7 @@ const login = async (req: Request, res: Response) => {
   }
 };
 
-const protectedAccess = (req: Request, res: Response) => {
+const protectedAccess: Controller = (req, res) => {
   try {
     res.send({ message: "protected access" });
   } catch (error) {
@@ -104,8 +111,8 @@ const protectedAccess = (req: Request, res: Response) => {
   }
 };
 
-const refreshTokens = (req: Request, res: Response) => {
-  const { refreshToken } = req.cookies;
+const refreshTokens: Controller = (req, res) => {
+  const { refreshToken } = req.cookies as { refreshToken: string };
   try {
     if (!refreshToken) {
       console.log(" no refreshToken");
@@ -150,7 +157,7 @@ const refreshTokens = (req: Request, res: Response) => {
   }
 };
 
-const logout = (req: Request, res: Response) => {
+const logout: Controller = (req, res) => {
   res.clearCookie("refreshToken");
   res.send({ message: "User logged out successfully" });
 };

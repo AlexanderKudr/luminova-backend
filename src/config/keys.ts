@@ -24,7 +24,7 @@ ILU91cQoX7pd7xIHZG1crXCn6A0hO/HYBHIb7TbQhNYEqC/RrLLJJVyYosOWDfw4
 4iZ7ZgsCgYEAic9MzgwzPVXmFhnjUy0njygZOvBSntFagiDt2kOa4X2nInb0+AVa
 Mh8ExJiamJOeAVNZ/Ujy+oETzS5CK7XkYwfvxxjlbpqkYg6fhj2xLq0xuKckGVgB
 2GMgBfYydAa+NrkPZZp5Z3p01zNFvLBjBTnyg+GWIs8343KcTbGoDsE=
------END RSA PRIVATE KEY-----`
+-----END RSA PRIVATE KEY-----`;
 const publicKey = `-----BEGIN PUBLIC KEY-----
 MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwt46XBIHGKxFovn5ycsM
 BkkKB0GfdGlhJlEcedFwK+OxyBQXikjrx33odwjLrG+1vY/Uuh7L/Q5yu3nwdv3m
@@ -33,5 +33,6 @@ R5usict1QsWk/H0YpmxIXfRcQug9P+3yVD/bgBMSqKiQ3rpcuoAh5sWEHKkdfbza
 PnVPQStXYcPpxsR+xqKTaWqZRYwxAEnV7l738QhT2lqe7BoIikUWth2yZ4PcURdc
 CkhGGU7fhk0EaqAjnGAJCozgdWXmTmaVSi4t/Xyjj8vL9Qif3La9EkPVUl/wqwUd
 BQIDAQAB
------END PUBLIC KEY-----`
-export { privateKey, publicKey }
+-----END PUBLIC KEY-----`;
+
+export { privateKey, publicKey };

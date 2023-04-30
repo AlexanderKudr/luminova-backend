@@ -1,7 +1,7 @@
-// import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { Middleware } from "../types/middlewares.js";
 import { config } from "../config/index.js";
+
 const verifyToken: Middleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {

@@ -1,15 +1,8 @@
 import * as dotenv from "dotenv";
 import { privateKey, publicKey } from "./keys.js";
-dotenv.config();
 
-const {
-  CLOUDINARY_NAME,
-  CLOUDINARY_API_KEY,
-  CLOUDINARY_API_SECRET,
-  PORT,
-  // PRIVATE_KEY,
-  // PUBLIC_KEY,
-} = process.env;
+dotenv.config();
+const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, PORT } = process.env;
 const config = {
   port: PORT,
   corsOptions: { origin: "http://localhost:5173", credentials: true },
