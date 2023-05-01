@@ -1,27 +1,67 @@
-import { PrismaClient } from "@prisma/client";
+import { User } from "../src/types/user.js";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
+import { handleDisconnectDB, handleErrorDB, prisma } from "../src/utils/handleDB.js";
 
-const prisma = new PrismaClient();
-type User = {
-  email: string;
-  password: string;
-  accessToken?: string | null;
-  refreshToken?: string | null;
+const createUser = async (user: User) => {
+  const { email, password, accessToken, refreshToken } = user;
+  try {
+    const existingUser = await prisma.user.findUnique({
+      where: { email: email },
+    });
+
+    if (existingUser) {
+      console.error("User with email already exists");
+      return null;
+    }
+
+    const newUser = await prisma.user.create({
+      data: {
+        email: email,
+        password: password,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+        favoriteImages: { create: [] },
+      },
+    });
+
+    console.log("New user created:", newUser);
+    return newUser;
+  } catch (error) {
+    const errorCheck = error instanceof PrismaClientKnownRequestError;
+    if (errorCheck && error.code === "P2002") {
+      console.error("User with email already exists");
+    } else {
+      console.error("Error creating user:", error);
+    }
+    return null;
+  }
 };
-// async function main(user: User) {
-//   const addUser = await prisma.user.create({
-//     data: {
-//       email: user.email,
-//       password: user.password,
-//     },
-//   });
-// }
 
-// main()
-//   .then(async () => {
-//     await prisma.$disconnect();
-//   })
-//   .catch(async (e) => {
-//     console.error(e);
-//     await prisma.$disconnect();
-//     process.exit(1);
-//   });
+const handleCreateUser = async (user: User) => {
+  try {
+    await createUser(user);
+    await handleDisconnectDB();
+  } catch (error) {
+    await handleErrorDB(error);
+  }
+};
+
+const checkUserInDB = async (email: string) => {
+  const user = await prisma.user.findUnique({
+    where: { email: email },
+  });
+  return user;
+};
+
+const handleCheckUserInDB = async (email: string) => {
+  try {
+    const user = await checkUserInDB(email);
+    await handleDisconnectDB();
+    return user;
+  } catch (error) {
+    await handleErrorDB(error);
+    return null;
+  }
+};
+
+export { handleCreateUser, handleCheckUserInDB };

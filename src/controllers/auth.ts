@@ -4,6 +4,7 @@ import { config } from "../config/index.js";
 import { Controller } from "../types/middlewares.js";
 import { getUserBy, users } from "../../prisma/db.js";
 import { time, hashPassword } from "../utils/index.js";
+import { handleCheckUserInDB, handleCreateUser } from "../../prisma/script.js";
 
 const { time5minutes, time30days } = time;
 const { privateKey, publicKey } = config;
@@ -11,37 +12,57 @@ const { privateKey, publicKey } = config;
 const register: Controller = async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };
 
-  const ifUserExists = users.some((user) => user.email === email);
-  if (ifUserExists) {
+  const user = await handleCheckUserInDB(email);
+  if (user) {
     return res.status(400).send({ error: "User with this email already exists" });
   }
+  // const ifUserExists = users.some((user) => user.email === email);
+  // if (ifUserExists) {
+  //   return res.status(400).send({ error: "User with this email already exists" });
+  // }
 
-  const newUser = {
-    email: email,
-    password: await hashPassword(password),
-    id: users.length + 1,
-    accessToken: null,
-    refreshToken: null,
-  };
-
-  const accessToken = jwt.sign({ userId: newUser.id }, privateKey!, {
+  // const newUser = {
+  //   email: email,
+  //   password: await hashPassword(password),
+  //   id: users.length + 1,
+  //   accessToken: null,
+  //   refreshToken: null,
+  // };
+  const accessToken = jwt.sign({ userEmail: email }, privateKey!, {
     algorithm: "RS256",
     expiresIn: time5minutes,
   });
-  const refreshToken = jwt.sign({ userId: newUser.id }, privateKey!, {
+
+  const refreshToken = jwt.sign({ userEmail: email }, privateKey!, {
     algorithm: "RS256",
     expiresIn: time30days,
   });
-
-  users.push({
-    email,
+  const test = {
+    email: email,
     password: await hashPassword(password),
-    id: users.length + 1,
     accessToken: accessToken,
     refreshToken: refreshToken,
-  }) as unknown as typeof users;
+    favoriteImages: [],
+  };
+  await handleCreateUser(test);
+  // const accessToken = jwt.sign({ userEmail: newUser.email }, privateKey!, {
+  //   algorithm: "RS256",
+  //   expiresIn: time5minutes,
+  // });
+  // const refreshToken = jwt.sign({ userEmail: newUser.email }, privateKey!, {
+  //   algorithm: "RS256",
+  //   expiresIn: time30days,
+  // });
 
-  console.log(users, "allusers");
+  // users.push({
+  //   email,
+  //   password: await hashPassword(password),
+  //   id: users.length + 1,
+  //   accessToken: accessToken,
+  //   refreshToken: refreshToken,
+  // }) as unknown as typeof users;
+
+  // console.log(users, "allusers");
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     maxAge: time30days,
@@ -49,7 +70,6 @@ const register: Controller = async (req, res) => {
   res.send({
     message: "User registered successfully",
     user: users.find((user) => user.email === email),
-    accessToken,
   });
 };
 
