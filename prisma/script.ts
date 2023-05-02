@@ -46,16 +46,11 @@ const handleCreateUser = async (user: User) => {
   }
 };
 
-const checkUserInDB = async (email: string) => {
-  const user = await prisma.user.findUnique({
-    where: { email: email },
-  });
-  return user;
-};
-
-const handleCheckUserInDB = async (email: string) => {
+const checkUserInDb = async (email: string) => {
   try {
-    const user = await checkUserInDB(email);
+    const user = await prisma.user.findUnique({
+      where: { email: email },
+    });
     await handleDisconnectDB();
     return user;
   } catch (error) {
@@ -64,4 +59,4 @@ const handleCheckUserInDB = async (email: string) => {
   }
 };
 
-export { handleCreateUser, handleCheckUserInDB };
+export { handleCreateUser, checkUserInDb };

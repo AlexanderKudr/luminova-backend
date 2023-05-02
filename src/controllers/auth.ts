@@ -4,7 +4,8 @@ import { config } from "../config/index.js";
 import { Controller } from "../types/middlewares.js";
 import { getUserBy, users } from "../../prisma/db.js";
 import { time, hashPassword } from "../utils/index.js";
-import { handleCheckUserInDB, handleCreateUser } from "../../prisma/script.js";
+import { checkUserInDb, handleCreateUser } from "../../prisma/script.js";
+import { generateTokens } from "../utils/jwt.js";
 
 const { time5minutes, time30days } = time;
 const { privateKey, publicKey } = config;
@@ -12,57 +13,22 @@ const { privateKey, publicKey } = config;
 const register: Controller = async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };
 
-  const user = await handleCheckUserInDB(email);
+  const user = await checkUserInDb(email);
   if (user) {
     return res.status(400).send({ error: "User with this email already exists" });
   }
-  // const ifUserExists = users.some((user) => user.email === email);
-  // if (ifUserExists) {
-  //   return res.status(400).send({ error: "User with this email already exists" });
-  // }
 
-  // const newUser = {
-  //   email: email,
-  //   password: await hashPassword(password),
-  //   id: users.length + 1,
-  //   accessToken: null,
-  //   refreshToken: null,
-  // };
-  const accessToken = jwt.sign({ userEmail: email }, privateKey!, {
-    algorithm: "RS256",
-    expiresIn: time5minutes,
-  });
+  const { accessToken, refreshToken } = generateTokens(email, privateKey!);
 
-  const refreshToken = jwt.sign({ userEmail: email }, privateKey!, {
-    algorithm: "RS256",
-    expiresIn: time30days,
-  });
-  const test = {
+  const newUser = {
     email: email,
     password: await hashPassword(password),
     accessToken: accessToken,
     refreshToken: refreshToken,
     favoriteImages: [],
   };
-  await handleCreateUser(test);
-  // const accessToken = jwt.sign({ userEmail: newUser.email }, privateKey!, {
-  //   algorithm: "RS256",
-  //   expiresIn: time5minutes,
-  // });
-  // const refreshToken = jwt.sign({ userEmail: newUser.email }, privateKey!, {
-  //   algorithm: "RS256",
-  //   expiresIn: time30days,
-  // });
+  await handleCreateUser(newUser);
 
-  // users.push({
-  //   email,
-  //   password: await hashPassword(password),
-  //   id: users.length + 1,
-  //   accessToken: accessToken,
-  //   refreshToken: refreshToken,
-  // }) as unknown as typeof users;
-
-  // console.log(users, "allusers");
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     maxAge: time30days,
