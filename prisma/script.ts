@@ -1,4 +1,4 @@
-import { User } from "../src/types/user.js";
+import { UpdateUser, User } from "../src/types/user.js";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
 import { handleDisconnectDB, handleErrorDB, prisma } from "../src/utils/handleDB.js";
 
@@ -10,7 +10,6 @@ const createUser = async (user: User) => {
     });
 
     if (existingUser) {
-      console.error("User with email already exists");
       return null;
     }
 
@@ -23,8 +22,6 @@ const createUser = async (user: User) => {
         favoriteImages: { create: [] },
       },
     });
-
-    console.log("New user created:", newUser);
     return newUser;
   } catch (error) {
     const errorCheck = error instanceof PrismaClientKnownRequestError;
@@ -46,10 +43,10 @@ const handleCreateUser = async (user: User) => {
   }
 };
 
-const checkUserInDb = async (email: string) => {
+const checkUserInDB = async (field: string, value: string) => {
   try {
-    const user = await prisma.user.findUnique({
-      where: { email: email },
+    const user = await prisma.user.findFirst({
+      where: { [field]: value },
     });
     await handleDisconnectDB();
     return user;
@@ -59,4 +56,60 @@ const checkUserInDb = async (email: string) => {
   }
 };
 
-export { handleCreateUser, checkUserInDb };
+const updateUserTokensInDB = async ({ email, accessToken, refreshToken }: UpdateUser) => {
+  try {
+    const user = await prisma.user.updateMany({
+      where: { email: email },
+      data: {
+        accessToken: accessToken,
+        refreshToken: refreshToken,
+      },
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    await handleDisconnectDB();
+  } catch (error) {
+    await handleErrorDB(error);
+  }
+};
+
+const updateRefreshTokenInDB = async (refreshToken: string) => {
+  try {
+    const user = await prisma.user.updateMany({
+      where: { refreshToken },
+      data: { refreshToken },
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    await handleDisconnectDB();
+    return user;
+  } catch (error) {
+    await handleErrorDB(error);
+    return null;
+  }
+};
+
+const clearUserTokensInDB = async (refreshToken: string) => {
+  try {
+    const user = await prisma.user.updateMany({
+      where: { refreshToken },
+      data: { accessToken: null, refreshToken: null },
+    });
+    if (!user) {
+      throw new Error("User not found");
+    }
+    await handleDisconnectDB();
+  } catch (error) {
+    await handleErrorDB(error);
+  }
+};
+
+export {
+  handleCreateUser,
+  checkUserInDB,
+  updateUserTokensInDB,
+  updateRefreshTokenInDB,
+  clearUserTokensInDB,
+};

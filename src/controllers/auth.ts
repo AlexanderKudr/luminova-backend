@@ -2,18 +2,23 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { config } from "../config/index.js";
 import { Controller } from "../types/middlewares.js";
-import { getUserBy, users } from "../../prisma/db.js";
-import { time, hashPassword } from "../utils/index.js";
-import { checkUserInDb, handleCreateUser } from "../../prisma/script.js";
 import { generateTokens } from "../utils/jwt.js";
+import { time, hashPassword } from "../utils/index.js";
+import {
+  checkUserInDB,
+  handleCreateUser,
+  updateUserTokensInDB,
+  updateRefreshTokenInDB,
+  clearUserTokensInDB,
+} from "../../prisma/script.js";
 
-const { time5minutes, time30days } = time;
+const { time30days } = time;
 const { privateKey, publicKey } = config;
 
 const register: Controller = async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };
 
-  const user = await checkUserInDb(email);
+  const user = await checkUserInDB("email", email);
   if (user) {
     return res.status(400).send({ error: "User with this email already exists" });
   }
@@ -27,61 +32,39 @@ const register: Controller = async (req, res) => {
     refreshToken: refreshToken,
     favoriteImages: [],
   };
+
   await handleCreateUser(newUser);
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     maxAge: time30days,
   });
+
   res.send({
     message: "User registered successfully",
-    user: users.find((user) => user.email === email),
+    user: await checkUserInDB("email", email),
   });
 };
-
 const login: Controller = async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };
+  const user = await checkUserInDB("email", email);
 
-  const user = getUserBy(email);
   if (!user) {
     return res.status(401).send({ error: "Invalid email or password" });
   }
-  console.log(password, user.password, "password");
-  const passwordMatches = await bcrypt.compare(password, user.password);
 
+  const passwordMatches = await bcrypt.compare(password, user.password);
   if (passwordMatches) {
-    // Generate JWT token
-    console.log(passwordMatches, "passwordMatches");
-    const accessToken = jwt.sign({ userId: user!.id }, privateKey!, {
-      algorithm: "RS256",
-      expiresIn: time5minutes,
-    });
-    const refreshToken = jwt.sign({ userId: user!.id }, privateKey!, {
-      algorithm: "RS256",
-      expiresIn: time30days,
-    });
-    const findUser = users.find((user) => user.email === email)!;
-    type Tokens = {
-      accessToken: string;
-      refreshToken: string;
-    };
-    const updateTokens = ({ accessToken, refreshToken }: Tokens) => {
-      const user = users.find((user) => user.email === email)!;
-      if (!user) {
-        throw new Error("User not found");
-      }
-      user.accessToken = accessToken;
-      user.refreshToken = refreshToken;
-    };
-    updateTokens({ accessToken, refreshToken });
-    console.log(users, "users");
+    const { accessToken, refreshToken } = generateTokens(email, privateKey!);
+    updateUserTokensInDB({ email, accessToken, refreshToken });
+
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       maxAge: time30days,
     });
+
     res.send({
-      message: `User ${findUser.email} logged in successfully`,
-      user: users.find((user) => user.email === email),
+      message: `User ${user?.email} logged in successfully`,
       accessToken,
     });
   } else {
@@ -91,50 +74,41 @@ const login: Controller = async (req, res) => {
 
 const protectedAccess: Controller = (req, res) => {
   try {
-    res.send({ message: "protected access" });
+    res.send({ message: "Protected access successfully" });
   } catch (error) {
-    res.status(500).send({ error: "Something went wrong" });
+    res.status(500).send({ error: "Protected access error" });
   }
 };
 
-const refreshTokens: Controller = (req, res) => {
+const refreshTokens: Controller = async (req, res) => {
   const { refreshToken } = req.cookies as { refreshToken: string };
   try {
     if (!refreshToken) {
-      console.log(" no refreshToken");
       return res.status(401).send({ error: "Refresh token missing" });
     }
 
-    const verify = jwt.verify(refreshToken, publicKey!);
-    if (!verify) {
-      console.log("Invalid token");
+    const veryfyToken = jwt.verify(refreshToken, publicKey!);
+    if (!veryfyToken) {
       return res.status(401).send({ error: "Invalid refresh token" });
     }
-    const user = users.find((user) => {
-      console.log(user.refreshToken, "here goes " + refreshToken);
-      return user.refreshToken === refreshToken;
-    });
-    console.log(users, "user 139 line");
+
+    const user = await checkUserInDB("refreshToken", refreshToken);
     if (!user) {
       return res.status(401).send({ error: "User not found" });
     }
-    const accessToken = jwt.sign({ user: user.id }, privateKey!, {
-      algorithm: "RS256",
-      expiresIn: time5minutes,
-    });
 
-    const newRefreshToken = jwt.sign({ user: user.id }, privateKey!, {
-      algorithm: "RS256",
-      expiresIn: time30days,
-    });
-    user.refreshToken = newRefreshToken;
+    const { accessToken, refreshToken: newRefreshToken } = generateTokens(
+      refreshToken,
+      privateKey!
+    );
+    updateRefreshTokenInDB(newRefreshToken);
     res.cookie("refreshToken", newRefreshToken, {
       httpOnly: true,
       maxAge: time30days,
     });
     res.send({
       message: "Token refreshed and user logged in successfully",
-      user: users.find((user) => user.refreshToken === refreshToken),
+      user: await checkUserInDB("email", refreshToken),
       accessToken,
     });
   } catch (error) {
@@ -144,6 +118,8 @@ const refreshTokens: Controller = (req, res) => {
 };
 
 const logout: Controller = (req, res) => {
+  const { refreshToken } = req.cookies as { refreshToken: string };
+  clearUserTokensInDB(refreshToken);
   res.clearCookie("refreshToken");
   res.send({ message: "User logged out successfully" });
 };
