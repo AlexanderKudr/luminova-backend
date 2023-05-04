@@ -1,7 +1,8 @@
-import { UpdateUser, User } from "../src/types/user.js";
+import { UpdateUserTokens, User } from "../types/user.js";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
-import { handleDisconnectDB, handleErrorDB, prisma } from "../src/utils/handleDB.js";
+import { utils } from "../utils/index.js";
 
+const { handleDisconnectDB, handleErrorDB, prisma } = utils;
 const createUser = async (user: User) => {
   const { email, password, accessToken, refreshToken } = user;
   try {
@@ -10,6 +11,7 @@ const createUser = async (user: User) => {
     });
 
     if (existingUser) {
+      console.error(`User with email ${email} already exists`);
       return null;
     }
 
@@ -25,6 +27,7 @@ const createUser = async (user: User) => {
     return newUser;
   } catch (error) {
     const errorCheck = error instanceof PrismaClientKnownRequestError;
+
     if (errorCheck && error.code === "P2002") {
       console.error("User with email already exists");
     } else {
@@ -56,7 +59,7 @@ const checkUserInDB = async (field: string, value: string) => {
   }
 };
 
-const updateUserTokensInDB = async ({ email, accessToken, refreshToken }: UpdateUser) => {
+const updateUserTokensInDB = async ({ email, accessToken, refreshToken }: UpdateUserTokens) => {
   try {
     const user = await prisma.user.updateMany({
       where: { email: email },

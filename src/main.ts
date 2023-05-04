@@ -1,6 +1,7 @@
 import express from "express";
-import { setupApp, setupRoutes } from "./utils/setup.js";
+import { utils } from "./utils/index.js";
 
+const { setupApp, setupRoutes } = utils;
 const app = express();
 
 setupApp(app);

@@ -2,16 +2,16 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { config } from "../config/index.js";
 import { Controller } from "../types/middlewares.js";
-import { generateTokens } from "../utils/jwt.js";
-import { time, hashPassword } from "../utils/index.js";
+import { utils } from "../utils/index.js";
 import {
   checkUserInDB,
   handleCreateUser,
   updateUserTokensInDB,
   updateRefreshTokenInDB,
   clearUserTokensInDB,
-} from "../../prisma/script.js";
+} from "../controllers/prisma.js";
 
+const { time, hashPassword, generateTokens } = utils;
 const { time30days } = time;
 const { privateKey, publicKey } = config;
 
@@ -45,6 +45,7 @@ const register: Controller = async (req, res) => {
     user: await checkUserInDB("email", email),
   });
 };
+
 const login: Controller = async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };
   const user = await checkUserInDB("email", email);
@@ -88,6 +89,7 @@ const refreshTokens: Controller = async (req, res) => {
     }
 
     const veryfyToken = jwt.verify(refreshToken, publicKey!);
+
     if (!veryfyToken) {
       return res.status(401).send({ error: "Invalid refresh token" });
     }
@@ -97,19 +99,18 @@ const refreshTokens: Controller = async (req, res) => {
       return res.status(401).send({ error: "User not found" });
     }
 
-    const { accessToken, refreshToken: newRefreshToken } = generateTokens(
-      refreshToken,
-      privateKey!
-    );
-    updateRefreshTokenInDB(newRefreshToken);
-    res.cookie("refreshToken", newRefreshToken, {
+    const tokens = generateTokens(refreshToken, privateKey!);
+
+    updateRefreshTokenInDB(tokens.refreshToken);
+
+    res.cookie("refreshToken", tokens.refreshToken, {
       httpOnly: true,
       maxAge: time30days,
     });
     res.send({
       message: "Token refreshed and user logged in successfully",
       user: await checkUserInDB("email", refreshToken),
-      accessToken,
+      accessToken: tokens.accessToken,
     });
   } catch (error) {
     console.error(error);
@@ -119,7 +120,12 @@ const refreshTokens: Controller = async (req, res) => {
 
 const logout: Controller = (req, res) => {
   const { refreshToken } = req.cookies as { refreshToken: string };
+
+  if (!refreshToken) {
+    return res.status(401).send({ error: "Refresh token missing" });
+  }
   clearUserTokensInDB(refreshToken);
+
   res.clearCookie("refreshToken");
   res.send({ message: "User logged out successfully" });
 };

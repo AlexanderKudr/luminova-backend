@@ -5,5 +5,5 @@ type User = {
   refreshToken: string | null;
   favoriteImages: string[];
 };
-type UpdateUser = Pick<User, "email" | "accessToken" | "refreshToken">;
-export type { User, UpdateUser };
+type UpdateUserTokens = Pick<User, "email" | "accessToken" | "refreshToken">;
+export type { User, UpdateUserTokens };
