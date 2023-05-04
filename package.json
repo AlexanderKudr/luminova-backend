@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm i && npm run tsc && npm run prisma",
+    "build": "npm i && npm run tsc && npm run prisma && npm run migrate",
     "prisma": "prisma generate",
+    "migrate": "prisma migrate dev",
     "tsc": "tsc",
     "start": "node dist/main.js",
     "dev": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\""
