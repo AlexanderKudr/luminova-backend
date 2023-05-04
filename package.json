@@ -12,7 +12,7 @@
     "dev": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\""
   },
   "prisma": {
-    "schema": "src/prisma/schema.prisma"
+    "schema": "prisma/schema.prisma"
   },
   "keywords": [],
   "author": "",
