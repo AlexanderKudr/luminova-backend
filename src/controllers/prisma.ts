@@ -49,6 +49,7 @@ const checkUserInDB = async (field: string, value: string) => {
     const user = await prisma.user.findFirst({
       where: { [field]: value },
     });
+ 
     await handleDisconnectDB();
     return user;
   } catch (error) {
