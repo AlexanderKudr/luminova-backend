@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "npm i && npm run tsc && cp prisma dist\\prisma /S /Y /D",
+    "build": "npm i && npm run tsc && rsync -a prisma/ dist/prisma/",
     "tsc": "tsc",
     "start": "node dist/main.js",
     "dev": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\""
