@@ -4,7 +4,7 @@ import { generateTokens } from "./jwt.js";
 import { setupApp, setupRoutes } from "./setup.js";
 import { handleDisconnectDB, handleErrorDB, prisma } from "./handleDB.js";
 
-export const utils = {
+export {
   hashPassword,
   time,
   generateTokens,

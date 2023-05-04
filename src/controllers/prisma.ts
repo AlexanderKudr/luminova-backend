@@ -1,8 +1,6 @@
 import { UpdateUserTokens, User } from "../types/user.js";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library.js";
-import { utils } from "../utils/index.js";
-
-const { handleDisconnectDB, handleErrorDB, prisma } = utils;
+import { handleDisconnectDB, handleErrorDB, prisma } from "../utils/index.js";
 const createUser = async (user: User) => {
   const { email, password, accessToken, refreshToken } = user;
   try {

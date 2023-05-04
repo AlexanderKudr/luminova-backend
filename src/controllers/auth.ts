@@ -2,7 +2,6 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import { config } from "../config/index.js";
 import { Controller } from "../types/middlewares.js";
-import { utils } from "../utils/index.js";
 import {
   checkUserInDB,
   handleCreateUser,
@@ -10,8 +9,8 @@ import {
   updateRefreshTokenInDB,
   clearUserTokensInDB,
 } from "../controllers/prisma.js";
+import { generateTokens, hashPassword, time } from "../utils/index.js";
 
-const { time, hashPassword, generateTokens } = utils;
 const { time30days } = time;
 const { privateKey, publicKey } = config;
 
