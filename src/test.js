@@ -33,3 +33,4 @@ function convertToDecimal(romanNumeral) {
   console.log(iterateIntoArray(decimalNum));
   return iterateIntoArray(decimalNum);
 }
+
