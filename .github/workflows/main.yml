@@ -51,4 +51,4 @@ jobs:
             sudo docker rm express-api 
 
             # Run a new container from a new image
-            sudo docker run -d -p 8080:8080 -e CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} -e CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} -e CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }} -e CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }} -e DATABASE_URL=${{ secrets.DATABASE_URL }} -e PORT=${{ secrets.PORT }} --name express-api alexdevops111/unsplash:backend 
+            sudo docker run -d -p 8080:8080 -e CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} -e CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} -e CLOUDINARY_NAME=${{ secrets.CLOUDINARY_NAME }} -e CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }} -e DATABASE_URL=${{ secrets.DATABASE_URL }} -e PORT=${{ secrets.PORT }} --name express-api alexdevops111/unsplash:backend 
