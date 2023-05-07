@@ -4,6 +4,7 @@ import { Controller } from "../types/middlewares";
 
 cloudinary.config(config.cloudinary);
 const getImages: Controller = (req, res) => {
+  console.log(config.cloudinary)
   cloudinary.search
     .expression("folder:gallery")
     .sort_by("public_id", "desc")
