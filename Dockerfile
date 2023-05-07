@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # Install the dependencies for the Node.js application using npm ci
-RUN yarn install --frozen-lockfile 
+RUN yarn install
 
 # Set the command to run when the container starts
 CMD ["node", "dist/main.js"]
