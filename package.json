@@ -9,7 +9,9 @@
     "build": "npm i && npm run tsc",
     "tsc": "tsc",
     "start": "node dist/main.js",
-    "dev": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\""
+    "dev": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\"",
+    "compose:start:dev": "docker-compose -f deployments/dev/docker-compose.yaml up -d",
+    "compose:stop:dev": "docker-compose -f deployments/dev/docker-compose.yaml down --volumes --rmi local"
   },
   "prisma": {
     "schema": "prisma/schema.prisma"

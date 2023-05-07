@@ -1,5 +1,5 @@
 # Use the Node.js 18 Alpine image as the base image
-FROM node:18-alpine3.14 AS build
+FROM node:20.1.0-alpine3.16 AS build
 
 RUN apk update && rm -rf /var/cache/apk/*
 
