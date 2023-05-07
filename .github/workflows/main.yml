@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build container image
-        run: docker build --no-cache -t alexdevops111/unsplash:backend . --build-arg CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} --build-arg CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} --build-arg CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }} --build-arg CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }} --build-arg DATABASE_URL=${{ secrets.DATABASE_URL }} --build-arg PORT=${{ secrets.PORT }} 
+        run: docker build --no-cache -t alexdevops111/unsplash:backend .  
 
       - name: Log in Docker Hub
         run: docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
@@ -48,7 +48,7 @@ jobs:
             sudo docker stop express-api
 
             # Remove old container
-            sudo docker rm express-api
+            sudo docker rm express-api 
 
             # Run a new container from a new image
-            sudo docker run -d -p 8080:8080 --name express-api alexdevops111/unsplash:backend 
+            sudo docker run -d -p 8080:8080 -e CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} -e CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} -e CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }} -e CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }} -e DATABASE_URL=${{ secrets.DATABASE_URL }} -e PORT=${{ secrets.PORT }} --name express-api alexdevops111/unsplash:backend 
