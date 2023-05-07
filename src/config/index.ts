@@ -1,5 +1,5 @@
 import * as dotenv from "dotenv";
-import { privateKey, publicKey } from "./keys.js";
+import { privateKey, publicKey } from "./keys";
 
 dotenv.config();
 const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, PORT } = process.env;

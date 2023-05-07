@@ -1,5 +1,5 @@
 import express from "express";
-import { setupApp, setupRoutes } from "./utils/index.js";
+import { setupApp, setupRoutes } from "./utils/index";
 
 const app = express();
 

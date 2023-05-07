@@ -1,6 +1,8 @@
 # Use the Node.js 18 Alpine image as the base image
 FROM node:18-alpine3.14 AS build
 
+RUN apk update && rm -rf /var/cache/apk/*
+
 # Set the working directory inside the container to /app
 WORKDIR /app
 
@@ -11,4 +13,4 @@ COPY . .
 RUN npm install
 
 # Set the command to run when the container starts
-CMD ["node", "dist/main.js"]
+CMD ["npm" , "run" , "start:prod"]

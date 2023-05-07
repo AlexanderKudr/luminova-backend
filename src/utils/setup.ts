@@ -1,8 +1,8 @@
 import cors from "cors";
 import express, { Express } from "express";
 import cookieParser from "cookie-parser";
-import { config } from "../config/index.js";
-import { routesAuth, routesImages } from "../routes/index.js";
+import { config } from "../config/index";
+import { routesAuth, routesImages } from "../routes/index";
 
 const { corsOptions, port } = config;
 

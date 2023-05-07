@@ -1,4 +1,4 @@
-import { routesAuth } from "./auth/auth.js";
-import { routesImages } from "./api/images.js";
+import { routesAuth } from "./auth/auth";
+import { routesImages } from "./api/images";
 
 export { routesAuth, routesImages };

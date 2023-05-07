@@ -1,8 +1,8 @@
-import { time } from "./time.js";
-import { hashPassword } from "./hashing.js";
-import { generateTokens } from "./jwt.js";
-import { setupApp, setupRoutes } from "./setup.js";
-import { handleDisconnectDB, handleErrorDB, prisma } from "./handleDB.js";
+import { time } from "./time";
+import { hashPassword } from "./hashing";
+import { generateTokens } from "./jwt";
+import { setupApp, setupRoutes } from "./setup";
+import { handleDisconnectDB, handleErrorDB, prisma } from "./handleDB";
 
 export {
   hashPassword,

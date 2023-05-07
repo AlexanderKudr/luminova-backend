@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { time } from "./index.js";
+import { time } from "./index";
 
 
 
