@@ -1,0 +1,54 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+
+
+jobs:
+  build_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v2
+
+      - name: Build container image
+        run: docker build --no-cache -t alexdevops111/unsplash:backend .
+
+      - name: Log in Docker Hub
+        run: docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Push image to Docker Hub
+        run: docker push alexdevops111/unsplash:backend
+
+  deploy:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    needs: build_and_push
+
+    steps:
+      - name: Deploy to Virtual Dedicated Server via SSH
+        uses: appleboy/ssh-action@v0.1.3
+        with:
+          host: ${{ secrets.HOST }}
+          username: kotatsu
+          password: 1
+          port: 22
+          
+          script: |
+            # Login to Docker Hub
+            sudo docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
+
+            # Pull from Docker Hub
+            sudo docker pull alexdevops111/unsplash:backend
+
+            # Stop running container
+            sudo docker stop express-api
+
+            # Remove old container
+            sudo docker rm express-api
+
+            # Run a new container from a new image
+            sudo docker run -d --name express-api alexdevops111/unsplash:backend -e CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} -e CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} -e CLOUDINARY_CLOUD_NAME=${{ secrets.CLOUDINARY_CLOUD_NAME }} -e CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }} -e DATABASE_URL=${{ secrets.DATABASE_URL }} -e PORT=${{ secrets.PORT }}
