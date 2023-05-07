@@ -6,6 +6,7 @@ on:
       - master
 
 
+
 jobs:
   build_and_push:
     runs-on: ubuntu-latest
@@ -41,14 +42,17 @@ jobs:
             # Login to Docker Hub
             sudo docker login -u ${{ secrets.DOCKER_LOGIN }} -p ${{ secrets.DOCKER_PASSWORD }}
 
-            # Pull from Docker Hub
-            sudo docker pull alexdevops111/unsplash:backend
-
             # Stop running container
             sudo docker stop express-api
 
             # Remove old container
             sudo docker rm express-api 
+
+            # Remove old image
+            sudo docker rmi alexdevops111/unsplash:backend
+
+            # Pull from Docker Hub
+            sudo docker pull alexdevops111/unsplash:backend
 
             # Run a new container from a new image
             sudo docker run -d -p 8080:8080 -e CLOUDINARY_API_KEY=${{ secrets.CLOUDINARY_API_KEY }} -e CLOUDINARY_API_SECRET=${{ secrets.CLOUDINARY_API_SECRET }} -e CLOUDINARY_NAME=${{ secrets.CLOUDINARY_NAME }} -e CLOUDINARY_URL=${{ secrets.CLOUDINARY_URL }} -e DATABASE_URL=${{ secrets.DATABASE_URL }} -e PORT=${{ secrets.PORT }} --name express-api alexdevops111/unsplash:backend 
