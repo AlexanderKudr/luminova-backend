@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { Middleware } from "../types/middlewares";
-import { config } from "../config/index";
+import { Middleware } from "@/types/middlewares";
+import { config } from "@/config";
 
 const verifyToken: Middleware = (req, res, next) => {
   const authHeader = req.headers.authorization;

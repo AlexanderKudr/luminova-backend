@@ -1,6 +1,6 @@
-import { UpdateUserTokens, User } from "../types/user";
+import { UpdateUserTokens, User } from "@/types/user";
+import { prisma, handleDisconnectDB, handleErrorDB } from "@/utils";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { handleDisconnectDB, handleErrorDB, prisma } from "../utils/index";
 
 const createUser = async (user: User) => {
   const { email, password, accessToken, refreshToken } = user;
@@ -50,7 +50,7 @@ const checkUserInDB = async (field: string, value: string) => {
     const user = await prisma.user.findFirst({
       where: { [field]: value },
     });
- 
+
     await handleDisconnectDB();
     return user;
   } catch (error) {

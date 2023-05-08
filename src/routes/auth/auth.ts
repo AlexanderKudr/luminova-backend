@@ -1,6 +1,6 @@
 import { Express } from "express";
-import { login, protectedAccess, refreshTokens, register,logout } from "../../controllers/auth";
-import { verifyToken } from "../../middlewares/verifytoken";
+import { login, protectedAccess, refreshTokens, register, logout } from "@controllers/auth";
+import { verifyToken } from "@middlewares/verifytoken";
 
 const routesAuth = (app: Express) => {
   const baseURL = "/auth";
@@ -8,7 +8,7 @@ const routesAuth = (app: Express) => {
   app.post(`${baseURL}/login`, login);
   app.get(`${baseURL}/protected`, verifyToken, protectedAccess);
   app.post(`${baseURL}/refresh`, verifyToken, refreshTokens);
-  app.post(`${baseURL}/logout`,logout);
+  app.post(`${baseURL}/logout`, logout);
 };
 
 export { routesAuth };
