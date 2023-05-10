@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "outDir": "./dist",
+    "outDir": "dist",
     "target": "es6",
     "module": "commonjs",
     "allowJs": true, // Allow JS files to be compiled without TypeScript errors
