@@ -4,8 +4,8 @@
   "description": "",
   "type": "commonjs",
   "scripts": {
-    "build": "npm i && npm install ts-node",
-    "start": "npx ts-node ./src/main.ts",
+    "build": "npm i && npm install -g ts-node typescript && npm install",
+    "start": "ts-node ./src/main.ts",
     "dev": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\""
   },
   "prisma": {
