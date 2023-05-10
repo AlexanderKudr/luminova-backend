@@ -4,7 +4,6 @@
   "description": "",
   "type": "commonjs",
   "scripts": {
-    "start:prod": "ts-node ./src/main.ts",
     "build": "npm i",
     "start": "ts-node ./src/main.ts",
     "dev": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\""
