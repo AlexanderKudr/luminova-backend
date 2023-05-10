@@ -7,7 +7,7 @@
     "start:prod": "ts-node ./src/main.ts",
     "build": "npm i && npm run tsc",
     "tsc": "tsc",
-    "start": "node dist/main.js",
+    "start": "ts-node ./src/main.ts",
     "dev": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\""
   },
   "prisma": {
@@ -25,9 +25,7 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
-    "nanoid": "^4.0.2",
-    "tsconfig-paths": "^4.2.0",
-    "typescript-transform-paths": "^3.4.6"
+    "tsconfig-paths": "^4.2.0"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
