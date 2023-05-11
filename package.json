@@ -4,10 +4,10 @@
   "description": "",
   "type": "commonjs",
   "scripts": {
-    "build": "npm install && npm install typescript --save-dev && npm install ts-node --save-dev",
-    "start": "ts-node src/main.ts",
-    "dev": "npx ts-node ./src/main.ts",
-    "dev:test": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\""
+    "build": "npm i && npm run tsc",
+    "tsc": "tsc",
+    "start": "node dist/main.js",
+    "dev": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\""
   },
   "prisma": {
     "schema": "prisma/schema.prisma"
