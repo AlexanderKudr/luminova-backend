@@ -4,7 +4,7 @@
   "description": "",
   "type": "commonjs",
   "scripts": {
-    "build": "npm i && npm i typescript -g && npm i ts-node -g",
+    "build": "npm install && npm install -g typescript && npm install -g ts-node",
     "start": "npx ts-node src/main.ts",
     "dev": "npx ts-node ./src/main.ts",
     "dev:test": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\""
