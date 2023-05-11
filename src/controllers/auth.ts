@@ -1,15 +1,15 @@
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import { config } from "@/config";
-import { Controller } from "@/types/middlewares";
+import { config } from "../config";
+import { Controller } from "../types/middlewares";
 import {
   checkUserInDB,
   handleCreateUser,
   updateUserTokensInDB,
   updateRefreshTokenInDB,
   clearUserTokensInDB,
-} from "@/controllers/prisma";
-import { generateTokens, hashPassword, time } from "@/utils";
+} from "../controllers/prisma";
+import { generateTokens, hashPassword, time } from "../utils";
 
 const { time30days } = time;
 const { privateKey, publicKey } = config;

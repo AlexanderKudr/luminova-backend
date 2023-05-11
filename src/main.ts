@@ -1,5 +1,5 @@
 import express from "express";
-import { setupApp, setupRoutes } from "@/utils";
+import { setupApp, setupRoutes } from "./utils";
 
 const app = express();
 

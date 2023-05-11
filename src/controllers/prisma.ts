@@ -1,5 +1,5 @@
-import { UpdateUserTokens, User } from "@/types/user";
-import { prisma, handleDisconnectDB, handleErrorDB } from "@/utils";
+import { UpdateUserTokens, User } from "../types/user";
+import { prisma, handleDisconnectDB, handleErrorDB } from "../utils";
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 
 const createUser = async (user: User) => {

@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
-import { config } from "@/config";
-import { Controller } from "@/types/middlewares";
+import { config } from "../config";
+import { Controller } from "../types/middlewares";
 
 cloudinary.config(config.cloudinary);
 const getImages: Controller = (req, res) => {
