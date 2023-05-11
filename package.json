@@ -4,10 +4,9 @@
   "description": "",
   "type": "commonjs",
   "scripts": {
-    "build": "npm i && npm run tsc",
-    "tsc": "tsc",
-    "start": "node dist/main.js",
-    "dev": "ts-node ./src/main.ts",
+    "build": "npm i && npm i typescript -g && npm i ts-node -g",
+    "start": "npx ts-node src/main.ts",
+    "dev": "npx ts-node ./src/main.ts",
     "dev:test": "concurrently  \"npx tsc --watch\" \"nodemon dist/main.js\""
   },
   "prisma": {
