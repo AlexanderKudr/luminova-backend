@@ -12,4 +12,4 @@ COPY . .
 RUN npm install
 
 # Set the command to run when the container starts
-CMD ["npm" , "run" , "start:prod"]
+CMD ["npm" , "run" , "start"]
