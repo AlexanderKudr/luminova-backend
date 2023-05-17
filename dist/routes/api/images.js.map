@@ -1,1 +1,0 @@
-{"version":3,"file":"images.js","sourceRoot":"","sources":["../../../src/routes/api/images.ts"],"names":[],"mappings":";;;AACA,qDAA+D;AAE/D,MAAM,YAAY,GAAG,CAAC,GAAY,EAAE,EAAE;IACpC,MAAM,OAAO,GAAG,aAAa,CAAC;IAC9B,GAAG,CAAC,GAAG,CAAC,OAAO,EAAE,kBAAS,CAAC,CAAC;IAC5B,GAAG,CAAC,IAAI,CAAC,OAAO,EAAE,iBAAQ,CAAC,CAAC;AAC9B,CAAC,CAAC;AAEO,oCAAY"}

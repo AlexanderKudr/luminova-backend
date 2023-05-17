@@ -26,6 +26,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.config = void 0;
 const dotenv = __importStar(require("dotenv"));
 const keys_1 = require("./keys");
+const cloudinary_1 = require("cloudinary");
 dotenv.config();
 const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, PORT } = process.env;
 const config = {
@@ -41,4 +42,5 @@ const config = {
     privateKey: keys_1.privateKey,
 };
 exports.config = config;
+cloudinary_1.v2.config(config.cloudinary);
 //# sourceMappingURL=index.js.map
