@@ -1,11 +1,14 @@
 import * as dotenv from "dotenv";
 import { privateKey, publicKey } from "./keys";
+import { v2 as cloudinary } from "cloudinary";
 
 dotenv.config();
+
 const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, PORT } = process.env;
+
 const config = {
   port: PORT,
-  corsOptions: { origin: "*", credentials: true },
+  corsOptions: { origin: "http://localhost:5173", credentials: true },
   cloudinary: {
     cloud_name: CLOUDINARY_NAME,
     api_key: CLOUDINARY_API_KEY,
@@ -15,5 +18,7 @@ const config = {
   publicKey: publicKey,
   privateKey: privateKey,
 };
+
+cloudinary.config(config.cloudinary);
 
 export { config };

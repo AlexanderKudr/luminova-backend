@@ -1,8 +1,6 @@
 import jwt from "jsonwebtoken";
 import { time } from "./index";
 
-
-
 const generateTokens = (email: string, privateKey: string) => {
   const { time5minutes, time30days } = time;
   const algorithm = "RS256";
@@ -21,4 +19,8 @@ const generateTokens = (email: string, privateKey: string) => {
   return { accessToken, refreshToken };
 };
 
-export { generateTokens };
+const verifyToken = (refreshToken: string, publicKey: string) => {
+  return jwt.verify(refreshToken, publicKey);
+};
+
+export { generateTokens, verifyToken };
