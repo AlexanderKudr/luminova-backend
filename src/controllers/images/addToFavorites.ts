@@ -21,7 +21,7 @@ const addImageToFavorites: Controller = async (req, res) => {
     }
 
     const existingFavoriteImage = await favoriteImages.findFirst({
-      where: { public_id: public_id },
+      where: { public_id: public_id, user_id: existingUser?.id },
     });
     if (existingFavoriteImage) {
       await favoriteImages.delete({
