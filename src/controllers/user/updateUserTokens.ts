@@ -10,9 +10,11 @@ const updateUserTokensInDB = async ({ email, accessToken, refreshToken }: Update
         refreshToken: refreshToken,
       },
     });
+
     if (!user) {
       throw new Error("User not found");
     }
+
     await handleDisconnectDB();
   } catch (error) {
     await handleErrorDB(error);

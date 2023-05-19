@@ -1,5 +1,5 @@
 import { Express } from "express";
-import { login, protectedAccess, refreshTokens, register, logout } from "../../controllers/auth";
+import { login, protectedAccess, refreshTokens, register, logout } from "../../controllers";
 import { verifyToken } from "../../middlewares/verifytoken";
 
 const auth = (app: Express) => {

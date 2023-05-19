@@ -4,12 +4,14 @@ import {
   updateRefreshTokenInDB,
   clearUserTokensInDB,
   handleCreateUser,
-  findFavoriteImage,
-  deleteFavoriteImage,
-  addFavoriteImage,
-} from "./prisma";
+} from "./user";
+import {
+  addImageToCDN,
+  getImagesForNonUser,
+  addImageToFavorites,
+  getImagesForUser,
+} from "./images";
 import { login, register, logout, protectedAccess, refreshTokens } from "./auth";
-import { addImageToCDN, getImages, addImageToFavorites } from "./images";
 
 export {
   checkUserInDB,
@@ -17,11 +19,9 @@ export {
   updateRefreshTokenInDB,
   clearUserTokensInDB,
   handleCreateUser,
-  findFavoriteImage,
-  deleteFavoriteImage,
-  addFavoriteImage,
   addImageToFavorites,
-  getImages,
+  getImagesForNonUser,
+  getImagesForUser,
   addImageToCDN,
   register,
   login,

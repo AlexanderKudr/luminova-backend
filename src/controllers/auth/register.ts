@@ -1,7 +1,7 @@
 import { privateKey } from "../../config/keys";
 import { Controller } from "../../types/middlewares";
 import { generateTokens, hashPassword, time } from "../../utils";
-import { checkUserInDB, handleCreateUser } from "../prisma";
+import { checkUserInDB, handleCreateUser } from "../user";
 
 const { time30days } = time;
 

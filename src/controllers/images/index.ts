@@ -1,5 +1,6 @@
 import { addImageToCDN } from "./addToCDN";
-import { getImages } from "./getAll";
+import { getImagesForNonUser } from "./getImagesForNonUser";
 import { addImageToFavorites } from "./addToFavorites";
+import { getImagesForUser } from "./getImagesForUser";
 
-export { addImageToCDN, getImages, addImageToFavorites };
+export { addImageToCDN, getImagesForNonUser, addImageToFavorites, getImagesForUser };

@@ -4,6 +4,7 @@ import { prisma, handleDisconnectDB, handleErrorDB } from "../../utils";
 
 const createUser = async (user: User) => {
   const { email, password, accessToken, refreshToken } = user;
+
   try {
     const existingUser = await prisma.user.findUnique({
       where: { email: email },
@@ -23,6 +24,7 @@ const createUser = async (user: User) => {
         favoriteImages: { create: [] },
       },
     });
+
     return newUser;
   } catch (error) {
     const errorCheck = error instanceof PrismaClientKnownRequestError;
@@ -32,6 +34,7 @@ const createUser = async (user: User) => {
     } else {
       console.error("Error creating user:", error);
     }
+
     return null;
   }
 };
@@ -39,6 +42,7 @@ const createUser = async (user: User) => {
 const handleCreateUser = async (user: User) => {
   try {
     await createUser(user);
+
     await handleDisconnectDB();
   } catch (error) {
     await handleErrorDB(error);

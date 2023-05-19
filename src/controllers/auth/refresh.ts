@@ -1,17 +1,17 @@
 import { publicKey, privateKey } from "../../config/keys";
 import { Controller } from "../../types/middlewares";
-import { checkUserInDB, updateRefreshTokenInDB } from "../prisma";
+import { checkUserInDB, updateRefreshTokenInDB } from "../user";
 import { time, verifyToken, generateTokens } from "../../utils";
 
 const { time30days } = time;
 
 const refreshTokens: Controller = async (req, res) => {
-  const { refreshToken } = req.cookies as { refreshToken: string };
-  
   try {
+    const { refreshToken } = req.cookies as { refreshToken: string };
     if (!refreshToken) {
       return res.status(401).send({ error: "Refresh token missing" });
     }
+
     const token = verifyToken(refreshToken, publicKey!);
     if (!token) {
       return res.status(401).send({ error: "Invalid refresh token" });
@@ -38,6 +38,7 @@ const refreshTokens: Controller = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
+
     res.status(500).send({ error: "Server error" });
   }
 };

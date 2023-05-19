@@ -8,20 +8,18 @@ datasource db {
 }
 
 model User {
-  id             Int              @id @default(autoincrement())
+  id             String           @id @default(uuid())
   email          String           @unique
   password       String
-  accessToken    String?
+  accessToken    String?          @unique(map: "unique_user_accessToken")
   refreshToken   String?
   confirmedemail Boolean?         @default(false)
   favoriteImages favoriteImages[]
 }
 
 model favoriteImages {
-  id         Int     @id @default(autoincrement())
-  user_email String? @db.VarChar(255)
-  image_url  String  @db.VarChar(255)
-  User       User?   @relation(fields: [user_email], references: [email], onDelete: NoAction, onUpdate: NoAction, map: "UserFavoriteImages")
-
-  @@unique([user_email, image_url], map: "unique_favorite_image")
+  id        Int     @id @default(autoincrement())
+  public_id String
+  user_id   String?
+  User      User?   @relation(fields: [user_id], references: [id])
 }

@@ -1,7 +1,7 @@
 import { privateKey } from "../../config/keys";
 import { Controller } from "../../types/middlewares";
 import { generateTokens } from "../../utils";
-import { checkUserInDB, updateUserTokensInDB } from "../prisma";
+import { checkUserInDB, updateUserTokensInDB } from "../user";
 import bcrypt from "bcrypt";
 import { time } from "../../utils";
 

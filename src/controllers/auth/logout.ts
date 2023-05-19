@@ -1,5 +1,5 @@
 import { Controller } from "../../types/middlewares";
-import { clearUserTokensInDB } from "../prisma";
+import { clearUserTokensInDB } from "../user";
 
 const logout: Controller = (req, res) => {
   const { refreshToken } = req.cookies as { refreshToken: string };
@@ -7,9 +7,11 @@ const logout: Controller = (req, res) => {
   if (!refreshToken) {
     return res.status(401).send({ error: "Refresh token missing" });
   }
+
   clearUserTokensInDB(refreshToken);
 
   res.clearCookie("refreshToken");
+
   res.send({ message: "User logged out successfully" });
 };
 export { logout };
