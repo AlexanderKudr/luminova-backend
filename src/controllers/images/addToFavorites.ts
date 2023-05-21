@@ -18,6 +18,7 @@ const addImageToFavorites: Controller = async (req, res) => {
     });
     if (!existingUser) {
       res.status(400).send({ message: "User not found" });
+      return;
     }
 
     const existingFavoriteImage = await favoriteImages.findFirst({

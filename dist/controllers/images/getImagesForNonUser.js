@@ -9,25 +9,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addImageToCDN = void 0;
+exports.getImagesForNonUser = void 0;
 const cloudinary_1 = require("cloudinary");
-const addImageToCDN = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, url } = req.body;
+const getImagesForNonUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const uploadResult = yield cloudinary_1.v2.uploader.upload(url, {
-            use_filename: true,
-            public_id: title,
-            folder: "gallery",
-        });
-        const contextResult = (yield cloudinary_1.v2.uploader.add_context("favorite=false", [
-            uploadResult.public_id,
-        ]));
-        res.json(contextResult);
+        yield cloudinary_1.v2.search
+            .expression("folder:gallery")
+            .sort_by("public_id", "desc")
+            .max_results(30) //temporary fix //TODO: remove the max_results
+            .with_field("context")
+            .execute()
+            .then((result) => res.json(result));
     }
     catch (error) {
-        console.error(error);
-        res.status(500).send("Error adding image to Cloudinary");
+        console.log(error);
+        res.status(500).send({ error: "Images could not be fetched" });
     }
 });
-exports.addImageToCDN = addImageToCDN;
-//# sourceMappingURL=addToCDN.js.map
+exports.getImagesForNonUser = getImagesForNonUser;
+//# sourceMappingURL=getImagesForNonUser.js.map

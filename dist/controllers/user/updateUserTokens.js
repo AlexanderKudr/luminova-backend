@@ -9,25 +9,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addImageToCDN = void 0;
-const cloudinary_1 = require("cloudinary");
-const addImageToCDN = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, url } = req.body;
+exports.updateUserTokensInDB = void 0;
+const utils_1 = require("../../utils");
+const updateUserTokensInDB = ({ email, accessToken, refreshToken }) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const uploadResult = yield cloudinary_1.v2.uploader.upload(url, {
-            use_filename: true,
-            public_id: title,
-            folder: "gallery",
+        const user = yield utils_1.prisma.user.updateMany({
+            where: { email: email },
+            data: {
+                accessToken: accessToken,
+                refreshToken: refreshToken,
+            },
         });
-        const contextResult = (yield cloudinary_1.v2.uploader.add_context("favorite=false", [
-            uploadResult.public_id,
-        ]));
-        res.json(contextResult);
+        if (!user) {
+            throw new Error("User not found");
+        }
+        yield (0, utils_1.handleDisconnectDB)();
     }
     catch (error) {
-        console.error(error);
-        res.status(500).send("Error adding image to Cloudinary");
+        yield (0, utils_1.handleErrorDB)(error);
     }
 });
-exports.addImageToCDN = addImageToCDN;
-//# sourceMappingURL=addToCDN.js.map
+exports.updateUserTokensInDB = updateUserTokensInDB;
+//# sourceMappingURL=updateUserTokens.js.map

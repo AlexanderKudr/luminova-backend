@@ -10,26 +10,45 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addImageToFavorites = void 0;
-const updateFavoriteImages_1 = require("../prisma/updateFavoriteImages");
+const utils_1 = require("../../utils");
 const addImageToFavorites = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { public_id, accessToken } = req.body;
+    const { user, favoriteImages } = utils_1.prisma;
     try {
-        const { imageUrl, userEmail } = req.body;
-        if (!imageUrl || !userEmail) {
-            res.status(400).send({ message: "Email or imageUrl is missing" });
+        if (!public_id || !accessToken) {
+            res.status(400).send({ message: "public_id or accessToken is missing" });
             return;
         }
-        const existingFavoriteImage = yield (0, updateFavoriteImages_1.findFavoriteImage)(imageUrl, userEmail);
+        const existingUser = yield user.findFirst({
+            where: { accessToken: accessToken },
+        });
+        if (!existingUser) {
+            res.status(400).send({ message: "User not found" });
+            return;
+        }
+        const existingFavoriteImage = yield favoriteImages.findFirst({
+            where: { public_id: public_id, user_id: existingUser === null || existingUser === void 0 ? void 0 : existingUser.id },
+        });
         if (existingFavoriteImage) {
-            yield (0, updateFavoriteImages_1.deleteFavoriteImage)(existingFavoriteImage.id);
-            res.json({ message: "Favorite image removed successfully" });
+            yield favoriteImages.delete({
+                where: { id: existingFavoriteImage.id },
+            });
+            res.send({ message: "Favorite image removed successfully" });
             return;
         }
-        yield (0, updateFavoriteImages_1.addFavoriteImage)(imageUrl, userEmail);
-        res.json({ message: "Favorite image added successfully" });
+        yield favoriteImages.create({
+            data: {
+                public_id: public_id,
+                User: { connect: { id: existingUser === null || existingUser === void 0 ? void 0 : existingUser.id } },
+            },
+        });
+        res.send({ message: "Favorite image added successfully" });
     }
     catch (error) {
         console.error(error);
-        res.status(500).send({ message: "Internal server error" });
+        res
+            .status(500)
+            .send({ message: "Internal server error, adding/deleting image to favorites failed" });
     }
 });
 exports.addImageToFavorites = addImageToFavorites;
