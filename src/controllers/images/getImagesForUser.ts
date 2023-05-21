@@ -20,11 +20,11 @@ const getImagesForUser: Controller = async (req, res) => {
     });
 
     const images = getImagesFromCDN.resources.map((image) => {
-      const isActive = getFavoriteImagesFromDB?.favoriteImages.some(
+      const isFavorite = getFavoriteImagesFromDB?.favoriteImages.some(
         ({ public_id }) => public_id === image.public_id
       );
 
-      return isActive ? { ...image, isActive: true } : { ...image, isActive: false };
+      return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
     });
     res.send({ images });
   } catch (error) {

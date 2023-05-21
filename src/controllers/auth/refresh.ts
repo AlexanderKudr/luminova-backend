@@ -14,7 +14,7 @@ const refreshTokens: Controller = async (req, res) => {
 
     const token = verifyToken(refreshToken, publicKey!);
     if (!token) {
-      return res.status(401).send({ error: "Invalid refresh token" });
+      return res.status(401).send({ error: "Invalid or expired refresh token" });
     }
 
     const user = await checkUserInDB("refreshToken", refreshToken);

@@ -30,8 +30,8 @@ const login: Controller = async (req, res) => {
     res.send({
       message: `User ${user?.email} logged in successfully`,
       accessToken,
+      name: user?.name,
     });
-    
   } else {
     res.status(401).send({ error: "Invalid email or password" });
   }

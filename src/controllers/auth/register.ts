@@ -6,7 +6,7 @@ import { checkUserInDB, handleCreateUser } from "../user";
 const { time30days } = time;
 
 const register: Controller = async (req, res) => {
-  const { email, password } = req.body as { email: string; password: string };
+  const { email, password, name } = req.body as { email: string; password: string; name: string };
 
   const user = await checkUserInDB("email", email);
   if (user !== null && user !== undefined) {
@@ -16,6 +16,7 @@ const register: Controller = async (req, res) => {
   const { accessToken, refreshToken } = generateTokens(email, privateKey!);
 
   const newUser = {
+    name: name,
     email: email,
     password: await hashPassword(password),
     accessToken: accessToken,
@@ -35,6 +36,7 @@ const register: Controller = async (req, res) => {
   res.send({
     message: "User registered successfully",
     accessToken: accessToken,
+    name: name,
   });
 };
 export { register };
