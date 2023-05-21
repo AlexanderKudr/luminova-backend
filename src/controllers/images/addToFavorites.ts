@@ -1,5 +1,5 @@
 import { Controller } from "../../types/middlewares";
-import { handleDisconnectDB, handleErrorDB, prisma } from "../../utils";
+import { handleDisconnectDB,  prisma } from "../../utils";
 
 type Payload = { public_id: string; accessToken: string };
 

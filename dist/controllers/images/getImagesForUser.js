@@ -35,6 +35,9 @@ const getImagesForUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
         console.log(error);
         res.status(500).send({ error: "Images could not be fetched" });
     }
+    finally {
+        (0, utils_1.handleDisconnectDB)();
+    }
 });
 exports.getImagesForUser = getImagesForUser;
 //# sourceMappingURL=getImagesForUser.js.map

@@ -1,6 +1,6 @@
 import { v2 as cloudinary } from "cloudinary";
 import { Controller } from "../../types/middlewares";
-import { prisma } from "../../utils";
+import { handleDisconnectDB, prisma } from "../../utils";
 import { FetchImagesFromCDN } from "../../types/cloudinary";
 
 const getImagesForUser: Controller = async (req, res) => {
@@ -26,11 +26,14 @@ const getImagesForUser: Controller = async (req, res) => {
 
       return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
     });
+
     res.send({ images });
   } catch (error) {
     console.log(error);
 
     res.status(500).send({ error: "Images could not be fetched" });
+  } finally {
+    handleDisconnectDB();
   }
 };
 
