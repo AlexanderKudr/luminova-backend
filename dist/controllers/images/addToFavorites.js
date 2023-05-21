@@ -50,6 +50,9 @@ const addImageToFavorites = (req, res) => __awaiter(void 0, void 0, void 0, func
             .status(500)
             .send({ message: "Internal server error, adding/deleting image to favorites failed" });
     }
+    finally {
+        (0, utils_1.handleDisconnectDB)();
+    }
 });
 exports.addImageToFavorites = addImageToFavorites;
 //# sourceMappingURL=addToFavorites.js.map
