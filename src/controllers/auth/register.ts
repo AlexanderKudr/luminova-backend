@@ -21,6 +21,7 @@ const register: Controller = async (req, res) => {
     password: await hashPassword(password),
     accessToken: accessToken,
     refreshToken: refreshToken,
+    confirmedemail: false,
     favoriteImages: [] as string[],
   };
 

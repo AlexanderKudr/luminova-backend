@@ -3,7 +3,7 @@ import { User } from "../../types/user";
 import { prisma, handleDisconnectDB, handleErrorDB } from "../../utils";
 
 const createUser = async (user: User) => {
-  const { email, password, accessToken, refreshToken } = user;
+  const { name, email, password, accessToken, refreshToken } = user;
 
   try {
     const existingUser = await prisma.user.findUnique({
@@ -17,10 +17,12 @@ const createUser = async (user: User) => {
 
     const newUser = await prisma.user.create({
       data: {
+        name: name,
         email: email,
         password: password,
         accessToken: accessToken,
         refreshToken: refreshToken,
+        confirmedemail: false,
         favoriteImages: { create: [] },
       },
     });
