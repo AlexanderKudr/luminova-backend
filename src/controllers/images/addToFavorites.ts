@@ -1,5 +1,5 @@
 import { Controller } from "../../types/middlewares";
-import { prisma } from "../../utils";
+import { handleDisconnectDB, handleErrorDB, prisma } from "../../utils";
 
 type Payload = { public_id: string; accessToken: string };
 
@@ -48,6 +48,8 @@ const addImageToFavorites: Controller = async (req, res) => {
     res
       .status(500)
       .send({ message: "Internal server error, adding/deleting image to favorites failed" });
+  } finally {
+    handleDisconnectDB();
   }
 };
 export { addImageToFavorites };
