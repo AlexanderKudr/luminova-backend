@@ -4,4 +4,10 @@ import { refreshTokens } from "./refresh";
 import { register } from "./register";
 import { login } from "./login";
 
-export { register, login, logout, protectedAccess, refreshTokens };
+export const authControllers = {
+  register,
+  login,
+  logout,
+  protectedAccess,
+  refreshTokens,
+};

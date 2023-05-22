@@ -4,7 +4,7 @@ import { updateRefreshTokenInDB } from "./updateRefreshTokens";
 import { clearUserTokensInDB } from "./clearUserTokens";
 import { handleCreateUser } from "./createUser";
 
-export {
+export const userControllers = {
   checkUserInDB,
   updateUserTokensInDB,
   updateRefreshTokenInDB,

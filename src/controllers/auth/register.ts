@@ -1,15 +1,12 @@
 import { privateKey } from "../../config/keys";
 import { Controller } from "../../types/middlewares";
 import { generateTokens, hashPassword, time } from "../../utils";
-import { checkUserInDB, handleCreateUser } from "../user";
+import { userControllers } from "../index";
 
 const { time30days } = time;
-
+const { checkUserInDB, handleCreateUser } = userControllers;
 const register: Controller = async (req, res) => {
   const { email, password, name } = req.body as { email: string; password: string; name: string };
-  
-
-
 
   const user = await checkUserInDB("email", email);
   if (user !== null && user !== undefined) {

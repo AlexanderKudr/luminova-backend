@@ -11,9 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.refreshTokens = void 0;
 const keys_1 = require("../../config/keys");
-const user_1 = require("../user");
+const index_1 = require("../index");
 const utils_1 = require("../../utils");
 const { time30days } = utils_1.time;
+const { checkUserInDB, updateRefreshTokenInDB } = index_1.userControllers;
 const refreshTokens = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { refreshToken } = req.cookies;
@@ -24,19 +25,19 @@ const refreshTokens = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!token) {
             return res.status(401).send({ error: "Invalid or expired refresh token" });
         }
-        const user = yield (0, user_1.checkUserInDB)("refreshToken", refreshToken);
+        const user = yield checkUserInDB("refreshToken", refreshToken);
         if (!user) {
             return res.status(401).send({ error: "User not found" });
         }
         const tokens = (0, utils_1.generateTokens)(refreshToken, keys_1.privateKey);
-        (0, user_1.updateRefreshTokenInDB)(tokens.refreshToken);
+        updateRefreshTokenInDB(tokens.refreshToken);
         res.cookie("refreshToken", tokens.refreshToken, {
             httpOnly: true,
             maxAge: time30days,
         });
         res.send({
             message: "Token refreshed and user logged in successfully",
-            user: yield (0, user_1.checkUserInDB)("email", refreshToken),
+            user: yield checkUserInDB("email", refreshToken),
             accessToken: tokens.accessToken,
         });
     }

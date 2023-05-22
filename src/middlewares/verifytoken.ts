@@ -4,6 +4,7 @@ import { config } from "../config";
 
 const verifyToken: Middleware = (req, res, next) => {
   const authHeader = req.headers.authorization;
+
   if (!authHeader) {
     return res.status(401).send({ error: "Authorization header missing" });
   }
@@ -19,5 +20,6 @@ const verifyToken: Middleware = (req, res, next) => {
     return res.status(401).send({ error: "Invalid Access Token" });
   }
   next();
+  
 };
 export { verifyToken };

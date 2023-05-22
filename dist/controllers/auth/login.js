@@ -15,20 +15,21 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
 const keys_1 = require("../../config/keys");
 const utils_1 = require("../../utils");
-const user_1 = require("../user");
+const index_1 = require("../index");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const utils_2 = require("../../utils");
 const { time30days } = utils_2.time;
+const { checkUserInDB, updateUserTokensInDB } = index_1.userControllers;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
-    const user = yield (0, user_1.checkUserInDB)("email", email);
+    const user = yield checkUserInDB("email", email);
     if (!user) {
         return res.status(401).send({ error: "Invalid email or password" });
     }
     const passwordMatches = yield bcrypt_1.default.compare(password, user.password);
     if (passwordMatches) {
         const { accessToken, refreshToken } = (0, utils_1.generateTokens)(email, keys_1.privateKey);
-        (0, user_1.updateUserTokensInDB)({ email, accessToken, refreshToken });
+        updateUserTokensInDB({ email, accessToken, refreshToken });
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             maxAge: time30days,

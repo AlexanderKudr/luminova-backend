@@ -12,11 +12,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = void 0;
 const keys_1 = require("../../config/keys");
 const utils_1 = require("../../utils");
-const user_1 = require("../user");
+const index_1 = require("../index");
 const { time30days } = utils_1.time;
+const { checkUserInDB, handleCreateUser } = index_1.userControllers;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, name } = req.body;
-    const user = yield (0, user_1.checkUserInDB)("email", email);
+    const user = yield checkUserInDB("email", email);
     if (user !== null && user !== undefined) {
         return res.status(400).send({ error: "User with this email already exists" });
     }
@@ -30,7 +31,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         confirmedemail: false,
         favoriteImages: [],
     };
-    yield (0, user_1.handleCreateUser)(newUser);
+    yield handleCreateUser(newUser);
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
         secure: false,

@@ -25,6 +25,7 @@ const getImagesForUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
             where: { accessToken },
             select: { favoriteImages: true },
         });
+        console.log(`user ${JSON.stringify(getFavoriteImagesFromDB)}`);
         const images = getImagesFromCDN.resources.map((image) => {
             const isFavorite = getFavoriteImagesFromDB === null || getFavoriteImagesFromDB === void 0 ? void 0 : getFavoriteImagesFromDB.favoriteImages.some(({ public_id }) => public_id === image.public_id);
             return isFavorite ? Object.assign(Object.assign({}, image), { favorite: true }) : Object.assign(Object.assign({}, image), { favorite: false });

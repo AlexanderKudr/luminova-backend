@@ -1,11 +1,12 @@
 import { privateKey } from "../../config/keys";
 import { Controller } from "../../types/middlewares";
 import { generateTokens } from "../../utils";
-import { checkUserInDB, updateUserTokensInDB } from "../user";
+import { userControllers } from "../index";
 import bcrypt from "bcrypt";
 import { time } from "../../utils";
 
 const { time30days } = time;
+const { checkUserInDB, updateUserTokensInDB } = userControllers;
 
 const login: Controller = async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };

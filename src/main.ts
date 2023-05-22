@@ -5,7 +5,7 @@ import { auth, images } from "./routes";
 import { config } from "./config";
 
 const app = express();
-const { corsOptions, port } = config;
+const { corsOptions } = config;
 
 const setupApp = (app: Express) => {
   app.use(cors(corsOptions));
