@@ -29,7 +29,7 @@ const getImagesForUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
             const isFavorite = getFavoriteImagesFromDB === null || getFavoriteImagesFromDB === void 0 ? void 0 : getFavoriteImagesFromDB.favoriteImages.some(({ public_id }) => public_id === image.public_id);
             return isFavorite ? Object.assign(Object.assign({}, image), { favorite: true }) : Object.assign(Object.assign({}, image), { favorite: false });
         });
-        res.send({ images });
+        res.send({ resources: images });
     }
     catch (error) {
         console.log(error);

@@ -27,7 +27,7 @@ const getImagesForUser: Controller = async (req, res) => {
       return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
     });
 
-    res.send({ images });
+    res.send({ resources: images });
   } catch (error) {
     console.log(error);
 

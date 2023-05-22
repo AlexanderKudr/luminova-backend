@@ -7,6 +7,9 @@ const { time30days } = time;
 
 const register: Controller = async (req, res) => {
   const { email, password, name } = req.body as { email: string; password: string; name: string };
+  
+
+
 
   const user = await checkUserInDB("email", email);
   if (user !== null && user !== undefined) {
