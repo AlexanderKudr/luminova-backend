@@ -9,12 +9,12 @@ datasource db {
 
 model User {
   id             String           @id @default(uuid())
-  name           String           @unique
   email          String           @unique
   password       String
   accessToken    String?          @unique(map: "unique_user_accessToken")
-  refreshToken   String?
   confirmedemail Boolean?         @default(false)
+  refreshToken   String?
+  name           String           @unique
   favoriteImages favoriteImages[]
 }
 
@@ -23,4 +23,16 @@ model favoriteImages {
   public_id String
   user_id   String?
   User      User?   @relation(fields: [user_id], references: [id])
+}
+
+model collection_content {
+  content_id Int    @id
+  public_id  String
+}
+
+model collections {
+  collection_id Int     @id
+  title         String
+  description   String?
+  owner         String
 }

@@ -9,7 +9,7 @@ const express_1 = __importDefault(require("express"));
 const routes_1 = require("./routes");
 const config_1 = require("./config");
 const app = (0, express_1.default)();
-const { corsOptions, port } = config_1.config;
+const { corsOptions } = config_1.config;
 const setupApp = (app) => {
     app.use((0, cors_1.default)(corsOptions));
     app.use(express_1.default.json({ limit: "50mb" }));

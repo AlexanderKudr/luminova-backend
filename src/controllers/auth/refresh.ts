@@ -5,6 +5,7 @@ import { time, verifyToken, generateTokens } from "../../utils";
 
 const { time30days } = time;
 const { checkUserInDB, updateRefreshTokenInDB } = userControllers;
+
 const refreshTokens: Controller = async (req, res) => {
   try {
     const { refreshToken } = req.cookies as { refreshToken: string };

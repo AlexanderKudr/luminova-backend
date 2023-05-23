@@ -17,7 +17,6 @@ const getImagesForUser: Controller = async (req, res) => {
       where: { accessToken },
       select: { favoriteImages: true },
     });
-    console.log(`user ${JSON.stringify(getFavoriteImagesFromDB)}`);
     const images = getImagesFromCDN.resources.map((image) => {
       const isFavorite = getFavoriteImagesFromDB?.favoriteImages.some(
         ({ public_id }) => public_id === image.public_id
