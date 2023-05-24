@@ -9,13 +9,14 @@ datasource db {
 
 model User {
   id             String           @id @default(uuid())
+  name           String           @unique
   email          String           @unique
   password       String
   accessToken    String?          @unique(map: "unique_user_accessToken")
-  confirmedemail Boolean?         @default(false)
   refreshToken   String?
-  name           String           @unique
+  confirmedemail Boolean?         @default(false)
   favoriteImages favoriteImages[]
+  collections    collections[]
 }
 
 model favoriteImages {
@@ -26,13 +27,17 @@ model favoriteImages {
 }
 
 model collection_content {
-  content_id Int    @id
-  public_id  String
+  content_id       Int         @id @default(autoincrement())
+  public_id        String
+  fk_collection_id Int
+  collections      collections @relation(fields: [fk_collection_id], references: [collection_id], onDelete: NoAction, onUpdate: NoAction)
 }
 
 model collections {
-  collection_id Int     @id
-  title         String
-  description   String?
-  owner         String
+  collection_id      Int                  @id @default(autoincrement())
+  title              String
+  description        String?
+  fk_user_id         String
+  collection_content collection_content[]
+  User               User                 @relation(fields: [fk_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 }
