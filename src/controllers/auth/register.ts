@@ -9,8 +9,8 @@ const register: Controller = async (req, res) => {
   const { email, password, name } = req.body as { email: string; password: string; name: string };
 
   const user = await checkUserInDB("email", email);
-  if (user !== null && user !== undefined) {
-    return res.status(400).send({ error: "User with this email already exists" });
+  if (user?.email === email || user?.name === name) {
+    return res.status(400).send({ error: "User with this email/name already exists" });
   }
 
   const { accessToken, refreshToken } = generateTokens(email, privateKey!);
@@ -33,7 +33,6 @@ const register: Controller = async (req, res) => {
     // sameSite: "none",
     maxAge: time30days,
   });
-
 
   res.send({
     message: "User registered successfully",

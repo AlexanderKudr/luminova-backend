@@ -18,8 +18,8 @@ const { checkUserInDB, handleCreateUser } = index_1.userControllers;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, name } = req.body;
     const user = yield checkUserInDB("email", email);
-    if (user !== null && user !== undefined) {
-        return res.status(400).send({ error: "User with this email already exists" });
+    if ((user === null || user === void 0 ? void 0 : user.email) === email || (user === null || user === void 0 ? void 0 : user.name) === name) {
+        return res.status(400).send({ error: "User with this email/name already exists" });
     }
     const { accessToken, refreshToken } = (0, utils_1.generateTokens)(email, keys_1.privateKey);
     const newUser = {

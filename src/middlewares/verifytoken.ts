@@ -14,7 +14,7 @@ const verifyToken: Middleware = async (req, res, next) => {
   }
   
   try {
-    const decodedToken = jwt_decode<any>(token);
+    const decodedToken = jwt_decode<{ exp: number }>(token);
 
     if (decodedToken.exp < Date.now() / 1000) {
       return res.status(401).send({ error: "Access token expired" });

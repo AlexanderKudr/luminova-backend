@@ -14,9 +14,9 @@ model User {
   password       String
   accessToken    String?          @unique(map: "unique_user_accessToken")
   refreshToken   String?
-  confirmedemail Boolean?         @default(false)
   favoriteImages favoriteImages[]
   collections    collections[]
+  confirmedemail Boolean?         @default(false)
 }
 
 model favoriteImages {
