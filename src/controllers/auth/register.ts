@@ -5,12 +5,19 @@ import { userControllers } from "../index";
 
 const { time30days } = time;
 const { checkUserInDB, handleCreateUser } = userControllers;
+
 const register: Controller = async (req, res) => {
   const { email, password, name } = req.body as { email: string; password: string; name: string };
 
-  const user = await checkUserInDB("email", email);
-  if (user?.email === email || user?.name === name) {
-    return res.status(400).send({ error: "User with this email/name already exists" });
+  const userByEmail = await checkUserInDB("email", email);
+  const userByName = await checkUserInDB("name", name);
+
+  if (userByEmail?.email === email) {
+    return res.status(400).send({ error: "User with this email already exists" });
+  }
+
+  if (userByName?.name === name) {
+    return res.status(400).send({ error: "User with this name already exists" });
   }
 
   const { accessToken, refreshToken } = generateTokens(email, privateKey!);
