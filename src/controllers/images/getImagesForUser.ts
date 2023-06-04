@@ -12,7 +12,6 @@ const getImagesForUser: Controller = async (req, res) => {
       .max_results(30) //temporary fix //TODO: remove the max_results
       .with_field("context")
       .execute();
-
     const getFavoriteImagesFromDB = await prisma.user.findFirst({
       where: { accessToken },
       select: { favoriteImages: true },

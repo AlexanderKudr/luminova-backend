@@ -10,6 +10,7 @@ const getImagesForNonUser: Controller = async (req, res) => {
       .with_field("context")
       .execute()
       .then((result) => res.json(result));
+      
   } catch (error) {
     console.log(error);
 
