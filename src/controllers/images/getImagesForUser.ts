@@ -3,6 +3,7 @@ import { Controller } from "../../types/middlewares";
 import { handleDisconnectDB, prisma } from "../../utils";
 import { FetchImagesFromCDN } from "../../types/cloudinary";
 
+
 const getImagesForUser: Controller = async (req, res) => {
   const { accessToken } = req.body as { accessToken: string };
   try {
@@ -10,7 +11,7 @@ const getImagesForUser: Controller = async (req, res) => {
       .expression("folder:gallery")
       .sort_by("public_id", "desc")
       .max_results(30) //temporary fix //TODO: remove the max_results
-      .with_field("context")
+      .with_field("context") 
       .execute();
     const getFavoriteImagesFromDB = await prisma.user.findFirst({
       where: { accessToken },
