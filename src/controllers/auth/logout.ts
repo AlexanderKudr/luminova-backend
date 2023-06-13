@@ -16,4 +16,5 @@ const logout: Controller = (req, res) => {
 
   res.send({ message: "User logged out successfully" });
 };
+
 export { logout };
