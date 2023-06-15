@@ -4,7 +4,7 @@
   "description": "",
   "type": "commonjs",
   "scripts": {
-    "build": "npm i && npm run tsc",
+    "build": "npm install && npm run tsc",
     "tsc": "tsc",
     "start": "node dist/main.js",
     "dev": "npx tsnd --respawn src/main.ts"
