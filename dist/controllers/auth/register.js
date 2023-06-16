@@ -17,6 +17,7 @@ const { time30days } = utils_1.time;
 const { checkUserInDB, handleCreateUser } = index_1.userControllers;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, name } = req.body;
+    console.log(email, password, name);
     const userByEmail = yield checkUserInDB("email", email);
     const userByName = yield checkUserInDB("name", name);
     if ((userByEmail === null || userByEmail === void 0 ? void 0 : userByEmail.email) === email) {

@@ -8,7 +8,7 @@ const { checkUserInDB, handleCreateUser } = userControllers;
 
 const register: Controller = async (req, res) => {
   const { email, password, name } = req.body as { email: string; password: string; name: string };
-
+  console.log(email, password, name);
   const userByEmail = await checkUserInDB("email", email);
   const userByName = await checkUserInDB("name", name);
 
