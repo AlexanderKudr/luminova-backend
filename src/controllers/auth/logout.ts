@@ -1,7 +1,7 @@
-import { Controller } from "../../types/middlewares";
-import { userControllers } from "../index";
+import { Controller } from "../../types";
+import { databaseUtils } from "../../utils";
 
-const { clearUserTokensInDB } = userControllers;
+const { clearUserTokensInDB } = databaseUtils;
 
 const logout: Controller = (req, res) => {
   const { refreshToken } = req.cookies as { refreshToken: string };

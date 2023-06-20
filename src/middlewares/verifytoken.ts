@@ -1,5 +1,5 @@
 import jwt_decode from "jwt-decode";
-import { Middleware } from "../types/middlewares";
+import { Middleware } from "../types";
 
 const verifyToken: Middleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
@@ -12,7 +12,7 @@ const verifyToken: Middleware = async (req, res, next) => {
   if (!token) {
     return res.status(401).send({ error: "Access token is missing" });
   }
-  
+
   try {
     const decodedToken = jwt_decode<{ exp: number }>(token);
 

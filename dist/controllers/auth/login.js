@@ -13,13 +13,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
-const keys_1 = require("../../config/keys");
+const config_1 = require("../../config");
 const utils_1 = require("../../utils");
-const index_1 = require("../index");
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const utils_2 = require("../../utils");
-const { time30days } = utils_2.time;
-const { checkUserInDB, updateUserTokensInDB } = index_1.userControllers;
+const { time30days } = utils_1.time;
+const { checkUserInDB, updateUserTokensInDB } = utils_1.databaseUtils;
+const { generateTokens } = utils_1.jwtUtils;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const user = yield checkUserInDB("email", email);
@@ -28,7 +27,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
     const passwordMatches = yield bcrypt_1.default.compare(password, user.password);
     if (passwordMatches) {
-        const { accessToken, refreshToken } = (0, utils_1.generateTokens)(email, keys_1.privateKey);
+        const { accessToken, refreshToken } = generateTokens(email, config_1.privateKey);
         updateUserTokensInDB({ email, accessToken, refreshToken });
         console.log("about to set cookie");
         res.cookie("refreshToken", refreshToken, {

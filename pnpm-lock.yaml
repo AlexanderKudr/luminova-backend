@@ -1,6 +1,13 @@
-lockfileVersion: '6.0'
+lockfileVersion: '6.1'
+
+settings:
+  autoInstallPeers: true
+  excludeLinksFromLockfile: false
 
 dependencies:
+  '@huggingface/inference':
+    specifier: ^2.5.1
+    version: 2.5.1
   '@prisma/client':
     specifier: ^4.13.0
     version: 4.13.0(prisma@4.13.0)
@@ -79,6 +86,11 @@ packages:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
     dev: true
+
+  /@huggingface/inference@2.5.1:
+    resolution: {integrity: sha512-5Jx+cwRYrGtvN/27VJbzEcjFlFR7ixd+jNC/hbjcRDSZ3QteEUVKwMCgXplwjWkQbvoeWik+reR2m5fAWUvvpw==}
+    engines: {node: '>=18'}
+    dev: false
 
   /@jridgewell/resolve-uri@3.1.1:
     resolution: {integrity: sha512-dSYZh7HhCDtCKm4QakX0xFpsRDqjjtZf/kjI/v3T3Nwt5r8/qz/M19F9ySyOqU94SXBmeG9ttTul+YnR4LOxFA==}

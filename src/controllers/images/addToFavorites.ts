@@ -1,7 +1,9 @@
-import { Controller } from "../../types/middlewares";
-import { handleDisconnectDB,  prisma } from "../../utils";
+import { Controller } from "../../types";
+import { databaseUtils } from "../../utils";
 
 type Payload = { public_id: string; accessToken: string };
+
+const { handleDisconnectDB, prisma } = databaseUtils;
 
 const addImageToFavorites: Controller = async (req, res) => {
   const { public_id, accessToken } = req.body as Payload;

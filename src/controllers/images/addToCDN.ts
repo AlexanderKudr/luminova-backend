@@ -1,4 +1,4 @@
-import { Controller } from "../../types/middlewares";
+import { Controller } from "../../types";
 import { UploadApiErrorResponse, v2 as cloudinary } from "cloudinary";
 
 const addImageToCDN: Controller = async (req, res) => {
@@ -11,9 +11,10 @@ const addImageToCDN: Controller = async (req, res) => {
       folder: "gallery",
     });
 
-    const contextResult = (await cloudinary.uploader.add_context("favorite=false", [
-      uploadResult.public_id,
-    ])) as UploadApiErrorResponse;
+    const contextResult = (await cloudinary.uploader.add_context(
+      "favorite=false",
+      [uploadResult.public_id]
+    )) as UploadApiErrorResponse;
 
     res.json(contextResult);
   } catch (error) {

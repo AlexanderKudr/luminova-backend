@@ -1,4 +1,4 @@
-import { auth } from "./auth/auth";
-import { images } from "./images/images";
+import { auth } from "./auth";
+import { images } from "./images";
 
 export { auth, images };

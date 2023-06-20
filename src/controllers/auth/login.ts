@@ -1,12 +1,11 @@
-import { privateKey } from "../../config/keys";
-import { Controller } from "../../types/middlewares";
-import { generateTokens } from "../../utils";
-import { userControllers } from "../index";
+import { privateKey } from "../../config";
+import { Controller } from "../../types";
+import { jwtUtils, databaseUtils, time } from "../../utils";
 import bcrypt from "bcrypt";
-import { time } from "../../utils";
 
 const { time30days } = time;
-const { checkUserInDB, updateUserTokensInDB } = userControllers;
+const { checkUserInDB, updateUserTokensInDB } = databaseUtils;
+const { generateTokens } = jwtUtils;
 
 const login: Controller = async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };

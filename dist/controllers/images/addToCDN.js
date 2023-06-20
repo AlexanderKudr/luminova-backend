@@ -19,9 +19,7 @@ const addImageToCDN = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             public_id: title,
             folder: "gallery",
         });
-        const contextResult = (yield cloudinary_1.v2.uploader.add_context("favorite=false", [
-            uploadResult.public_id,
-        ]));
+        const contextResult = (yield cloudinary_1.v2.uploader.add_context("favorite=false", [uploadResult.public_id]));
         res.json(contextResult);
     }
     catch (error) {

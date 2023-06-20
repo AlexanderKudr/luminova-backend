@@ -1,11 +1,11 @@
 import { addImageToCDN } from "./addToCDN";
-import { getImagesForNonUser } from "./getImagesForNonUser";
 import { addImageToFavorites } from "./addToFavorites";
-import { getImagesForUser } from "./getImagesForUser";
+import { imagesForUser } from "./imagesForUser";
+import { imagesForNonUser } from "./imagesForNonUser";
 
 export const imagesControllers = {
   addImageToCDN,
-  getImagesForNonUser,
   addImageToFavorites,
-  getImagesForUser,
+  imagesForUser,
+  imagesForNonUser,
 };

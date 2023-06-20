@@ -21,4 +21,4 @@ const config = {
 
 cloudinary.config(config.cloudinary);
 
-export { config };
+export { config, privateKey, publicKey };

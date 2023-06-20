@@ -23,9 +23,11 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.config = void 0;
+exports.publicKey = exports.privateKey = exports.config = void 0;
 const dotenv = __importStar(require("dotenv"));
 const keys_1 = require("./keys");
+Object.defineProperty(exports, "privateKey", { enumerable: true, get: function () { return keys_1.privateKey; } });
+Object.defineProperty(exports, "publicKey", { enumerable: true, get: function () { return keys_1.publicKey; } });
 const cloudinary_1 = require("cloudinary");
 dotenv.config();
 const { CLOUDINARY_NAME, CLOUDINARY_API_KEY, CLOUDINARY_API_SECRET, PORT } = process.env;

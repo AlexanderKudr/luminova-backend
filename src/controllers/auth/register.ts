@@ -1,14 +1,15 @@
-import { privateKey } from "../../config/keys";
-import { Controller } from "../../types/middlewares";
-import { generateTokens, hashPassword, time } from "../../utils";
-import { userControllers } from "../index";
+import { privateKey } from "../../config";
+import { Controller } from "../../types";
+import { jwtUtils, databaseUtils, time } from "../../utils";
 
 const { time30days } = time;
-const { checkUserInDB, handleCreateUser } = userControllers;
+const { checkUserInDB, handleCreateUser } = databaseUtils;
+const { generateTokens, hashPassword } = jwtUtils;
 
 const register: Controller = async (req, res) => {
   const { email, password, name } = req.body as { email: string; password: string; name: string };
   console.log(email, password, name);
+
   const userByEmail = await checkUserInDB("email", email);
   const userByName = await checkUserInDB("name", name);
 
@@ -40,7 +41,7 @@ const register: Controller = async (req, res) => {
     // sameSite: "none",
     maxAge: time30days,
   });
-  
+
   res.send({
     message: "User registered successfully",
     accessToken: accessToken,

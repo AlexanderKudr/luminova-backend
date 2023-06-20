@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getImagesForUser = void 0;
 const cloudinary_1 = require("cloudinary");
 const utils_1 = require("../../utils");
+const { handleDisconnectDB, prisma } = utils_1.databaseUtils;
 const getImagesForUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { accessToken } = req.body;
     try {
@@ -21,7 +22,7 @@ const getImagesForUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
             .max_results(30) //temporary fix //TODO: remove the max_results
             .with_field("context")
             .execute();
-        const getFavoriteImagesFromDB = yield utils_1.prisma.user.findFirst({
+        const getFavoriteImagesFromDB = yield prisma.user.findFirst({
             where: { accessToken },
             select: { favoriteImages: true },
         });
@@ -36,7 +37,7 @@ const getImagesForUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.status(500).send({ error: "Images could not be fetched" });
     }
     finally {
-        (0, utils_1.handleDisconnectDB)();
+        handleDisconnectDB();
     }
 });
 exports.getImagesForUser = getImagesForUser;

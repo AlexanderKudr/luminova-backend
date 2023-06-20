@@ -11,9 +11,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.addImageToFavorites = void 0;
 const utils_1 = require("../../utils");
+const { handleDisconnectDB, prisma } = utils_1.databaseUtils;
 const addImageToFavorites = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { public_id, accessToken } = req.body;
-    const { user, favoriteImages } = utils_1.prisma;
+    const { user, favoriteImages } = prisma;
     try {
         if (!public_id || !accessToken) {
             res.status(400).send({ message: "public_id or accessToken is missing" });
@@ -51,7 +52,7 @@ const addImageToFavorites = (req, res) => __awaiter(void 0, void 0, void 0, func
             .send({ message: "Internal server error, adding/deleting image to favorites failed" });
     }
     finally {
-        (0, utils_1.handleDisconnectDB)();
+        handleDisconnectDB();
     }
 });
 exports.addImageToFavorites = addImageToFavorites;

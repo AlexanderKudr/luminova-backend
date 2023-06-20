@@ -14,6 +14,7 @@ const setupApp = (app) => {
     app.use((0, cors_1.default)(corsOptions));
     app.use(express_1.default.json({ limit: "50mb" }));
     app.use((0, cookie_parser_1.default)());
+    app.use(express_1.default.static("public"));
     app.listen(8080, () => console.log(`Example app listening on port ${8080}`));
 };
 const setupRoutes = (app) => {

@@ -10,18 +10,18 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.refreshTokens = void 0;
-const keys_1 = require("../../config/keys");
-const index_1 = require("../index");
+const config_1 = require("../../config");
 const utils_1 = require("../../utils");
 const { time30days } = utils_1.time;
-const { checkUserInDB, updateRefreshTokenInDB } = index_1.userControllers;
+const { checkUserInDB, updateRefreshTokenInDB } = utils_1.databaseUtils;
+const { verifyToken, generateTokens } = utils_1.jwtUtils;
 const refreshTokens = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { refreshToken } = req.cookies;
         if (!refreshToken) {
             return res.status(401).send({ error: "Refresh token missing" });
         }
-        const token = (0, utils_1.verifyToken)(refreshToken, keys_1.publicKey);
+        const token = verifyToken(refreshToken, config_1.publicKey);
         if (!token) {
             return res.status(401).send({ error: "Invalid or expired refresh token" });
         }
@@ -29,7 +29,7 @@ const refreshTokens = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!user) {
             return res.status(401).send({ error: "User not found" });
         }
-        const tokens = (0, utils_1.generateTokens)(refreshToken, keys_1.privateKey);
+        const tokens = generateTokens(refreshToken, config_1.privateKey);
         updateRefreshTokenInDB(tokens.refreshToken);
         res.cookie("refreshToken", tokens.refreshToken, {
             httpOnly: true,
