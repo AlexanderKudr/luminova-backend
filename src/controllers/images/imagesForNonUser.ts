@@ -1,4 +1,4 @@
-import { pageDescription } from "../../lib";
+import { pagePreview } from "../../lib";
 import { Controller, FetchImagesFromCDN } from "../../types";
 import { v2 as cloudinary } from "cloudinary";
 
@@ -16,14 +16,10 @@ const imagesForNonUser: Controller = async (req, res) => {
       .next_cursor(next_cursor)
       .execute();
 
-    const pagePreview = {
-      img: `http://localhost:8080/images/${category}.jpg`,
-      description: pageDescription[category as keyof typeof pageDescription],
-    };
-
-    res.send({ images: images, pagePreview: pagePreview });
+    res.send({ images: images.resources, pagePreview: pagePreview(category) });
   } catch (error) {
     res.status(500).send({ error: "Category images could not be fetched" });
   }
 };
+
 export { imagesForNonUser };

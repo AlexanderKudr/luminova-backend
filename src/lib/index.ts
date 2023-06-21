@@ -1,3 +1,3 @@
-import { pageDescription } from "./pagePreview";
+import { pagePreview } from "./pagePreview";
 
-export { pageDescription };
+export { pagePreview };

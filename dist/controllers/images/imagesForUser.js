@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.imagesForUser = void 0;
 const cloudinary_1 = require("cloudinary");
 const utils_1 = require("../../utils");
+const lib_1 = require("../../lib");
 const { prisma, handleDisconnectDB } = utils_1.databaseUtils;
 const imagesForUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { accessToken, category, next_cursor } = req.body;
@@ -21,16 +22,19 @@ const imagesForUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             .max_results(50)
             .next_cursor(next_cursor)
             .execute();
+        console.log(getImagesFromCDN, "getImagesFromCDN");
         const getFavoriteImagesFromDB = yield prisma.user.findFirst({
             where: { accessToken },
             select: { favoriteImages: true },
         });
-        const images = getImagesFromCDN.resources.map((image) => {
+        const images = getImagesFromCDN === null || getImagesFromCDN === void 0 ? void 0 : getImagesFromCDN.resources.map((image) => {
+            console.log("inside images");
             const isFavorite = getFavoriteImagesFromDB === null || getFavoriteImagesFromDB === void 0 ? void 0 : getFavoriteImagesFromDB.favoriteImages.some(({ public_id }) => public_id === image.public_id);
             return isFavorite
                 ? Object.assign(Object.assign({}, image), { favorite: true }) : Object.assign(Object.assign({}, image), { favorite: false });
         });
-        res.send({ resources: images });
+        console.log(images, "images");
+        res.send({ images: images, pagePreview: (0, lib_1.pagePreview)(category) });
     }
     catch (error) {
         res

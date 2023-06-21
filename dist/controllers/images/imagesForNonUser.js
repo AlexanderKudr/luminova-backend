@@ -20,11 +20,7 @@ const imagesForNonUser = (req, res) => __awaiter(void 0, void 0, void 0, functio
             .max_results(50)
             .next_cursor(next_cursor)
             .execute();
-        const pagePreview = {
-            img: `http://localhost:8080/images/${category}.jpg`,
-            description: lib_1.pageDescription[category],
-        };
-        res.send({ images: images, pagePreview: pagePreview });
+        res.send({ images: images.resources, pagePreview: (0, lib_1.pagePreview)(category) });
     }
     catch (error) {
         res.status(500).send({ error: "Category images could not be fetched" });
