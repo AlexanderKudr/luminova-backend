@@ -1,10 +1,14 @@
 import { Express } from "express";
 import { imagesControllers } from "../controllers";
 import { verifyToken } from "../middlewares";
-import { getCategoriesFromCDN } from "../services/cloudinary/utils";
 
-const { addImageToCDN, addImageToFavorites, imagesForUser, imagesForNonUser } =
-  imagesControllers;
+const {
+  addImageToCDN,
+  addImageToFavorites,
+  imagesForUser,
+  imagesForNonUser,
+  getCategoriesFromCDN,
+} = imagesControllers;
 
 const images = (app: Express) => {
   const baseURL = "/images";

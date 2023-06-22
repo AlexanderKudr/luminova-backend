@@ -21,7 +21,6 @@ const login: Controller = async (req, res) => {
     const { accessToken, refreshToken } = generateTokens(email, privateKey!);
     updateUserTokensInDB({ email, accessToken, refreshToken });
 
-    console.log("about to set cookie");
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
       secure: false,

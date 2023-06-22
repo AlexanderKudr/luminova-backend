@@ -41,7 +41,7 @@ const register: Controller = async (req, res) => {
     // sameSite: "none",
     maxAge: time30days,
   });
-
+  
   res.send({
     message: "User registered successfully",
     accessToken: accessToken,

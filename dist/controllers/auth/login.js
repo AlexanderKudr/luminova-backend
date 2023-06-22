@@ -29,7 +29,6 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (passwordMatches) {
         const { accessToken, refreshToken } = generateTokens(email, config_1.privateKey);
         updateUserTokensInDB({ email, accessToken, refreshToken });
-        console.log("about to set cookie");
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
             secure: false,
