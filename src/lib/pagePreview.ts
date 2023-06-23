@@ -25,7 +25,7 @@ const pageDescription = {
 
 const pagePreview = (category: string | undefined) => {
   return {
-    img: `http://localhost:8080/images/${category}.jpg`,
+    img: `https://long-lime-caridea-slip.cyclic.app/images/${category}.jpg`,
     description: pageDescription[category as keyof typeof pageDescription],
   };
 };
