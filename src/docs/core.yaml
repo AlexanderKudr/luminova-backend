@@ -1,0 +1,102 @@
+swagger: "2.0"
+info:
+  title: "Luminova Core API"
+  version: "1.0.0"
+paths:
+  /auth/register:
+    post:
+      summary: Registers a user
+      tags:
+        - Authentication
+      parameters:
+        - name: email
+          in: body
+          required: true
+          type: string
+        - name: password
+          in: body
+          required: true
+          type: string
+        - name: name
+          in: body
+          required: true
+          type: string
+      responses:
+        200:
+          description: User registered successfully
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              accessToken:
+                type: string
+              name:
+                type: string
+  /auth/login:
+    post:
+      summary: Logs a user in
+      tags:
+        - Authentication
+      parameters:
+        - name: email
+          in: body
+          required: true
+          type: string
+        - name: password
+          in: body
+          required: true
+          type: string
+      responses:
+        200:
+          description: User registered successfully
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              accessToken:
+                type: string
+              name:
+                type: string
+  /auth/refresh:
+    post:
+      summary: Refreshes an access token with a refresh token
+      tags:
+        - Authentication
+      parameters:
+        - name: Cookie
+          in: header
+          required: true
+          type: string
+          default: refreshToken={refreshToken}
+      responses:
+        200:
+          description: Token refreshed and user logged in successfully
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+              accessToken:
+                type: string
+  /auth/logout:
+    post:
+      summary: Logs a user out and clears their refresh token
+      tags:
+        - Authentication
+      parameters:
+        - name: Cookie
+          in: header
+          required: true
+          type: string
+          default: refreshToken={refreshToken}
+      responses:
+        200:
+          description: User logged out successfully
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+
