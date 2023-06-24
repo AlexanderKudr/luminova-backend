@@ -31,7 +31,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         updateUserTokensInDB({ email, accessToken, refreshToken });
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: true,
             // sameSite: "lax",
             maxAge: time30days,
         });

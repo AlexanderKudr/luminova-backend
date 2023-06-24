@@ -23,7 +23,7 @@ const login: Controller = async (req, res) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: false,
+      secure: true,
       // sameSite: "lax",
       maxAge: time30days,
     });

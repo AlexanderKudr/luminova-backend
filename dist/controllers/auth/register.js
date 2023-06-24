@@ -39,7 +39,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     yield handleCreateUser(newUser);
     res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        secure: false,
+        secure: true,
         // sameSite: "none",
         maxAge: time30days,
     });

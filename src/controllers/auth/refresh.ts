@@ -30,6 +30,7 @@ const refreshTokens: Controller = async (req, res) => {
     res.cookie("refreshToken", tokens.refreshToken, {
       httpOnly: true,
       maxAge: time30days,
+      secure: true,
     });
 
     res.send({

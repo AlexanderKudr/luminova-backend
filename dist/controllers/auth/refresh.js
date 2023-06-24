@@ -34,6 +34,7 @@ const refreshTokens = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.cookie("refreshToken", tokens.refreshToken, {
             httpOnly: true,
             maxAge: time30days,
+            secure: true,
         });
         res.send({
             message: "Token refreshed and user logged in successfully",

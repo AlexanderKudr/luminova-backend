@@ -19,14 +19,12 @@ const imagesForUser: Controller = async (req, res) => {
       .next_cursor(next_cursor)
       .execute();
       
-    console.log(getImagesFromCDN, "getImagesFromCDN")
     const getFavoriteImagesFromDB = await prisma.user.findFirst({
       where: { accessToken },
       select: { favoriteImages: true },
     });
 
     const images = getImagesFromCDN?.resources.map((image) => {
-      console.log("inside images")
       const isFavorite = getFavoriteImagesFromDB?.favoriteImages.some(
         ({ public_id }) => public_id === image.public_id
       );
@@ -35,7 +33,6 @@ const imagesForUser: Controller = async (req, res) => {
         ? { ...image, favorite: true }
         : { ...image, favorite: false };
     });
-console.log(images, "images")
     res.send({ images: images, pagePreview: pagePreview(category) });
   } catch (error) {
     res
