@@ -3,7 +3,7 @@ import { time } from "../time";
 
 const generateTokens = (email: string, privateKey: string) => {
   const { time5minutes, time30days } = time;
-  const algorithm = "RS256";
+  const algorithm = "RS256";//check xxhash64
   const payload = { userEmail: email };
 
   const accessToken = jwt.sign(payload, privateKey, {
