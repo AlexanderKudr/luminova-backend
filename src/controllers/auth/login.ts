@@ -1,11 +1,12 @@
 import { privateKey } from "../../config";
 import { Controller } from "../../types";
-import { jwtUtils, databaseUtils, time } from "../../utils";
+import { time } from "../../utils";
+import { jwtService, databaseService } from "../../services";
 import bcrypt from "bcrypt";
 
 const { time30days } = time;
-const { checkUserInDB, updateUserTokensInDB } = databaseUtils;
-const { generateTokens } = jwtUtils;
+const { checkUserInDB, updateUserTokensInDB } = databaseService;
+const { generateTokens } = jwtService;
 
 const login: Controller = async (req, res) => {
   const { email, password } = req.body as { email: string; password: string };

@@ -1,10 +1,11 @@
 import { privateKey } from "../../config";
 import { Controller, User } from "../../types";
-import { jwtUtils, databaseUtils, time } from "../../utils";
+import { time } from "../../utils";
+import { databaseService, jwtService } from "../../services";
 
 const { time30days } = time;
-const { checkUserInDB, handleCreateUser } = databaseUtils;
-const { generateTokens, hashPassword } = jwtUtils;
+const { checkUserInDB, handleCreateUser } = databaseService;
+const { generateTokens, hashPassword } = jwtService;
 
 const register: Controller = async (req, res) => {
   const { email, password, name } = req.body as { email: string; password: string; name: string };

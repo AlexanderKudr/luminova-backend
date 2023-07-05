@@ -1,14 +1,14 @@
-import { Controller, FavoriteImages, FetchImagesFromCDN, User } from "../../types";
+import { Controller } from "../../types";
 import { ResourceApiResponse, v2 as cloudinary } from "cloudinary";
-import { databaseUtils } from "../../utils";
 import { pagePreview } from "../../lib";
+import { databaseService } from "../../services";
 
 type Payload = {
   accessToken: string;
   category: string | undefined;
   next_cursor: string;
 };
-const { prisma, handleDisconnectDB } = databaseUtils;
+const { prisma, handleDisconnectDB } = databaseService;
 
 const imagesForUser: Controller = async (req, res) => {
   const { accessToken, category, next_cursor } = req.body as Payload;
@@ -32,7 +32,7 @@ const imagesForUser: Controller = async (req, res) => {
 
       return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
     });
-  
+
     res.send({ images: images, pagePreview: pagePreview(category) });
   } catch (error) {
     res.status(500).send({ error: "Category images for user could not be fetched" });

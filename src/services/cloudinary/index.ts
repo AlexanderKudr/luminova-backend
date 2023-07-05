@@ -1,3 +1,3 @@
 import { appendJpeg } from "./utils";
 
-export { appendJpeg };
+export const cloudinaryService = { appendJpeg };

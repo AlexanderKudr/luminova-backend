@@ -10,8 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateFavoriteImages = void 0;
-const utils_1 = require("../../utils");
-const { handleDisconnectDB, prisma } = utils_1.databaseUtils;
+const services_1 = require("../../services");
+const { handleDisconnectDB, prisma } = services_1.databaseService;
 const updateFavoriteImages = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { public_id, accessToken } = req.body;
     const { user, favoriteImages } = prisma;

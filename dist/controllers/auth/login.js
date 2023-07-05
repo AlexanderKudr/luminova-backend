@@ -15,10 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = void 0;
 const config_1 = require("../../config");
 const utils_1 = require("../../utils");
+const services_1 = require("../../services");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const { time30days } = utils_1.time;
-const { checkUserInDB, updateUserTokensInDB } = utils_1.databaseUtils;
-const { generateTokens } = utils_1.jwtUtils;
+const { checkUserInDB, updateUserTokensInDB } = services_1.databaseService;
+const { generateTokens } = services_1.jwtService;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const user = yield checkUserInDB("email", email);

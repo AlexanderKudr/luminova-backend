@@ -10,9 +10,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFavoriteImages = void 0;
-const utils_1 = require("../../utils");
+const services_1 = require("../../services");
 const cloudinary_1 = require("cloudinary");
-const { prisma } = utils_1.databaseUtils;
+const { prisma } = services_1.databaseService;
 const getFavoriteImages = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { user } = prisma;
     const { name } = req.body;

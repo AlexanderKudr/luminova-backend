@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { time } from "../time";
+import { time } from "../../utils/time";
 
 const generateTokens = (email: string, privateKey: string) => {
   const { time5minutes, time30days } = time;

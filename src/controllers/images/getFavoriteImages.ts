@@ -1,8 +1,8 @@
+import { databaseService } from "../../services";
 import { Controller } from "../../types";
-import { databaseUtils } from "../../utils";
-import { v2 as cloudinary } from "cloudinary";
+import { ResourceApiResponse, v2 as cloudinary } from "cloudinary";
 
-const { prisma } = databaseUtils;
+const { prisma } = databaseService;
 
 const getFavoriteImages: Controller = async (req, res) => {
   const { user } = prisma;

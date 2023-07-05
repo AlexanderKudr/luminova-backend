@@ -12,9 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.register = void 0;
 const config_1 = require("../../config");
 const utils_1 = require("../../utils");
+const services_1 = require("../../services");
 const { time30days } = utils_1.time;
-const { checkUserInDB, handleCreateUser } = utils_1.databaseUtils;
-const { generateTokens, hashPassword } = utils_1.jwtUtils;
+const { checkUserInDB, handleCreateUser } = services_1.databaseService;
+const { generateTokens, hashPassword } = services_1.jwtService;
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password, name } = req.body;
     console.log(email, password, name);

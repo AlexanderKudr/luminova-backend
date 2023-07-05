@@ -1,10 +1,11 @@
 import { publicKey, privateKey } from "../../config";
 import { Controller } from "../../types";
-import { time, databaseUtils, jwtUtils } from "../../utils";
+import { time } from "../../utils";
+import { databaseService, jwtService } from "../../services";
 
 const { time30days } = time;
-const { checkUserInDB, updateRefreshTokenInDB } = databaseUtils;
-const { verifyToken, generateTokens } = jwtUtils;
+const { checkUserInDB, updateRefreshTokenInDB } = databaseService;
+const { verifyToken, generateTokens } = jwtService;
 
 const refreshTokens: Controller = async (req, res) => {
   try {

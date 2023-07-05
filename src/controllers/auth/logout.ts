@@ -1,7 +1,7 @@
 import { Controller } from "../../types";
-import { databaseUtils } from "../../utils";
+import { databaseService } from "../../services";
 
-const { clearUserTokensInDB } = databaseUtils;
+const { clearUserTokensInDB } = databaseService;
 
 const logout: Controller = (req, res) => {
   const { refreshToken } = req.cookies as { refreshToken: string };

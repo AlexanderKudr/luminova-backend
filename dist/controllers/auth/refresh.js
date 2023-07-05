@@ -12,9 +12,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.refreshTokens = void 0;
 const config_1 = require("../../config");
 const utils_1 = require("../../utils");
+const services_1 = require("../../services");
 const { time30days } = utils_1.time;
-const { checkUserInDB, updateRefreshTokenInDB } = utils_1.databaseUtils;
-const { verifyToken, generateTokens } = utils_1.jwtUtils;
+const { checkUserInDB, updateRefreshTokenInDB } = services_1.databaseService;
+const { verifyToken, generateTokens } = services_1.jwtService;
 const refreshTokens = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { refreshToken } = req.cookies;

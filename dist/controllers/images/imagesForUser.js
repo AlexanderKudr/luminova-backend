@@ -11,9 +11,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.imagesForUser = void 0;
 const cloudinary_1 = require("cloudinary");
-const utils_1 = require("../../utils");
 const lib_1 = require("../../lib");
-const { prisma, handleDisconnectDB } = utils_1.databaseUtils;
+const services_1 = require("../../services");
+const { prisma, handleDisconnectDB } = services_1.databaseService;
 const imagesForUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { accessToken, category, next_cursor } = req.body;
     try {

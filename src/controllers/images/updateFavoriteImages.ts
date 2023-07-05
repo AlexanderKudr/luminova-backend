@@ -1,9 +1,9 @@
-import { Controller, User } from "../../types";
-import { databaseUtils } from "../../utils";
+import { databaseService } from "../../services";
+import { Controller } from "../../types";
 
 type Payload = { public_id: string; accessToken: string };
 
-const { handleDisconnectDB, prisma } = databaseUtils;
+const { handleDisconnectDB, prisma } = databaseService;
 
 const updateFavoriteImages: Controller = async (req, res) => {
   const { public_id, accessToken } = req.body as Payload;

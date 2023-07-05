@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.logout = void 0;
-const utils_1 = require("../../utils");
-const { clearUserTokensInDB } = utils_1.databaseUtils;
+const services_1 = require("../../services");
+const { clearUserTokensInDB } = services_1.databaseService;
 const logout = (req, res) => {
     const { refreshToken } = req.cookies;
     if (!refreshToken) {

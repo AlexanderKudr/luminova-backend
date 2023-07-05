@@ -5,7 +5,7 @@ import { updateRefreshTokenInDB } from "./updateRefreshTokens";
 import { clearUserTokensInDB } from "./clearUserTokens";
 import { handleCreateUser } from "./createUser";
 
-export const databaseUtils = {
+export const databaseService = {
   handleDisconnectDB,
   handleErrorDB,
   prisma,
