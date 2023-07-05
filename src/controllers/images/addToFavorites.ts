@@ -1,4 +1,4 @@
-import { Controller } from "../../types";
+import { Controller, User } from "../../types";
 import { databaseUtils } from "../../utils";
 
 type Payload = { public_id: string; accessToken: string };

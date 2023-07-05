@@ -8,7 +8,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const time_1 = require("../time");
 const generateTokens = (email, privateKey) => {
     const { time5minutes, time30days } = time_1.time;
-    const algorithm = "RS256";
+    const algorithm = "RS256"; //check xxhash64
     const payload = { userEmail: email };
     const accessToken = jsonwebtoken_1.default.sign(payload, privateKey, {
         algorithm: algorithm,

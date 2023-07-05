@@ -5,7 +5,14 @@ type User = {
   accessToken: string | null;
   refreshToken: string | null;
   confirmedemail: boolean;
-  favoriteImages: string[];
+  favoriteImages: FavoriteImages[];
 };
+type FavoriteImages = {
+  id: number;
+  public_id: string;
+  user_id: string | null;
+  User: User | null;
+};
+
 type UpdateUserTokens = Pick<User, "email" | "accessToken" | "refreshToken">;
-export type { User, UpdateUserTokens };
+export type { User, UpdateUserTokens, FavoriteImages };

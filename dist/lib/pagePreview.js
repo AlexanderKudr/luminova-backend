@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.pagePreview = void 0;
 const pageDescription = {
-    gallery: "The internet's source for visuals.Powered by creators everywhere.",
+    gallery: "The internet's source for visuals. Powered by creators everywhere.",
     animals: "Exotic wildlife, pet kittens — and everything in between. Uncover the beauty of the animal kingdom through your screen.",
     architecture: "Exploring our built environments — from brutalist buildings to eccentric home decor. This category showcases the best of architecture and interiors from around the world.",
     arts: "Your daily dose of culture — with photography showcasing the best in art, music and literature from around the world.",

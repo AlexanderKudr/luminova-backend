@@ -3,7 +3,7 @@ import { Controller } from "../../types";
 
 const getCategoriesFromCDN: Controller = async (req, res) => {
   try {
-    const uploadResult = await cloudinary.api.root_folders();
+    const uploadResult: string[] = await cloudinary.api.root_folders();
     res.json(uploadResult);
   } catch (error) {
     console.error(error);

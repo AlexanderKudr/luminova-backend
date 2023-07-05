@@ -1,10 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient();
+const prisma: PrismaClient = new PrismaClient();
 
-const handleDisconnectDB = async () => await prisma.$disconnect();
+const handleDisconnectDB = async (): Promise<void> => await prisma.$disconnect();
 
-const handleErrorDB = async (e: any) => {
+const handleErrorDB = async (e: any): Promise<void> => {
   console.error(e);
   handleDisconnectDB();
   process.exit(1);

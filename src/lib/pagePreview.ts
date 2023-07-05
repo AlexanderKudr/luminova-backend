@@ -1,5 +1,5 @@
 const pageDescription = {
-  gallery: "The internet's source for visuals.Powered by creators everywhere.",
+  gallery: "The internet's source for visuals. Powered by creators everywhere.",
   animals:
     "Exotic wildlife, pet kittens — and everything in between. Uncover the beauty of the animal kingdom through your screen.",
   architecture:

@@ -1,5 +1,5 @@
 import { privateKey } from "../../config";
-import { Controller } from "../../types";
+import { Controller, User } from "../../types";
 import { jwtUtils, databaseUtils, time } from "../../utils";
 
 const { time30days } = time;
@@ -23,14 +23,14 @@ const register: Controller = async (req, res) => {
 
   const { accessToken, refreshToken } = generateTokens(email, privateKey!);
 
-  const newUser = {
+  const newUser: User = {
     name: name,
     email: email,
     password: await hashPassword(password),
     accessToken: accessToken,
     refreshToken: refreshToken,
     confirmedemail: false,
-    favoriteImages: [] as string[],
+    favoriteImages: [],
   };
 
   await handleCreateUser(newUser);
@@ -41,7 +41,7 @@ const register: Controller = async (req, res) => {
     // sameSite: "none",
     maxAge: time30days,
   });
-  
+
   res.send({
     message: "User registered successfully",
     accessToken: accessToken,

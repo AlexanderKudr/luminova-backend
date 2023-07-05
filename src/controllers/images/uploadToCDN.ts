@@ -1,7 +1,7 @@
 import { Controller } from "../../types";
 import { UploadApiErrorResponse, v2 as cloudinary } from "cloudinary";
 
-const addImageToCDN: Controller = async (req, res) => {
+const uploadToCDN: Controller = async (req, res) => {
   const { title, url } = req.body as { title: string; url: string };
 
   try {
@@ -24,4 +24,4 @@ const addImageToCDN: Controller = async (req, res) => {
   }
 };
 
-export { addImageToCDN };
+export { uploadToCDN };

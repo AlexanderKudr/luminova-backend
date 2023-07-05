@@ -28,15 +28,12 @@ const imagesForUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
         const images = getImagesFromCDN === null || getImagesFromCDN === void 0 ? void 0 : getImagesFromCDN.resources.map((image) => {
             const isFavorite = getFavoriteImagesFromDB === null || getFavoriteImagesFromDB === void 0 ? void 0 : getFavoriteImagesFromDB.favoriteImages.some(({ public_id }) => public_id === image.public_id);
-            return isFavorite
-                ? Object.assign(Object.assign({}, image), { favorite: true }) : Object.assign(Object.assign({}, image), { favorite: false });
+            return isFavorite ? Object.assign(Object.assign({}, image), { favorite: true }) : Object.assign(Object.assign({}, image), { favorite: false });
         });
         res.send({ images: images, pagePreview: (0, lib_1.pagePreview)(category) });
     }
     catch (error) {
-        res
-            .status(500)
-            .send({ error: "Category images for user could not be fetched" });
+        res.status(500).send({ error: "Category images for user could not be fetched" });
     }
     finally {
         handleDisconnectDB();
