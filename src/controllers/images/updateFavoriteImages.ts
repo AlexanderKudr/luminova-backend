@@ -5,7 +5,7 @@ type Payload = { public_id: string; accessToken: string };
 
 const { handleDisconnectDB, prisma } = databaseUtils;
 
-const addImageToFavorites: Controller = async (req, res) => {
+const updateFavoriteImages: Controller = async (req, res) => {
   const { public_id, accessToken } = req.body as Payload;
   const { user, favoriteImages } = prisma;
 
@@ -54,4 +54,4 @@ const addImageToFavorites: Controller = async (req, res) => {
     handleDisconnectDB();
   }
 };
-export { addImageToFavorites };
+export { updateFavoriteImages };

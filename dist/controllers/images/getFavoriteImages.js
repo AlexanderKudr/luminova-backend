@@ -29,19 +29,19 @@ const getFavoriteImages = (req, res) => __awaiter(void 0, void 0, void 0, functi
             res.status(400).send({ message: "User not found" });
             return;
         }
-        const images = yield user.findMany({
+        const getFavoriteImagesFromDB = yield user.findMany({
             where: { name: name },
             select: { favoriteImages: true },
         });
-        const publicIds = images[0].favoriteImages.map((image) => image.public_id);
+        const publicIds = getFavoriteImagesFromDB[0].favoriteImages.map((image) => image.public_id);
         const imagesFromCDN = yield cloudinary_1.v2.api.resources_by_ids(publicIds);
-        const favoriteImages = imagesFromCDN.resources.map((image) => {
-            const isFavorite = checkUser.favoriteImages.some(({ public_id }) => public_id === image.public_id);
+        const images = imagesFromCDN === null || imagesFromCDN === void 0 ? void 0 : imagesFromCDN.resources.map((image) => {
+            const isFavorite = checkUser === null || checkUser === void 0 ? void 0 : checkUser.favoriteImages.some(({ public_id }) => public_id === image.public_id);
             return isFavorite ? Object.assign(Object.assign({}, image), { favorite: true }) : Object.assign(Object.assign({}, image), { favorite: false });
         });
-        console.log(favoriteImages);
+        console.log(images);
         res.send({
-            favoriteImages,
+            favoriteImages: images,
             message: "Favorite images retrieved successfully",
         });
     }

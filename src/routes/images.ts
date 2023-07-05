@@ -4,7 +4,7 @@ import { verifyToken } from "../middlewares";
 
 const {
   uploadToCDN,
-  addImageToFavorites,
+  updateFavoriteImages,
   imagesForUser,
   imagesForNonUser,
   getCategoriesFromCDN,
@@ -15,7 +15,7 @@ const images = (app: Express) => {
   const baseURL = "/images";
 
   app.post(`${baseURL}/add`, uploadToCDN);
-  app.post(`${baseURL}/favorites`, verifyToken, addImageToFavorites);
+  app.post(`${baseURL}/updatefavorites`, verifyToken, updateFavoriteImages);
   app.post(`${baseURL}/foruser`, imagesForUser);
   app.post(`${baseURL}/fornonuser`, imagesForNonUser);
   app.post(`${baseURL}/getfavorites`, getFavoriteImages);

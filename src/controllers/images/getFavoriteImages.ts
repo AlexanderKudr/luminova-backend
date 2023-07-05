@@ -24,25 +24,24 @@ const getFavoriteImages: Controller = async (req, res) => {
       return;
     }
 
-    const images = await user.findMany({
+    const getFavoriteImagesFromDB = await user.findMany({
       where: { name: name },
       select: { favoriteImages: true },
     });
 
-    const publicIds = images[0].favoriteImages.map((image) => image.public_id);
+    const publicIds = getFavoriteImagesFromDB[0].favoriteImages.map((image) => image.public_id);
     const imagesFromCDN = await cloudinary.api.resources_by_ids(publicIds);
 
-    const favoriteImages = imagesFromCDN.resources.map((image) => {
-      const isFavorite = checkUser.favoriteImages.some(
+    const images = imagesFromCDN?.resources.map((image) => {
+      const isFavorite = checkUser?.favoriteImages.some(
         ({ public_id }) => public_id === image.public_id
       );
       return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
     });
-
-    console.log(favoriteImages);
+    console.log(images);
 
     res.send({
-      favoriteImages,
+      favoriteImages: images,
       message: "Favorite images retrieved successfully",
     });
   } catch {

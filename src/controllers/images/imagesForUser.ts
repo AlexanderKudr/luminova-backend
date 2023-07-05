@@ -1,5 +1,5 @@
 import { Controller, FavoriteImages, FetchImagesFromCDN, User } from "../../types";
-import { v2 as cloudinary } from "cloudinary";
+import { ResourceApiResponse, v2 as cloudinary } from "cloudinary";
 import { databaseUtils } from "../../utils";
 import { pagePreview } from "../../lib";
 
@@ -14,7 +14,7 @@ const imagesForUser: Controller = async (req, res) => {
   const { accessToken, category, next_cursor } = req.body as Payload;
 
   try {
-    const getImagesFromCDN: FetchImagesFromCDN = await cloudinary.search
+    const getImagesFromCDN: ResourceApiResponse = await cloudinary.search
       .expression(`folder:${category}`)
       .max_results(50)
       .next_cursor(next_cursor)
