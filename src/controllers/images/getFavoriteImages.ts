@@ -1,6 +1,7 @@
-import { Controller, FavoriteImages, User } from "../../types";
+import { Controller } from "../../types";
 import { databaseUtils } from "../../utils";
 import { v2 as cloudinary } from "cloudinary";
+
 const { prisma } = databaseUtils;
 
 const getFavoriteImages: Controller = async (req, res) => {
@@ -14,7 +15,8 @@ const getFavoriteImages: Controller = async (req, res) => {
     }
 
     const checkUser = await user.findUnique({
-      where: { name: name },
+      where: { name },
+      include: { favoriteImages: true },
     });
 
     if (!checkUser) {
@@ -28,10 +30,19 @@ const getFavoriteImages: Controller = async (req, res) => {
     });
 
     const publicIds = images[0].favoriteImages.map((image) => image.public_id);
-    const imagesFromCDN = await cloudinary.api.resources_by_ids(publicIds)
+    const imagesFromCDN = await cloudinary.api.resources_by_ids(publicIds);
+
+    const favoriteImages = imagesFromCDN.resources.map((image) => {
+      const isFavorite = checkUser.favoriteImages.some(
+        ({ public_id }) => public_id === image.public_id
+      );
+      return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
+    });
+
+    console.log(favoriteImages);
 
     res.send({
-      images: imagesFromCDN.resources,
+      favoriteImages,
       message: "Favorite images retrieved successfully",
     });
   } catch {

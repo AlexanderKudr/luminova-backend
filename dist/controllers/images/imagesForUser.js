@@ -22,7 +22,7 @@ const imagesForUser = (req, res) => __awaiter(void 0, void 0, void 0, function* 
             .max_results(50)
             .next_cursor(next_cursor)
             .execute();
-        const getFavoriteImagesFromDB = yield prisma.user.findFirst({
+        const getFavoriteImagesFromDB = yield prisma.user.findUnique({
             where: { accessToken },
             select: { favoriteImages: true },
         });

@@ -22,7 +22,8 @@ const getFavoriteImages = (req, res) => __awaiter(void 0, void 0, void 0, functi
             return;
         }
         const checkUser = yield user.findUnique({
-            where: { name: name },
+            where: { name },
+            include: { favoriteImages: true },
         });
         if (!checkUser) {
             res.status(400).send({ message: "User not found" });
@@ -34,8 +35,13 @@ const getFavoriteImages = (req, res) => __awaiter(void 0, void 0, void 0, functi
         });
         const publicIds = images[0].favoriteImages.map((image) => image.public_id);
         const imagesFromCDN = yield cloudinary_1.v2.api.resources_by_ids(publicIds);
+        const favoriteImages = imagesFromCDN.resources.map((image) => {
+            const isFavorite = checkUser.favoriteImages.some(({ public_id }) => public_id === image.public_id);
+            return isFavorite ? Object.assign(Object.assign({}, image), { favorite: true }) : Object.assign(Object.assign({}, image), { favorite: false });
+        });
+        console.log(favoriteImages);
         res.send({
-            images: imagesFromCDN.resources,
+            favoriteImages,
             message: "Favorite images retrieved successfully",
         });
     }

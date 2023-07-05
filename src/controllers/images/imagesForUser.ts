@@ -20,7 +20,7 @@ const imagesForUser: Controller = async (req, res) => {
       .next_cursor(next_cursor)
       .execute();
 
-    const getFavoriteImagesFromDB = await prisma.user.findFirst({
+    const getFavoriteImagesFromDB = await prisma.user.findUnique({
       where: { accessToken },
       select: { favoriteImages: true },
     });
@@ -32,6 +32,7 @@ const imagesForUser: Controller = async (req, res) => {
 
       return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
     });
+  
     res.send({ images: images, pagePreview: pagePreview(category) });
   } catch (error) {
     res.status(500).send({ error: "Category images for user could not be fetched" });
