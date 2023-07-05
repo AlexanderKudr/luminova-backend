@@ -1,6 +1,6 @@
 import { Controller, FavoriteImages, User } from "../../types";
 import { databaseUtils } from "../../utils";
-
+import { v2 as cloudinary } from "cloudinary";
 const { prisma } = databaseUtils;
 
 const getFavoriteImages: Controller = async (req, res) => {
@@ -27,11 +27,13 @@ const getFavoriteImages: Controller = async (req, res) => {
       select: { favoriteImages: true },
     });
 
+    const publicIds = images[0].favoriteImages.map((image) => image.public_id);
+    const imagesFromCDN = await cloudinary.api.resources_by_ids(publicIds)
+
     res.send({
-      images: images[0].favoriteImages,
+      images: imagesFromCDN.resources,
       message: "Favorite images retrieved successfully",
     });
-    
   } catch {
     res.status(500).send({ message: "Could not retrieve favorite images" });
   }

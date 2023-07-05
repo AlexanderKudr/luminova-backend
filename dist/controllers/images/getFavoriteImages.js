@@ -11,6 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getFavoriteImages = void 0;
 const utils_1 = require("../../utils");
+const cloudinary_1 = require("cloudinary");
 const { prisma } = utils_1.databaseUtils;
 const getFavoriteImages = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { user } = prisma;
@@ -31,8 +32,10 @@ const getFavoriteImages = (req, res) => __awaiter(void 0, void 0, void 0, functi
             where: { name: name },
             select: { favoriteImages: true },
         });
+        const publicIds = images[0].favoriteImages.map((image) => image.public_id);
+        const imagesFromCDN = yield cloudinary_1.v2.api.resources_by_ids(publicIds);
         res.send({
-            images: images[0].favoriteImages,
+            images: imagesFromCDN.resources,
             message: "Favorite images retrieved successfully",
         });
     }
