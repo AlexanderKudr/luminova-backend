@@ -17,7 +17,7 @@ const cloudinary_1 = require("cloudinary");
 const multer_1 = __importDefault(require("multer"));
 const upload = (0, multer_1.default)({
     storage: multer_1.default.diskStorage({
-        destination: "public/temporal",
+        destination: "src/assets",
         filename: (req, file, cb) => cb(null, file.originalname),
     }),
 }).array("file", 10);

@@ -15,7 +15,7 @@ type UploadFiles = {
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: "public/temporal",
+    destination: "src/assets",
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
 }).array("file", 10);
@@ -42,7 +42,7 @@ const uploadToProfile: Controller = async (req, res) => {
           folder: category,
         });
       }
-      
+
     });
 
     // const uploadResult = await cloudinary.uploader.upload(url, {
