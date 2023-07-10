@@ -11,20 +11,16 @@ const app = express();
 
 const setupApp = (app: Express) => {
   app.use(cors());
+  app.use((req, res, next) => {
+    res.setHeader("Access-Control-Allow-Origin", "*"); 
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+  });
   app.use(express.json({ limit: "50mb" }));
   app.use(cookieParser());
   app.use(express.static("public"));
 
-  app.use((req, res, next) => {
-    // res.setHeader('Access-Control-Allow-Origin', 'http:/127.0.0.1:5173/');
-    res.header({
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
-    });
-    // res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    // res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    next();
-  });
 
   swagger(app);
   app.listen(8080, () => console.log(`Example app listening on port ${8080}`));
