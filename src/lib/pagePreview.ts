@@ -24,8 +24,9 @@ const pageDescription = {
 };
 
 const pagePreview = (category: string | undefined) => {
+  const baseUrl = 'http://localhost:8080/images'
   return {
-    img: `https://long-lime-caridea-slip.cyclic.app/images/${category}.jpg`,
+    img: `${baseUrl}/${category}.jpg`,
     description: pageDescription[category as keyof typeof pageDescription],
   };
 };

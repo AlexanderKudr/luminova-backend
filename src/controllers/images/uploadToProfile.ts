@@ -15,7 +15,7 @@ type UploadFiles = {
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: "src/assets",
+    destination: "public/temporal",
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
 }).array("file", 10);
