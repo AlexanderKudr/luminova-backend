@@ -41,6 +41,7 @@ const uploadToProfile: Controller = async (req, res) => {
           public_id: fileName,
           folder: category,
         });
+        
       }
 
     });
