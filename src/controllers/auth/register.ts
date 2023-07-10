@@ -46,7 +46,7 @@ const register: Controller = async (req, res) => {
   res.send({
     message: "User registered successfully",
     accessToken: accessToken,
-    name: name,
+    userName: name,
   });
 };
 export { register };

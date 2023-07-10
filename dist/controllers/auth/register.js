@@ -47,7 +47,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     res.send({
         message: "User registered successfully",
         accessToken: accessToken,
-        name: name,
+        userName: name,
     });
 });
 exports.register = register;

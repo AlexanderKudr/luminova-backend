@@ -1,11 +1,11 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
   binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")  
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -16,7 +16,7 @@ model User {
   accessToken    String?          @unique(map: "unique_user_accessToken")
   refreshToken   String?
   favoriteImages favoriteImages[]
-  collections    collections[]
+  uploadedImages uploadedImages[]
   confirmedemail Boolean?         @default(false)
 }
 
@@ -27,18 +27,10 @@ model favoriteImages {
   User      User?   @relation(fields: [user_id], references: [id])
 }
 
-model collection_content {
-  content_id       Int         @id @default(autoincrement())
-  public_id        String
-  fk_collection_id Int
-  collections      collections @relation(fields: [fk_collection_id], references: [collection_id], onDelete: NoAction, onUpdate: NoAction)
+model uploadedImages {
+  id        Int     @id @default(autoincrement())
+  public_id String
+  user_id   String?
+  User      User?   @relation(fields: [user_id], references: [id])
 }
 
-model collections {
-  collection_id      Int                  @id @default(autoincrement())
-  title              String
-  description        String?
-  fk_user_id         String
-  collection_content collection_content[]
-  User               User                 @relation(fields: [fk_user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
-}

@@ -3,7 +3,7 @@ import { imagesControllers } from "../controllers";
 import { verifyToken } from "../middlewares";
 
 const {
-  uploadToCDN,
+  uploadToProfile,
   updateFavoriteImages,
   imagesForUser,
   imagesForNonUser,
@@ -14,7 +14,7 @@ const {
 const images = (app: Express) => {
   const baseURL = "/images";
 
-  app.post(`${baseURL}/add`, uploadToCDN);
+  app.post(`${baseURL}/upload`, uploadToProfile);
   app.post(`${baseURL}/updatefavorites`, verifyToken, updateFavoriteImages);
   app.post(`${baseURL}/foruser`, imagesForUser);
   app.post(`${baseURL}/fornonuser`, imagesForNonUser);

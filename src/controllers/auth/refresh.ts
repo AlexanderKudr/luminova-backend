@@ -36,7 +36,7 @@ const refreshTokens: Controller = async (req, res) => {
 
     res.send({
       message: "Token refreshed and user logged in successfully",
-      user: await checkUserInDB("email", refreshToken),
+      userName: user?.name,
       accessToken: tokens.accessToken,
     });
   } catch (error) {

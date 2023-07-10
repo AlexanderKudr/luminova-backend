@@ -39,7 +39,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         res.send({
             message: `User ${user === null || user === void 0 ? void 0 : user.email} logged in successfully`,
             accessToken,
-            name: user === null || user === void 0 ? void 0 : user.name,
+            userName: user === null || user === void 0 ? void 0 : user.name,
         });
     }
     else {

@@ -39,7 +39,7 @@ const refreshTokens = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         });
         res.send({
             message: "Token refreshed and user logged in successfully",
-            user: yield checkUserInDB("email", refreshToken),
+            userName: user === null || user === void 0 ? void 0 : user.name,
             accessToken: tokens.accessToken,
         });
     }

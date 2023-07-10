@@ -1,4 +1,4 @@
-import { uploadToCDN } from "./uploadToCDN";
+import { uploadToProfile } from "./uploadToProfile";
 import { updateFavoriteImages } from "./updateFavoriteImages";
 import { imagesForUser } from "./imagesForUser";
 import { imagesForNonUser } from "./imagesForNonUser";
@@ -7,7 +7,7 @@ import { getFavoriteImages } from "./getFavoriteImages";
 // import { getFavoriteImages } from "./getFavoriteImages";
 
 export const imagesControllers = {
-  uploadToCDN,
+  uploadToProfile,
   updateFavoriteImages,
   imagesForUser,
   imagesForNonUser,
