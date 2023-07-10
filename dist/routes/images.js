@@ -3,10 +3,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.images = void 0;
 const controllers_1 = require("../controllers");
 const middlewares_1 = require("../middlewares");
-const { uploadToProfile, updateFavoriteImages, imagesForUser, imagesForNonUser, getCategoriesFromCDN, getFavoriteImages } = controllers_1.imagesControllers;
+const {  updateFavoriteImages, imagesForUser, imagesForNonUser, getCategoriesFromCDN, getFavoriteImages } = controllers_1.imagesControllers;
 const images = (app) => {
     const baseURL = "/images";
-    app.post(`${baseURL}/upload`, uploadToProfile);
     app.post(`${baseURL}/updatefavorites`, middlewares_1.verifyToken, updateFavoriteImages);
     app.post(`${baseURL}/foruser`, imagesForUser);
     app.post(`${baseURL}/fornonuser`, imagesForNonUser);
