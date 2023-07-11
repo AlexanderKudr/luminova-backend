@@ -32,18 +32,14 @@ const uploadToProfile: Controller = async (req, res) => {
         const files: UploadFiles[] = req.files as UploadFiles[];
 
         console.log(files[0].path, "req.files");
+        const { path, filename } = files[0];
 
-        const url = files[0].path;
-        const fileName = files[0].filename;
-
-        const uploadToCDN = await cloudinary.uploader.upload(url, {
+        const uploadToCDN = await cloudinary.uploader.upload(path, {
           use_filename: true,
-          public_id: fileName,
+          public_id: filename,
           folder: category,
         });
-        
       }
-
     });
 
     // const uploadResult = await cloudinary.uploader.upload(url, {

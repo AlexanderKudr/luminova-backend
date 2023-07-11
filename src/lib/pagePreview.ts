@@ -1,3 +1,5 @@
+import { baseUrl } from "../utils";
+
 const pageDescription = {
   gallery: "The internet's source for visuals. Powered by creators everywhere.",
   animals:
@@ -24,9 +26,8 @@ const pageDescription = {
 };
 
 const pagePreview = (category: string | undefined) => {
-  const baseUrl = 'http://v2004009.hosted-by-vdsina.ru/images'
   return {
-    img: `${baseUrl}/${category}.jpg`,
+    img: `${baseUrl}/images/${category}.jpg`,
     description: pageDescription[category as keyof typeof pageDescription],
   };
 };

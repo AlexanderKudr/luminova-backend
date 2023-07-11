@@ -19,7 +19,6 @@ const setupApp = (app: Express) => {
   app.use(cookieParser());
   app.use(express.static("public"));
 
-
   swagger(app);
   app.listen(8080, () => console.log(`Example app listening on port ${8080}`));
 };
