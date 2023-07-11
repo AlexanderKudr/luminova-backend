@@ -3,11 +3,9 @@ import cors from "cors";
 import express, { Express } from "express";
 import { auth, images } from "./routes";
 import { swagger } from "./docs";
-import { config } from "./config";
 
 const app = express();
 
-// const { corsOptions } = config;
 
 const setupApp = (app: Express) => {
   app.use(cors());

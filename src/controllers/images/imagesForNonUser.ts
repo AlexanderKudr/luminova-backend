@@ -3,6 +3,7 @@ import { Controller, FetchImagesFromCDN } from "../../types";
 import { v2 as cloudinary } from "cloudinary";
 
 const imagesForNonUser: Controller = async (req, res) => {
+  
   const { category, next_cursor } = req.body as {
     accessToken: string;
     category: string | undefined;

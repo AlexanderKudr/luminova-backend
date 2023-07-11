@@ -24,7 +24,7 @@ const pageDescription = {
 };
 
 const pagePreview = (category: string | undefined) => {
-  const baseUrl = 'http://localhost:8080/images'
+  const baseUrl = 'http://v2004009.hosted-by-vdsina.ru/images'
   return {
     img: `${baseUrl}/${category}.jpg`,
     description: pageDescription[category as keyof typeof pageDescription],
