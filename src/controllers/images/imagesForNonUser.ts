@@ -1,5 +1,5 @@
-import { pagePreview } from "../../lib";
-import { Controller, FetchImagesFromCDN } from "../../types";
+import { pagePreview } from "../../utils/lib";
+import { Controller, FetchImagesFromCDN } from "../../utils/types";
 import { v2 as cloudinary } from "cloudinary";
 
 const imagesForNonUser: Controller = async (req, res) => {

@@ -1,5 +1,5 @@
-import { publicKey, privateKey } from "../../config";
-import { Controller } from "../../types";
+import { config } from "../../utils/config";
+import { Controller } from "../../utils/types";
 import { time } from "../../utils";
 import { databaseService, jwtService } from "../../services";
 
@@ -14,7 +14,7 @@ const refreshTokens: Controller = async (req, res) => {
       return res.status(401).send({ error: "Refresh token missing" });
     }
 
-    const token = verifyToken(refreshToken, publicKey!);
+    const token = verifyToken(refreshToken, config.publicKey!);
     if (!token) {
       return res.status(401).send({ error: "Invalid or expired refresh token" });
     }
@@ -24,7 +24,7 @@ const refreshTokens: Controller = async (req, res) => {
       return res.status(401).send({ error: "User not found" });
     }
 
-    const tokens = generateTokens(refreshToken, privateKey!);
+    const tokens = generateTokens(refreshToken, config.privateKey!);
 
     updateRefreshTokenInDB(tokens.refreshToken);
 

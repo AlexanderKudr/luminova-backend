@@ -1,5 +1,5 @@
 import jwt_decode from "jwt-decode";
-import { Middleware } from "../types";
+import { Middleware } from "../utils/types";
 
 const verifyToken: Middleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;

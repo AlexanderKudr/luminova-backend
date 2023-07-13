@@ -4,6 +4,7 @@ import { imagesForUser } from "./imagesForUser";
 import { imagesForNonUser } from "./imagesForNonUser";
 import { getCategoriesFromCDN } from "./getCategories";
 import { getFavoriteImages } from "./getFavoriteImages";
+import {getProfileImages} from "./getProfileImages";
 // import { getFavoriteImages } from "./getFavoriteImages";
 
 export const imagesControllers = {
@@ -13,4 +14,5 @@ export const imagesControllers = {
   imagesForNonUser,
   getCategoriesFromCDN,
   getFavoriteImages,
+  getProfileImages
 };

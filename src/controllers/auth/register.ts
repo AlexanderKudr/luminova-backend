@@ -1,5 +1,5 @@
-import { privateKey } from "../../config";
-import { Controller, User } from "../../types";
+import { config } from "../../utils/config";
+import { Controller, User } from "../../utils/types";
 import { time } from "../../utils";
 import { databaseService, jwtService } from "../../services";
 
@@ -22,7 +22,7 @@ const register: Controller = async (req, res) => {
     return res.status(400).send({ error: "User with this name already exists" });
   }
 
-  const { accessToken, refreshToken } = generateTokens(email, privateKey!);
+  const { accessToken, refreshToken } = generateTokens(email, config.privateKey!);
 
   const newUser: User = {
     name: name,

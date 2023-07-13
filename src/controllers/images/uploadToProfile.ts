@@ -1,6 +1,8 @@
-import { Controller } from "../../types";
-import { UploadApiErrorResponse, v2 as cloudinary } from "cloudinary";
+import { Controller } from "../../utils/types";
+import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
+import { databaseService } from "../../services/db";
+import { deleteTemporalImages } from "../../utils/functions";
 
 type UploadFiles = {
   fieldname: string;
@@ -13,12 +15,15 @@ type UploadFiles = {
   size: number;
 };
 
+const destination = "public/temporal";
 const upload = multer({
   storage: multer.diskStorage({
-    destination: "public/temporal",
+    destination: destination,
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
 }).array("file", 10);
+
+const { prisma, handleDisconnectDB, checkUserInDB } = databaseService;
 
 const uploadToProfile: Controller = async (req, res) => {
   try {
@@ -27,31 +32,69 @@ const uploadToProfile: Controller = async (req, res) => {
         res.status(500).send({ error: "Error uploading image to Server" });
         return;
       } else {
-        //write logic to receive user name on frontend and then continue here
-        const { userName, category } = req.body;
-        const files: UploadFiles[] = req.files as UploadFiles[];
+        const { userName, category } = req.body as { userName: string; category: string };
+        const user = await checkUserInDB("name", userName);
+        if (!user) {
+          res.status(401).send({ error: "User not found" });
+          return;
+        }
 
-        console.log(files[0].path, "req.files");
-        const { path, filename } = files[0];
+        const files = req.files as UploadFiles[];
+        const filesPaths = files.map((file) => file.path);
 
-        const uploadToCDN = await cloudinary.uploader.upload(path, {
-          use_filename: true,
-          public_id: filename,
-          folder: category,
+        const uploadImagesToCDN = async (paths: string[]) => {
+          try {
+            const uploadPromises = paths.map(async (path) => {
+              const filename = path.split("\\").pop();
+              const result = await cloudinary.uploader.upload(path, {
+                use_filename: true,
+                folder: category,
+                public_id: filename,
+              });
+              return result;
+            });
+
+            const uploadResults = await Promise.all(uploadPromises);
+            return uploadResults;
+          } catch (error) {
+            console.error("Error uploading images to CDN:", error);
+            throw error;
+          }
+        };
+
+        const uploadResults = await uploadImagesToCDN(filesPaths);
+
+        const getIdsFromCDN = uploadResults.map(({ public_id }) => {
+          return { public_id: public_id };
         });
+
+        const addPhotosToUserInDB = async (array: { public_id: string }[], userName: string) => {
+          try {
+            const addImages = await prisma.user.update({
+              where: { name: userName },
+              data: {
+                uploadedImages: {
+                  createMany: {
+                    data: array,
+                  },
+                },
+              },
+            });
+
+            console.log(addImages, "addImages");
+          } catch (error) {
+            console.error(error);
+          } finally {
+            handleDisconnectDB();
+          }
+        };
+
+        console.log(getIdsFromCDN, "getPayloadForDB");
+        await addPhotosToUserInDB(getIdsFromCDN, userName);
+        deleteTemporalImages(destination);
       }
     });
 
-    // const uploadResult = await cloudinary.uploader.upload(url, {
-    //   use_filename: true,
-    //   public_id: title,
-    //   folder: "gallery",
-    // });
-    // const contextResult = (await cloudinary.uploader.add_context(
-    //   "favorite=false",
-    //   [uploadResult.public_id]
-    // )) as UploadApiErrorResponse;
-    // res.json(contextResult);
     res.send({ message: "success" });
   } catch (error) {
     res.status(500).send("Error adding image to Cloudinary");

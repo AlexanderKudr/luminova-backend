@@ -1,4 +1,4 @@
-import { UpdateUserTokens } from "../../types/user";
+import { UpdateUserTokens } from "../../utils/types/user";
 import { prisma, handleDisconnectDB, handleErrorDB } from "./handleDB";
 
 const updateUserTokensInDB = async ({ email, accessToken, refreshToken }: UpdateUserTokens) => {

@@ -8,18 +8,18 @@ const {
   imagesForUser,
   imagesForNonUser,
   getCategoriesFromCDN,
-  getFavoriteImages
+  getFavoriteImages,
+  getProfileImages,
 } = imagesControllers;
 
 const images = (app: Express) => {
   const baseURL = "/images";
-
   app.post(`${baseURL}/upload`, uploadToProfile);
   app.post(`${baseURL}/updatefavorites`, verifyToken, updateFavoriteImages);
   app.post(`${baseURL}/foruser`, imagesForUser);
   app.post(`${baseURL}/fornonuser`, imagesForNonUser);
   app.post(`${baseURL}/getfavorites`, getFavoriteImages);
-  //
+  app.post(`${baseURL}/getprofileimages`, getProfileImages);
   app.get(`${baseURL}/categories`, getCategoriesFromCDN);
 };
 

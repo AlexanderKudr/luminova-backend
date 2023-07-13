@@ -1,5 +1,5 @@
 import { v2 as cloudinary } from "cloudinary";
-import { Controller } from "../../types";
+import { Controller } from "../../utils/types";
 
 const getCategoriesFromCDN: Controller = async (req, res) => {
   try {

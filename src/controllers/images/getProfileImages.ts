@@ -1,11 +1,10 @@
 import { databaseService } from "../../services";
 import { Controller } from "../../utils/types";
-import { ResourceApiResponse, v2 as cloudinary } from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 
 const { prisma, handleDisconnectDB } = databaseService;
 
-const getFavoriteImages: Controller = async (req, res) => {
-  const { user } = prisma;
+const getProfileImages: Controller = async (req, res) => {
   const { name }: { name: string } = req.body;
 
   try {
@@ -14,9 +13,9 @@ const getFavoriteImages: Controller = async (req, res) => {
       return;
     }
 
-    const checkUser = await user.findUnique({
+    const checkUser = await prisma.user.findUnique({
       where: { name },
-      include: { favoriteImages: true },
+      include: { uploadedImages: true },
     });
 
     if (!checkUser) {
@@ -24,23 +23,22 @@ const getFavoriteImages: Controller = async (req, res) => {
       return;
     }
 
-    const publicIds = checkUser.favoriteImages.map((image) => image.public_id);
+    const publicIds = checkUser.uploadedImages.map((image) => image.public_id);
     const imagesFromCDN = await cloudinary.api.resources_by_ids(publicIds);
 
     const images = imagesFromCDN?.resources.map((image) => {
-      const isFavorite = checkUser?.favoriteImages.some(
+      const isFavorite = checkUser?.uploadedImages.some(
         ({ public_id }) => public_id === image.public_id
       );
       return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
     });
 
-    res.send({ images: images, message: "Favorite images retrieved" });
+    res.send({ images: images, message: "Profile images retrieved" });
   } catch {
-    res.status(500).send({ message: "Could not retrieve favorite images" });
-  }
-  finally{
+    res.status(500).send({ message: "Could not retrieve profile images" });
+  } finally {
     handleDisconnectDB();
   }
 };
 
-export { getFavoriteImages };
+export { getProfileImages };

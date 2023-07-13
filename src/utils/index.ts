@@ -1,4 +1,4 @@
-import { time } from "./time";
-import { baseUrl } from "./urls";
+import { time } from "./lib/time";
+import { baseUrl } from "./lib/urls";
 
 export { time, baseUrl };

@@ -1,6 +1,6 @@
-import { Controller } from "../../types";
+import { Controller } from "../../utils/types";
 import { ResourceApiResponse, v2 as cloudinary } from "cloudinary";
-import { pagePreview } from "../../lib";
+import { pagePreview } from "../../utils/lib";
 import { databaseService } from "../../services";
 
 type Payload = {

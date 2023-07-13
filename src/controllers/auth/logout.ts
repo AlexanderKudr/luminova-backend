@@ -1,4 +1,4 @@
-import { Controller } from "../../types";
+import { Controller } from "../../utils/types";
 import { databaseService } from "../../services";
 
 const { clearUserTokensInDB } = databaseService;

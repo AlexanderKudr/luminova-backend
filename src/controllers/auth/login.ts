@@ -1,5 +1,5 @@
-import { privateKey } from "../../config";
-import { Controller } from "../../types";
+import { config } from "../../utils/config";
+import { Controller } from "../../utils/types";
 import { time } from "../../utils";
 import { jwtService, databaseService } from "../../services";
 import bcrypt from "bcrypt";
@@ -19,7 +19,7 @@ const login: Controller = async (req, res) => {
   const passwordMatches = await bcrypt.compare(password, user.password);
 
   if (passwordMatches) {
-    const { accessToken, refreshToken } = generateTokens(email, privateKey!);
+    const { accessToken, refreshToken } = generateTokens(email, config.privateKey!);
     updateUserTokensInDB({ email, accessToken, refreshToken });
 
     res.cookie("refreshToken", refreshToken, {

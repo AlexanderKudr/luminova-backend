@@ -1,5 +1,5 @@
 import { databaseService } from "../../services";
-import { Controller } from "../../types";
+import { Controller } from "../../utils/types";
 
 type Payload = { public_id: string; accessToken: string };
 
