@@ -3,9 +3,10 @@ import cors from "cors";
 import express, { Express } from "express";
 import { auth, images } from "./routes";
 import { swagger } from "./docs";
+import * as dotenv from "dotenv";
 
+// dotenv.config({path: ".env.dev"});
 const app = express();
-
 
 const setupApp = (app: Express) => {
   app.use(cors());
@@ -20,7 +21,7 @@ const setupApp = (app: Express) => {
   app.use(express.static("public"));
 
   swagger(app);
-  app.listen(8080, () => console.log(`Example app listening on port ${8080}`));
+  app.listen(process.env.PORT, () => console.log(`Example app listening on port ${process.env.PORT}`));
 };
 
 const setupRoutes = (app: Express) => {

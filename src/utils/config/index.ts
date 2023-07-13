@@ -20,6 +20,7 @@ const config = {
     api_secret: CLOUDINARY_API_SECRET,
     secure: true,
   },
+  
   publicKey: PUBLIC_KEY,
   privateKey: PRIVATE_KEY,
 };

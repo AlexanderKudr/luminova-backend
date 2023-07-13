@@ -63,4 +63,6 @@ jobs:
               -e CLOUDINARY_URL="${{ secrets.CLOUDINARY_URL }}" \
               -e DATABASE_URL="${{ secrets.DATABASE_URL }}" \
               -e PORT="${{ secrets.PORT }}" \
+              -e PUBLIC_KEY="${{ secrets.PUBLIC_KEY }}" \
+              -e PRIVATE_KEY="${{ secrets.PRIVATE_KEY }}" \
               --name express-api alexdevops111/unsplash:backend
