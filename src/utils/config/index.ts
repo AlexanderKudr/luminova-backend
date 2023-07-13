@@ -24,6 +24,7 @@ const config = {
   privateKey: PRIVATE_KEY,
 };
 
+
 cloudinary.config(config.cloudinary);
 
 export { config };
