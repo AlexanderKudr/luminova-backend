@@ -3,9 +3,7 @@ import cors from "cors";
 import express, { Express } from "express";
 import { auth, images } from "./routes";
 import { swagger } from "./docs";
-import * as dotenv from "dotenv";
 
-// dotenv.config({path: ".env.dev"});
 const app = express();
 
 const setupApp = (app: Express) => {

@@ -34,6 +34,8 @@ const uploadToProfile: Controller = async (req, res) => {
       } else {
         const { userName, category } = req.body as { userName: string; category: string };
         const user = await checkUserInDB("name", userName);
+        //
+        console.log("checked user in db")
         if (!user) {
           res.status(401).send({ error: "User not found" });
           return;
@@ -41,7 +43,8 @@ const uploadToProfile: Controller = async (req, res) => {
 
         const files = req.files as UploadFiles[];
         const filesPaths = files.map((file) => file.path);
-
+        //
+        console.log(files, "files stored")
         const uploadImagesToCDN = async (paths: string[]) => {
           try {
             const uploadPromises = paths.map(async (path) => {
@@ -55,6 +58,7 @@ const uploadToProfile: Controller = async (req, res) => {
             });
 
             const uploadResults = await Promise.all(uploadPromises);
+            console.log("images uploaded to cloudinary");
             return uploadResults;
           } catch (error) {
             console.error("Error uploading images to CDN:", error);
@@ -81,7 +85,7 @@ const uploadToProfile: Controller = async (req, res) => {
               },
             });
 
-            console.log(addImages, "addImages");
+            console.log(addImages, "added images to db");
           } catch (error) {
             console.error(error);
           } finally {
@@ -89,7 +93,6 @@ const uploadToProfile: Controller = async (req, res) => {
           }
         };
 
-        console.log(getIdsFromCDN, "getPayloadForDB");
         await addPhotosToUserInDB(getIdsFromCDN, userName);
         deleteTemporalImages(destination);
       }
