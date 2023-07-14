@@ -9,6 +9,9 @@ WORKDIR /app
 # Copy the current directory (where the Dockerfile is located) into the container at /app
 COPY . .
 
+# Add write permissions to the working directory
+RUN chmod -R 777 /app
+
 RUN npm install
 
 # Set the command to run when the container starts
