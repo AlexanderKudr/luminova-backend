@@ -35,7 +35,7 @@ const uploadToProfile: Controller = async (req, res) => {
         const { userName, category } = req.body as { userName: string; category: string };
         const user = await checkUserInDB("name", userName);
         //
-        console.log("checked user in db")
+        console.log("checked user in db");
         if (!user) {
           res.status(401).send({ error: "User not found" });
           return;
@@ -44,7 +44,7 @@ const uploadToProfile: Controller = async (req, res) => {
         const files = req.files as UploadFiles[];
         const filesPaths = files.map((file) => file.path);
         //
-        console.log(files, "files stored")
+        console.log(files, "files stored");
         const uploadImagesToCDN = async (paths: string[]) => {
           try {
             const uploadPromises = paths.map(async (path) => {
@@ -95,10 +95,10 @@ const uploadToProfile: Controller = async (req, res) => {
 
         await addPhotosToUserInDB(getIdsFromCDN, userName);
         deleteTemporalImages(destination);
+        
+        res.send({ message: "success" });
       }
     });
-
-    res.send({ message: "success" });
   } catch (error) {
     res.status(500).send("Error adding image to Cloudinary");
   }
