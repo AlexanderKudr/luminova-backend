@@ -15,7 +15,7 @@ type UploadFiles = {
   size: number;
 };
 
-const destination = "public/temporal";
+const destination = "/app/public/temporal";
 const upload = multer({
   storage: multer.diskStorage({
     destination: destination,
