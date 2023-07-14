@@ -33,9 +33,9 @@ const uploadToProfile: Controller = async (req, res) => {
         return;
       } else {
         const { userName, category } = req.body as { userName: string; category: string };
+        console.log(category, "category");
         const user = await checkUserInDB("name", userName);
-        //
-        console.log("checked user in db");
+
         if (!user) {
           res.status(401).send({ error: "User not found" });
           return;
@@ -43,18 +43,17 @@ const uploadToProfile: Controller = async (req, res) => {
 
         const files = req.files as UploadFiles[];
         const filesPaths = files.map((file) => file.path);
-        //
-        console.log(files, "files stored");
+        // console.log(filesPaths, "filesPaths");
         const uploadImagesToCDN = async (paths: string[]) => {
           try {
             const uploadPromises = paths.map(async (path) => {
               const filename = path.split("\\").pop();
-              const result = await cloudinary.uploader.upload(path, {
-                use_filename: true,
-                folder: category,
-                public_id: filename,
-              });
-              return result;
+              // const result = await cloudinary.uploader.upload(path, {
+              //   use_filename: true,
+              //   folder: category,
+              //   public_id: filename,
+              // });
+              // return result;
             });
 
             const uploadResults = await Promise.all(uploadPromises);
@@ -68,7 +67,7 @@ const uploadToProfile: Controller = async (req, res) => {
 
         const uploadResults = await uploadImagesToCDN(filesPaths);
 
-        const getIdsFromCDN = uploadResults.map(({ public_id }) => {
+        const getIdsFromCDN = uploadResults.map(({ public_id }:any) => {
           return { public_id: public_id };
         });
 
