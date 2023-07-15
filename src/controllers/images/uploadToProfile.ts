@@ -15,7 +15,7 @@ type UploadFiles = {
   path: string;
   size: number;
 };
-console.log("current directory", process.cwd());
+console.log("current directory", __dirname);
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) =>
