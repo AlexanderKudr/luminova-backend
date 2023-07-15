@@ -15,10 +15,9 @@ type UploadFiles = {
   size: number;
 };
 
-const destination = "public/temporal";
 const upload = multer({
   storage: multer.diskStorage({
-    destination: destination,
+    destination: (req, file, cb) => cb(null, "public/temporal"),
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
 }).array("file", 10);
@@ -43,7 +42,7 @@ const uploadToProfile: Controller = async (req, res) => {
 
         const files = req.files as UploadFiles[];
         const filesPaths = files.map((file) => file.destination);
-        // console.log(files, "files")
+
         const uploadImagesToCDN = async (paths: string[], category: string) => {
           try {
             const uploadPromises = paths.map(async (path) => {
@@ -93,7 +92,7 @@ const uploadToProfile: Controller = async (req, res) => {
         };
 
         await addPhotosToUserInDB(getIdsFromCDN!, userName);
-        deleteTemporalImages(destination);
+        deleteTemporalImages("public/temporal");
 
         res.send({ message: "success" });
       }
