@@ -16,7 +16,7 @@ type UploadFiles = {
   size: number;
 };
 
-// console.log("current directory", __dirname);
+console.log("current directory", __dirname);
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => cb(null, "/app/dist/public/temporal"),
