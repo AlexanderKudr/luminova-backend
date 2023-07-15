@@ -34,8 +34,6 @@ const uploadToProfile: Controller = async (req, res) => {
       } else {
         const { userName, category } = req.body as { userName: string; category: string };
 
-    
-
         const user = await checkUserInDB("name", userName);
 
         if (!user) {
@@ -94,7 +92,7 @@ const uploadToProfile: Controller = async (req, res) => {
           }
         };
 
-        await addPhotosToUserInDB(getIdsFromCDN, userName);
+        await addPhotosToUserInDB(getIdsFromCDN!, userName);
         deleteTemporalImages(destination);
 
         res.send({ message: "success" });
