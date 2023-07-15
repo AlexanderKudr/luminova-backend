@@ -47,7 +47,7 @@ const uploadToProfile: Controller = async (req, res) => {
         const uploadImagesToCDN = async (paths: string[], category: string) => {
           try {
             const uploadPromises = paths.map(async (path) => {
-              const filename = path.split("\\").pop();
+              const filename = path.split("/").pop();
 
               const result = await cloudinary.uploader.upload(path, {
                 use_filename: true,
