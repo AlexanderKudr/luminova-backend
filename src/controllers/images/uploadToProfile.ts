@@ -52,12 +52,13 @@ const uploadToProfile: Controller = async (req, res) => {
         }
 
         const files = req.files as UploadFiles[];
-        const filesPaths = files.map((file) => file.path);
-
+        const filesPaths = files.map((file) => file.destination);
+        // console.log(files, "files")
         const uploadImagesToCDN = async (paths: string[], category: string) => {
           try {
             const uploadPromises = paths.map(async (path) => {
               const filename = path.split("\\").pop();
+              console.log(filename, "filename");
               const result = await cloudinary.uploader.upload(path, {
                 use_filename: true,
                 folder: category,
@@ -77,7 +78,7 @@ const uploadToProfile: Controller = async (req, res) => {
 
         const uploadResults = await uploadImagesToCDN(filesPaths, resolvedCategory as string);
 
-        const getIdsFromCDN = uploadResults.map(({ public_id }) => {
+        const getIdsFromCDN = uploadResults.map(({ public_id }:any) => {
           return { public_id: public_id };
         });
 
