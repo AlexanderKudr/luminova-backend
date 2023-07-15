@@ -34,14 +34,7 @@ const uploadToProfile: Controller = async (req, res) => {
       } else {
         const { userName, category } = req.body as { userName: string; category: string };
 
-        const waitForCategory = new Promise((resolve) => {
-          setTimeout(() => {
-            resolve(category);
-          }, 1000);
-        });
-        const resolvedCategory = await waitForCategory;
-
-        console.log(resolvedCategory, "resolvedCategory");
+    
 
         const user = await checkUserInDB("name", userName);
 
@@ -74,9 +67,9 @@ const uploadToProfile: Controller = async (req, res) => {
           }
         };
 
-        const uploadResults = await uploadImagesToCDN(filesPaths, resolvedCategory as string);
+        const uploadResults = await uploadImagesToCDN(filesPaths, category);
 
-        const getIdsFromCDN = uploadResults.map(({ public_id }: any) => {
+        const getIdsFromCDN = uploadResults?.map(({ public_id }) => {
           return { public_id: public_id };
         });
 
