@@ -17,7 +17,7 @@ type UploadFiles = {
 
 const upload = multer({
   storage: multer.diskStorage({
-    destination: (req, file, cb) => cb(null, "./public/temporal"),
+    destination: (req, file, cb) => cb(null, "public/temporal"),
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
 }).array("file", 10);
@@ -42,17 +42,20 @@ const uploadToProfile: Controller = async (req, res) => {
         }
 
         const files = req.files as UploadFiles[];
-        const filesPaths = files.map((file) => file.destination);
+        console.log(req.files, "req.files");
+        const filesPaths = files.map((file) => file.path);
 
         const uploadImagesToCDN = async (paths: string[], category: string) => {
           try {
             const uploadPromises = paths.map(async (path) => {
-              // const filename = path.split("/").pop();
+              const split = path.split("\\");
+              const forwardPath = split.join("/");
+              const filename = split[split.length - 1];
 
-              const result = await cloudinary.uploader.upload(path, {
+              const result = await cloudinary.uploader.upload(forwardPath, {
                 use_filename: true,
                 folder: category,
-                public_id: path,
+                public_id: filename,
               });
               console.log(result, "result");
               return result;
