@@ -3,6 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 import { databaseService } from "../../services/db";
 import { deleteTemporalImages } from "../../utils/functions";
+import path from 'path';
 
 type UploadFiles = {
   fieldname: string;
@@ -14,7 +15,7 @@ type UploadFiles = {
   path: string;
   size: number;
 };
-
+console.log("current directory", process.cwd());
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => cb(null, "./public/temporal"),
