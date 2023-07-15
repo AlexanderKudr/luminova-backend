@@ -62,7 +62,7 @@ const uploadToProfile: Controller = async (req, res) => {
             console.log("images uploaded to cloudinary");
             return uploadResults;
           } catch (error) {
-            console.error("Error uploading images to CDN:");
+            console.error("Error uploading images to CDN:", error);
           }
         };
 
