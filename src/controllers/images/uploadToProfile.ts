@@ -63,6 +63,8 @@ const uploadToProfile: Controller = async (req, res) => {
             return uploadResults;
           } catch (error) {
             console.error("Error uploading images to CDN:", error);
+            console.log("Path:", paths);
+            throw error; // Rethrow the error to propagate it to the caller
           }
         };
 
