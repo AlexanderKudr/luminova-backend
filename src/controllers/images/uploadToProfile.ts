@@ -15,7 +15,7 @@ type UploadFiles = {
   size: number;
 };
 
-const destination = "/app/public/temporal";
+const destination = "public/temporal";
 const upload = multer({
   storage: multer.diskStorage({
     destination: destination,
@@ -38,12 +38,11 @@ const uploadToProfile: Controller = async (req, res) => {
           setTimeout(() => {
             resolve(category);
           }, 1000);
-          
-        })
+        });
         const resolvedCategory = await waitForCategory;
 
         console.log(resolvedCategory, "resolvedCategory");
-        
+
         const user = await checkUserInDB("name", userName);
 
         if (!user) {
@@ -58,7 +57,7 @@ const uploadToProfile: Controller = async (req, res) => {
           try {
             const uploadPromises = paths.map(async (path) => {
               const filename = path.split("\\").pop();
-              console.log(filename, "filename");
+
               const result = await cloudinary.uploader.upload(path, {
                 use_filename: true,
                 folder: category,
@@ -71,14 +70,13 @@ const uploadToProfile: Controller = async (req, res) => {
             console.log("images uploaded to cloudinary");
             return uploadResults;
           } catch (error) {
-            console.error("Error uploading images to CDN:", error);
-            throw error;
+            console.error("Error uploading images to CDN:");
           }
         };
 
         const uploadResults = await uploadImagesToCDN(filesPaths, resolvedCategory as string);
 
-        const getIdsFromCDN = uploadResults.map(({ public_id }:any) => {
+        const getIdsFromCDN = uploadResults.map(({ public_id }: any) => {
           return { public_id: public_id };
         });
 
@@ -105,7 +103,7 @@ const uploadToProfile: Controller = async (req, res) => {
 
         await addPhotosToUserInDB(getIdsFromCDN, userName);
         deleteTemporalImages(destination);
-        
+
         res.send({ message: "success" });
       }
     });
