@@ -28,6 +28,7 @@ const uploadToProfile: Controller = async (req, res) => {
   try {
     upload(req, res, async (err) => {
       if (err) {
+        console.error(err, "Error uploading image to Server");
         res.status(500).send({ error: "Error uploading image to Server" });
         return;
       } else {
