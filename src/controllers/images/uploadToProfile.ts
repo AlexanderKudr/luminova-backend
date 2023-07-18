@@ -18,7 +18,7 @@ type UploadFiles = {
 console.log("current directory", __dirname);
 const upload = multer({
   storage: multer.diskStorage({
-    destination: (req, file, cb) => cb(null, "app/dist/public/temporal"),
+    destination: (req, file, cb) => cb(null, "public/temporal"),
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
 }).array("file", 10);
@@ -100,7 +100,7 @@ const uploadToProfile: Controller = async (req, res) => {
         };
 
         await addPhotosToUserInDB(getIdsFromCDN!, userName);
-        deleteTemporalImages("app/dist/public/temporal");
+        deleteTemporalImages("public/temporal");
 
         res.send({ message: "success" });
       }
