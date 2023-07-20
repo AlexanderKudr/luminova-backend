@@ -12,7 +12,6 @@ const { prisma, handleDisconnectDB } = databaseService;
 
 const imagesForUser: Controller = async (req, res) => {
   const { accessToken, category, next_cursor } = req.body as Payload;
-
   try {
     const getImagesFromCDN: ResourceApiResponse = await cloudinary.search
       .expression(`folder:${category}`)
@@ -24,12 +23,13 @@ const imagesForUser: Controller = async (req, res) => {
       where: { accessToken },
       select: { favoriteImages: true },
     });
+    console.log(getFavoriteImagesFromDB, "getFavoriteImagesFromDB");
+    // console.log(getImagesFromCDN, "getfrom cdn");
 
     const images = getImagesFromCDN?.resources.map((image) => {
       const isFavorite = getFavoriteImagesFromDB?.favoriteImages.some(
         ({ public_id }) => public_id === image.public_id
       );
-
       return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
     });
 

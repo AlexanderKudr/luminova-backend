@@ -9,6 +9,7 @@ const updateFavoriteImages: Controller = async (req, res) => {
   const { public_id, accessToken } = req.body as Payload;
   const { user, favoriteImages } = prisma;
 
+  console.log("fires");
   try {
     if (!public_id || !accessToken) {
       res.status(400).send({ message: "public_id or accessToken is missing" });

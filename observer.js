@@ -1,23 +1,22 @@
-// const input = document.querySelector("#input");
-// input.style.color = "red";
+const input = document.querySelector("#input");
+input.style.color = "red";
 
-// const useObserver = () => {
-//   const observers = [];
+const useObserver = () => {
+  const observers = [];
 
-//   const addObserver = (observer) => observers.push(observer);
+  const addObserver = (observer) => observers.push(observer);
 
-//   const removeObserver = (observer) => observers.splice(observers.indexOf(observer), 1);
+  const removeObserver = (observer) => observers.splice(observers.indexOf(observer), 1);
 
-//   const notifyObservers = (data) => observers.forEach(() => console.log(data));
+  const notifyObservers = (data) => observers.forEach(() => console.log(data));
 
-//   return { addObserver, removeObserver, notifyObservers };
-// };
+  return { addObserver, removeObserver, notifyObservers };
+};
 
-// const { addObserver, removeObserver, notifyObservers } = useObserver();
+const { addObserver, removeObserver, notifyObservers } = useObserver();
 
-// addObserver({
-//   update: (data) => console.log("update", data),
-// });
+addObserver({
+  update: (data) => console.log("update", data),
+});
 
-// input.addEventListener("input", () => notifyObservers(input.value));
-//tests
+input.addEventListener("input", () => console.log(input.value));
