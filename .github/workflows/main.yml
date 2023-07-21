@@ -65,4 +65,5 @@ jobs:
               -e PORT="${{ secrets.PORT }}" \
               -e PUBLIC_KEY="${{ secrets.PUBLIC_KEY }}" \
               -e PRIVATE_KEY="${{ secrets.PRIVATE_KEY }}" \
+              -v temporal-images:/app/dist/public/temporal \
               --name express-api alexdevops111/unsplash:backend

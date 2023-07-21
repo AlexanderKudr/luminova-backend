@@ -3,6 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
 import { databaseService } from "../../services/db";
 import { deleteTemporalImages } from "../../utils/functions";
+import path from "path";
 
 type UploadFiles = {
   fieldname: string;
@@ -18,7 +19,7 @@ type UploadFiles = {
 console.log("current directory", __dirname);
 const upload = multer({
   storage: multer.diskStorage({
-    destination: (req, file, cb) => cb(null, "public/temporal"),
+    destination: (req, file, cb) => cb(null, "./public/temporal"),
     filename: (req, file, cb) => cb(null, file.originalname),
   }),
 }).array("file", 10);
@@ -48,16 +49,18 @@ const uploadToProfile: Controller = async (req, res) => {
 
         const uploadImagesToCDN = async (paths: string[], category: string) => {
           try {
+            const systemPath = path.sep;
+
             const uploadPromises = paths.map(async (path) => {
-              const split = path.split("\\");
-              const forwardPath = split.join("/");
+              const split = path.split(systemPath);
               const filename = split[split.length - 1];
 
-              const result = await cloudinary.uploader.upload(forwardPath, {
+              const result = await cloudinary.uploader.upload(path, {
                 use_filename: true,
                 folder: category,
                 public_id: filename,
               });
+
               console.log(result, "result");
               return result;
             });

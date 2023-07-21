@@ -3,6 +3,7 @@ FROM node:18.14.0-alpine
 
 RUN apk update && rm -rf /var/cache/apk/*
 
+
 # Set the working directory inside the container to /app
 WORKDIR /app
 
