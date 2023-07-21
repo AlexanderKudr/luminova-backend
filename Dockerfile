@@ -10,7 +10,6 @@ WORKDIR /app
 # Copy the current directory (where the Dockerfile is located) into the container at /app
 COPY . .
 
-COPY package.json pnpm-lock.yaml ./
 
 RUN npm install pnpm -g
 
