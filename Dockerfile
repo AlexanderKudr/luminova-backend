@@ -1,5 +1,5 @@
 # Use the Node.js 18 Alpine image as the base image
-FROM node:20.1.0-alpine3.16 AS build
+FROM node:18.14.0-alpine
 
 RUN apk update && rm -rf /var/cache/apk/*
 
@@ -9,7 +9,13 @@ WORKDIR /app
 # Copy the current directory (where the Dockerfile is located) into the container at /app
 COPY . .
 
-RUN npm install
+COPY package.json pnpm-lock.yaml ./
+
+RUN npm install pnpm -g
+
+RUN pnpm install
+
+RUN pnpm install typescript && pnpm tsc
 
 # Set the command to run when the container starts
-CMD ["npm" , "run" , "start"]
+CMD ["pnpm", "start"]
