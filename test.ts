@@ -19,7 +19,6 @@
 // console.log(test, 'test')
 
 const data = [1, 2, 3, 4];
-[]
 const waitForData = async <T>(array: T): Promise<T> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => resolve(array), 1000);
