@@ -99,4 +99,7 @@ paths:
             properties:
               message:
                 type: string
+  # /collections/profile:
+  #   get:
+  #     summary: Get user collections
 

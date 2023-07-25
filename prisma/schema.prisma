@@ -17,6 +17,7 @@ model User {
   refreshToken   String?
   favoriteImages favoriteImages[]
   uploadedImages uploadedImages[]
+  collection     collection[]
   confirmedemail Boolean?         @default(false)
 }
 
@@ -29,7 +30,24 @@ model favoriteImages {
 
 model uploadedImages {
   id        Int     @id @default(autoincrement())
-  public_id String
   user_id   String?
+  public_id String
   User      User?   @relation(fields: [user_id], references: [id])
+}
+
+model collection {
+  id               Int                @id @default(autoincrement())
+  name             String
+  description      String?
+  user_id          String?
+  User             User?              @relation(fields: [user_id], references: [id])
+  collectionImages collectionImages[]
+}
+
+model collectionImages {
+  id        Int    @id @default(autoincrement())
+  public_id String
+
+  collection_id Int?
+  collection    collection? @relation(fields: [collection_id], references: [id])
 }

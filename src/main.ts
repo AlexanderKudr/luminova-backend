@@ -1,7 +1,7 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Express } from "express";
-import { auth, images } from "./routes";
+import { auth, images, collections, user } from "./routes";
 import { swagger } from "./docs";
 
 const app = express();
@@ -21,6 +21,8 @@ const setupApp = (app: Express) => {
 const setupRoutes = (app: Express) => {
   auth(app);
   images(app);
+  collections(app);
+  user(app);
 };
 
 setupApp(app);

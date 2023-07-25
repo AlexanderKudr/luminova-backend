@@ -37,7 +37,7 @@ const imagesForUser: Controller = async (req, res) => {
   } catch (error) {
     res.status(500).send({ error: "Category images for user could not be fetched" });
   } finally {
-    handleDisconnectDB();
+    await handleDisconnectDB();
   }
 };
 export { imagesForUser };

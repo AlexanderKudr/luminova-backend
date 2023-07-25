@@ -16,7 +16,6 @@ type UploadFiles = {
   size: number;
 };
 
-console.log("current directory", __dirname);
 const upload = multer({
   storage: multer.diskStorage({
     destination: (req, file, cb) => cb(null, "./public/temporal"),
@@ -110,6 +109,8 @@ const uploadToProfile: Controller = async (req, res) => {
     });
   } catch (error) {
     res.status(500).send("Error adding image to Cloudinary");
+  } finally {
+    await handleDisconnectDB();
   }
 };
 

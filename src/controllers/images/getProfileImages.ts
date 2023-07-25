@@ -15,7 +15,7 @@ const getProfileImages: Controller = async (req, res) => {
 
     const checkUser = await prisma.user.findUnique({
       where: { name },
-      include: { uploadedImages: true },
+      include: { uploadedImages: true, favoriteImages: true },
     });
 
     if (!checkUser) {
@@ -27,9 +27,10 @@ const getProfileImages: Controller = async (req, res) => {
     const imagesFromCDN = await cloudinary.api.resources_by_ids(publicIds);
 
     const images = imagesFromCDN?.resources.map((image) => {
-      const isFavorite = checkUser?.uploadedImages.some(
+      const isFavorite = checkUser?.favoriteImages.some(
         ({ public_id }) => public_id === image.public_id
       );
+
       return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
     });
 
@@ -37,7 +38,7 @@ const getProfileImages: Controller = async (req, res) => {
   } catch {
     res.status(500).send({ message: "Could not retrieve profile images" });
   } finally {
-    handleDisconnectDB();
+    await handleDisconnectDB();
   }
 };
 

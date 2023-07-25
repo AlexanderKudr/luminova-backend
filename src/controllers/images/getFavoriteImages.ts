@@ -37,9 +37,8 @@ const getFavoriteImages: Controller = async (req, res) => {
     res.send({ images: images, message: "Favorite images retrieved" });
   } catch {
     res.status(500).send({ message: "Could not retrieve favorite images" });
-  }
-  finally{
-    handleDisconnectDB();
+  } finally {
+    await handleDisconnectDB();
   }
 };
 

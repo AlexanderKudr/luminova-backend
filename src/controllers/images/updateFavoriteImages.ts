@@ -9,7 +9,6 @@ const updateFavoriteImages: Controller = async (req, res) => {
   const { public_id, accessToken } = req.body as Payload;
   const { user, favoriteImages } = prisma;
 
-  console.log("fires");
   try {
     if (!public_id || !accessToken) {
       res.status(400).send({ message: "public_id or accessToken is missing" });
@@ -19,6 +18,7 @@ const updateFavoriteImages: Controller = async (req, res) => {
     const existingUser = await user.findFirst({
       where: { accessToken: accessToken },
     });
+
     if (!existingUser) {
       res.status(400).send({ message: "User not found" });
       return;
@@ -52,7 +52,7 @@ const updateFavoriteImages: Controller = async (req, res) => {
       .status(500)
       .send({ message: "Internal server error, adding/deleting image to favorites failed" });
   } finally {
-    handleDisconnectDB();
+    await handleDisconnectDB();
   }
 };
 export { updateFavoriteImages };
