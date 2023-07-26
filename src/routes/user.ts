@@ -1,7 +1,7 @@
 import { Express } from "express";
 import { userControllers } from "../controllers";
 
-const { updateUserData } = userControllers;
+const { updateUserData, downloadHistory } = userControllers;
 
 const user = (app: Express) => {
   const baseURL = "/user";
