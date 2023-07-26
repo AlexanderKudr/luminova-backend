@@ -6,19 +6,18 @@ const { prisma, handleDisconnectDB } = databaseService;
 
 const getFavoriteImages: Controller = async (req, res) => {
   const { user } = prisma;
-  const { name }: { name: string } = req.body;
+  const { userName } = req.params;
 
   try {
-    if (!name) {
+    if (!userName) {
       res.status(400).send({ message: "name is missing" });
       return;
     }
 
     const checkUser = await user.findUnique({
-      where: { name },
+      where: { name: userName },
       include: { favoriteImages: true },
     });
-
     if (!checkUser) {
       res.status(400).send({ message: "User not found" });
       return;
@@ -33,7 +32,9 @@ const getFavoriteImages: Controller = async (req, res) => {
       );
       return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
     });
-
+    
+    
+    
     res.send({ images: images, message: "Favorite images retrieved" });
   } catch {
     res.status(500).send({ message: "Could not retrieve favorite images" });

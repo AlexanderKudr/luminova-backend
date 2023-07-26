@@ -5,16 +5,16 @@ import { v2 as cloudinary } from "cloudinary";
 const { prisma, handleDisconnectDB } = databaseService;
 
 const getProfileImages: Controller = async (req, res) => {
-  const { name }: { name: string } = req.body;
+  const { userName } = req.params;
 
   try {
-    if (!name) {
+    if (!userName) {
       res.status(400).send({ message: "name is missing" });
       return;
     }
 
     const checkUser = await prisma.user.findUnique({
-      where: { name },
+      where: { name: userName },
       include: { uploadedImages: true, favoriteImages: true },
     });
 

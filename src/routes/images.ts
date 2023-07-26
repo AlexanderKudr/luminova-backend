@@ -18,8 +18,8 @@ const images = (app: Express) => {
   app.post(`${baseURL}/updatefavorites`, verifyToken, updateFavoriteImages);
   app.post(`${baseURL}/foruser`, imagesForUser);
   app.post(`${baseURL}/fornonuser`, imagesForNonUser);
-  app.post(`${baseURL}/getfavorites`, getFavoriteImages);
-  app.post(`${baseURL}/getprofileimages`, getProfileImages);
+  app.post(`${baseURL}/getfavorites/:userName`, getFavoriteImages);
+  app.post(`${baseURL}/getprofileimages/:userName`, getProfileImages);
   app.get(`${baseURL}/categories`, getCategoriesFromCDN);
 };
 
