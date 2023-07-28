@@ -26,13 +26,19 @@ const updateImageInCollection: Controller = async (req, res) => {
       include: { collectionImages: true },
     });
 
+    console.log(findCollection, "findCollection");
+
     const findImageInCollection = findCollection?.collectionImages.find(
       (image) => image.public_id === public_id
     );
+    
     if (findImageInCollection) {
-      await prisma.collection.delete({
-        where: { id: findImageInCollection.id },
+      await prisma.collectionImages.delete({
+        where: {
+          id: findImageInCollection.id,
+        },
       });
+
       res.send({ message: "Image from collection removed successfully" });
       return;
     }
@@ -40,7 +46,7 @@ const updateImageInCollection: Controller = async (req, res) => {
     await prisma.collectionImages.create({
       data: {
         public_id: public_id,
-        collection: { connect: { id: findCollection?.id } },
+        collection: { connect: { id: collectionId } },
       },
     });
 

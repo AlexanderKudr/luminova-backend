@@ -6,7 +6,7 @@ const { user } = prisma;
 
 const getProfileCollections: Controller = async (req, res) => {
   const { refreshToken }: { refreshToken: string } = req.cookies;
-
+  
   try {
     if (!refreshToken) {
       res.status(401).send({ error: "Refresh token missing" });
@@ -14,13 +14,23 @@ const getProfileCollections: Controller = async (req, res) => {
     }
     const checkUserInDB = await user.findFirst({
       where: { refreshToken: refreshToken },
-      include: { collection: true },
+      include: {
+        collection: {
+          include: {
+            collectionImages: {
+              take: 3,
+            },
+          },
+        },
+      },
     });
 
     if (!checkUserInDB) {
       res.status(401).send({ error: "User not found" });
       return;
     }
+
+    console.log(checkUserInDB.collection);
 
     res.send({
       collection: checkUserInDB.collection,
