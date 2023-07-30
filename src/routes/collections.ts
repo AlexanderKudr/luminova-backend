@@ -7,7 +7,7 @@ const {
   editCollection,
   deleteCollection,
   updateImageInCollection,
-  openCollection,
+  openCollectionByID,
 } = collectionControllers;
 
 const collections = (app: Express) => {
@@ -17,7 +17,7 @@ const collections = (app: Express) => {
   app.put(`${baseURL}/edit`, editCollection);
   app.delete(`${baseURL}/delete`, deleteCollection);
   app.post(`${baseURL}/updateimage`, updateImageInCollection);
-  app.post(`${baseURL}/open`, openCollection);
+  app.post(`${baseURL}/openbyid`, openCollectionByID);
 };
 
 export { collections };

@@ -3,7 +3,7 @@ import { getProfileCollections } from "./getProfileCollections";
 import { editCollection } from "./editCollection";
 import { deleteCollection } from "./deleteCollection";
 import { updateImageInCollection } from "./updateImageInCollection";
-import { openCollection } from "./openCollection";
+import { openCollectionByID } from "./openCollectionByID";
 
 export const collectionControllers = {
   createCollection,
@@ -11,5 +11,5 @@ export const collectionControllers = {
   editCollection,
   deleteCollection,
   updateImageInCollection,
-  openCollection
+  openCollectionByID
 };

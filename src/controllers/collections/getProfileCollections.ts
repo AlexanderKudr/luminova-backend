@@ -36,6 +36,7 @@ const getProfileCollections: Controller = async (req, res) => {
       collection: checkUserInDB.collection,
       message: "Collections fetched successfully",
     });
+    
   } catch (error) {
     console.error(error);
     res.status(500).send({ error: "Error getting collections" });
