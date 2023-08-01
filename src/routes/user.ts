@@ -5,7 +5,6 @@ const { updateUserData, downloadHistory } = userControllers;
 
 const user = (app: Express) => {
   const baseURL = "/user";
-  //   app.get(`${baseURL}/profile`, getProfile);
   app.put(`${baseURL}/update`, updateUserData);
 };
 
