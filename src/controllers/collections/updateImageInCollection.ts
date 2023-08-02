@@ -6,6 +6,7 @@ const { prisma, handleDisconnectDB } = databaseService;
 const updateImageInCollection: Controller = async (req, res) => {
   const { refreshToken }: { refreshToken: string } = req.cookies;
   const { collectionId, public_id }: { collectionId: number; public_id: string } = req.body;
+// console.log(req.body, 'payload on back')
 
   try {
     if (!refreshToken) {
@@ -26,7 +27,6 @@ const updateImageInCollection: Controller = async (req, res) => {
       include: { collectionImages: true },
     });
 
-    console.log(findCollection, "findCollection");
 
     const findImageInCollection = findCollection?.collectionImages.find(
       (image) => image.public_id === public_id
@@ -49,7 +49,7 @@ const updateImageInCollection: Controller = async (req, res) => {
         collection: { connect: { id: collectionId } },
       },
     });
-
+    // console.log(findCollection, 'collection')
     res.status(200).send({ message: "Image added to collection successfully" });
   } catch (error) {
     console.error(error);

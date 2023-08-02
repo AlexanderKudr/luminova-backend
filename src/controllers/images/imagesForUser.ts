@@ -21,10 +21,9 @@ const imagesForUser: Controller = async (req, res) => {
 
     const getFavoriteImagesFromDB = await prisma.user.findUnique({
       where: { accessToken },
-      select: { favoriteImages: true },
+      include: { favoriteImages: true, collection: true },
+      //TODO add check if image exist in any collection
     });
-    console.log(getFavoriteImagesFromDB, "getFavoriteImagesFromDB");
-    // console.log(getImagesFromCDN, "getfrom cdn");
 
     const images = getImagesFromCDN?.resources.map((image) => {
       const isFavorite = getFavoriteImagesFromDB?.favoriteImages.some(
