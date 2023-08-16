@@ -10,7 +10,7 @@ const createCollection: Controller = async (req, res) => {
 
   try {
     if (!refreshToken) {
-      res.status(401).send({ error: "Refresh token missing" });
+      res.status(401).send({ error: "Refresh token is missing" });
       return;
     }
 

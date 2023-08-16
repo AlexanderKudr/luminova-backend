@@ -7,7 +7,7 @@ const logout: Controller = (req, res) => {
   const { refreshToken } = req.cookies as { refreshToken: string };
 
   if (!refreshToken) {
-    return res.status(401).send({ error: "Refresh token missing" });
+    return res.status(401).send({ error: "Refresh token is missing" });
   }
 
   clearUserTokensInDB(refreshToken);

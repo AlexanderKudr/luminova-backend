@@ -29,4 +29,19 @@ const result = await waitForData<typeof data>(data);
 
 export {};
 console.log(result);
+////////////////////////////////
+function greet(message) {
+  console.log(message + ", " + this.name);
+//   return message + ", " + this.name;
+}
 
+const person = {
+  name: "John",
+};
+
+greet.apply(person, ["Hello"]);
+
+greet.call(person, "Hello");
+
+const newFunc = greet.bind(person);
+console.log(newFunc("Hello"));

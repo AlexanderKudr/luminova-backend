@@ -5,7 +5,9 @@ const { prisma, handleDisconnectDB } = databaseService;
 
 const deleteCollection: Controller = async (req, res) => {
   const { refreshToken }: { refreshToken: string } = req.cookies;
-  const { collectionId }: { collectionId: number } = req.body;
+  const { collectionId } = req.params;
+
+  console.log(req.params, "payload on back");
 
   try {
     if (!refreshToken) {
@@ -14,9 +16,9 @@ const deleteCollection: Controller = async (req, res) => {
     }
 
     await prisma.collection.delete({
-      where: { id: collectionId },
+      where: { id: +collectionId },
     });
-
+    console.log("Collection deleted successfully");
     res.send({ message: "Collection deleted successfully" });
   } catch (error) {
     console.error(error);

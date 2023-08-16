@@ -6,11 +6,11 @@ const { prisma, handleDisconnectDB } = databaseService;
 const updateImageInCollection: Controller = async (req, res) => {
   const { refreshToken }: { refreshToken: string } = req.cookies;
   const { collectionId, public_id }: { collectionId: number; public_id: string } = req.body;
-// console.log(req.body, 'payload on back')
+  // console.log(req.body, 'payload on back')
 
   try {
     if (!refreshToken) {
-      res.status(401).send({ error: "Refresh token missing" });
+      res.status(401).send({ error: "Refresh token is missing" });
       return;
     }
 
@@ -27,16 +27,13 @@ const updateImageInCollection: Controller = async (req, res) => {
       include: { collectionImages: true },
     });
 
-
     const findImageInCollection = findCollection?.collectionImages.find(
       (image) => image.public_id === public_id
     );
-    
+
     if (findImageInCollection) {
       await prisma.collectionImages.delete({
-        where: {
-          id: findImageInCollection.id,
-        },
+        where: { id: findImageInCollection.id },
       });
 
       res.send({ message: "Image from collection removed successfully" });
@@ -49,7 +46,6 @@ const updateImageInCollection: Controller = async (req, res) => {
         collection: { connect: { id: collectionId } },
       },
     });
-    // console.log(findCollection, 'collection')
     res.status(200).send({ message: "Image added to collection successfully" });
   } catch (error) {
     console.error(error);

@@ -15,7 +15,7 @@ const refreshTokens: Controller = async (req, res) => {
     console.log(refreshToken !== "" && "exists");
     
     if (!refreshToken) {
-      return res.status(401).send({ error: "Refresh token missing" });
+      return res.status(401).send({ error: "Refresh token is missing" });
     }
 
     const token = verifyToken(refreshToken, config.publicKey!);

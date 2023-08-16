@@ -15,7 +15,7 @@ const collections = (app: Express) => {
   app.post(`${baseURL}/create`, createCollection);
   app.get(`${baseURL}/profile`, getProfileCollections);
   app.put(`${baseURL}/edit`, editCollection);
-  app.delete(`${baseURL}/delete`, deleteCollection);
+  app.delete(`${baseURL}/delete/:collectionId`, deleteCollection);
   app.post(`${baseURL}/updateimage`, updateImageInCollection);
   app.post(`${baseURL}/openbyid`, openCollectionByID);
 };
