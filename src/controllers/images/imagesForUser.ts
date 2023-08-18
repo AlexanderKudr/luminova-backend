@@ -8,6 +8,7 @@ type Payload = {
   category: string | undefined;
   next_cursor: string;
 };
+
 const { prisma, handleDisconnectDB } = databaseService;
 
 const imagesForUser: Controller = async (req, res) => {
@@ -19,18 +20,39 @@ const imagesForUser: Controller = async (req, res) => {
       .next_cursor(next_cursor)
       .execute();
 
-    const getFavoriteImagesFromDB = await prisma.user.findUnique({
+    const getDataFromDB = await prisma.user.findUnique({
       where: { accessToken },
-      include: { favoriteImages: true, collection: true },
-      //TODO add check if image exist in any collection
+      include: {
+        favoriteImages: true,
+        collection: {
+          include: {
+            collectionImages: true,
+          },
+        },
+      },
     });
 
+    const collectionImages = getDataFromDB?.collection.map(
+      (collection) => collection.collectionImages
+    );
+    // console.log(collectionImages, "getDataFromDB");
+
     const images = getImagesFromCDN?.resources.map((image) => {
-      const isFavorite = getFavoriteImagesFromDB?.favoriteImages.some(
+      const isFavorite = getDataFromDB?.favoriteImages.some(
         ({ public_id }) => public_id === image.public_id
       );
       return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
     });
+
+    // const isImageInCollection = collectionImages?.map((collection) => {
+    //   return collection.some((item) => {
+    //     if (item.public_id === images[0].public_id) {
+    //       return true;
+    //     }
+    //     return false;
+    //   });
+    // });
+    // console.log(isImageInCollection, "isImageInCollection");
 
     res.send({ images: images, pagePreview: pagePreview(category) });
   } catch (error) {
