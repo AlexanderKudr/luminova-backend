@@ -13,7 +13,6 @@ const getOptions = (file: string) => {
 
 const swagger = (app: Express) => {
   app.use("/docs-core", ...getOptions("core"));
-  // app.use("/docs-blog", ...options);
 };
 
 export { swagger };
