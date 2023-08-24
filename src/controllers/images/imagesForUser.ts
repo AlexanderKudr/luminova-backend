@@ -33,10 +33,16 @@ const imagesForUser: Controller = async (req, res) => {
       },
     });
 
+    if (!getDataFromDB) {
+      res.status(400).send({ message: "User not found" });
+      return;
+    }
+    
     const returnImages = handleImages(getImagesFromCDN, getDataFromDB);
 
     res.send({ images: returnImages, pagePreview: pagePreview(category) });
   } catch (error) {
+    console.log(error);
     res.status(500).send({ error: "Category images for user could not be fetched" });
   } finally {
     await handleDisconnectDB();

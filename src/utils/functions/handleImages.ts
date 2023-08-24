@@ -1,6 +1,6 @@
 import { ResourceApiResponse } from "cloudinary";
 
-export const handleImages = <T>(
+export const handleImages =  <T>(
   imagesFromCdn: ResourceApiResponse,
   imagesFromDB: T | undefined
 ) => {
@@ -12,6 +12,7 @@ export const handleImages = <T>(
   };
 
   return imagesFromCdn?.resources.map((image) => {
+    console.log(imagesFromDB)
     const { collection, favoriteImages } = imagesFromDB as ImagesFromDB;
     const isFavorite = favoriteImages?.some(({ public_id }) => public_id === image.public_id);
 

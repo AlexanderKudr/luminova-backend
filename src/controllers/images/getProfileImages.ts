@@ -1,6 +1,6 @@
 import { databaseService } from "../../services";
 import { Controller, functions } from "../../utils";
-import { ResourceApiResponse, v2 as cloudinary } from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 
 const { prisma, handleDisconnectDB } = databaseService;
 const { handleImages } = functions;

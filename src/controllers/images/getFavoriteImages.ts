@@ -26,6 +26,7 @@ const getFavoriteImages: Controller = async (req, res) => {
         },
       },
     });
+
     if (!getDataFromDB) {
       res.status(400).send({ message: "User not found" });
       return;
