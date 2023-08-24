@@ -1,9 +1,7 @@
-import { config } from "../../utils/config";
-import { Controller } from "../../utils/types";
-import { time } from "../../utils";
+import { constants, Controller, config } from "../../utils";
 import { databaseService, jwtService } from "../../services";
 
-const { time30days } = time;
+const { time } = constants;
 const { checkUserInDB, updateRefreshTokenInDB } = databaseService;
 const { verifyToken, generateTokens } = jwtService;
 
@@ -13,7 +11,7 @@ const refreshTokens: Controller = async (req, res) => {
     const { refreshToken } = req.cookies as { refreshToken: string };
     const { userName } = req.body as { userName: string };
     console.log(refreshToken !== "" && "exists");
-    
+
     if (!refreshToken) {
       return res.status(401).send({ error: "Refresh token is missing" });
     }
@@ -34,7 +32,7 @@ const refreshTokens: Controller = async (req, res) => {
 
     res.cookie("refreshToken", tokens.refreshToken, {
       httpOnly: true,
-      maxAge: time30days,
+      maxAge: time.time30days,
       secure: true,
     });
 

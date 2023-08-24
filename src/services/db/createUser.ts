@@ -1,5 +1,5 @@
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import { User } from "../../utils/types/user";
+import { User } from "../../utils";
 import { prisma, handleDisconnectDB, handleErrorDB } from "./handleDB";
 
 const createUser = async (user: User) => {

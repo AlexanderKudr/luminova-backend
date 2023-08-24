@@ -1,5 +1,6 @@
 import { Express } from "express";
 import { authControllers } from "../controllers";
+
 const { register, login, logout, refreshTokens } = authControllers;
 
 const auth = (app: Express) => {

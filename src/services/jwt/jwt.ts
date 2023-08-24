@@ -1,8 +1,10 @@
 import jwt from "jsonwebtoken";
-import { time } from "../../utils/lib/time";
+import { constants } from "../../utils";
+
+const { time } = constants;
+const { time5minutes, time30days } = time;
 
 const generateTokens = (email: string, privateKey: string) => {
-  const { time5minutes, time30days } = time;
   const algorithm = "RS256";//check xxhash64
   const payload = { userEmail: email };
 

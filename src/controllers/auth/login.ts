@@ -1,10 +1,8 @@
-import { config } from "../../utils/config";
-import { Controller } from "../../utils/types";
-import { time } from "../../utils";
+import { constants, config, Controller } from "../../utils";
 import { jwtService, databaseService } from "../../services";
 import bcrypt from "bcrypt";
 
-const { time30days } = time;
+const { time } = constants;
 const { checkUserInDB, updateUserTokensInDB } = databaseService;
 const { generateTokens } = jwtService;
 
@@ -26,7 +24,7 @@ const login: Controller = async (req, res) => {
       httpOnly: true,
       secure: true,
       // sameSite: "lax",
-      maxAge: time30days,
+      maxAge: time.time30days,
     });
 
     res.send({

@@ -1,8 +1,7 @@
-import { Controller } from "../../utils/types";
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
-import { databaseService } from "../../services/db";
-import { deleteTemporalImages } from "../../utils/functions";
+import { databaseService } from "../../services";
+import { functions, Controller } from "../../utils";
 import path from "path";
 
 type UploadFiles = {
@@ -24,12 +23,14 @@ const upload = multer({
 }).array("file", 10);
 
 const { prisma, handleDisconnectDB, checkUserInDB } = databaseService;
+const { deleteTemporalImages } = functions;
 
 const uploadToProfile: Controller = async (req, res) => {
   try {
     upload(req, res, async (err) => {
       if (err) {
         console.error(err, "Error uploading image to Server");
+
         res.status(500).send({ error: "Error uploading image to Server" });
         return;
       } else {
@@ -43,35 +44,26 @@ const uploadToProfile: Controller = async (req, res) => {
         }
 
         const files = req.files as UploadFiles[];
-        console.log(req.files, "req.files");
         const filesPaths = files.map((file) => file.path);
 
         const uploadImagesToCDN = async (paths: string[], category: string) => {
-          try {
-            const systemPath = path.sep;
+          const systemPath = path.sep;
 
-            const uploadPromises = paths.map(async (path) => {
-              const split = path.split(systemPath);
-              const filename = split[split.length - 1];
+          const uploadPromises = paths.map(async (path) => {
+            const split = path.split(systemPath);
+            const filename = split[split.length - 1];
 
-              const result = await cloudinary.uploader.upload(path, {
-                use_filename: true,
-                folder: category,
-                public_id: filename,
-              });
-
-              console.log(result, "result");
-              return result;
+            const result = await cloudinary.uploader.upload(path, {
+              use_filename: true,
+              folder: category,
+              public_id: filename,
             });
 
-            const uploadResults = await Promise.all(uploadPromises);
-            console.log("images uploaded to cloudinary");
-            return uploadResults;
-          } catch (error) {
-            console.error("Error uploading images to CDN:", error);
-            console.log("Path:", paths);
-            throw error; // Rethrow the error to propagate it to the caller
-          }
+            return result;
+          });
+
+          const uploadResults = await Promise.all(uploadPromises);
+          return uploadResults;
         };
 
         const uploadResults = await uploadImagesToCDN(filesPaths, category);
@@ -82,7 +74,7 @@ const uploadToProfile: Controller = async (req, res) => {
 
         const addPhotosToUserInDB = async (array: { public_id: string }[], userName: string) => {
           try {
-            const addImages = await prisma.user.update({
+            await prisma.user.update({
               where: { name: userName },
               data: {
                 uploadedImages: {
@@ -92,8 +84,6 @@ const uploadToProfile: Controller = async (req, res) => {
                 },
               },
             });
-
-            console.log(addImages, "added images to db");
           } catch (error) {
             console.error(error);
           } finally {

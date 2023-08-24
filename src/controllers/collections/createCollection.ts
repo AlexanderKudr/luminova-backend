@@ -1,5 +1,5 @@
 import { databaseService } from "../../services";
-import { Controller } from "../../utils/types";
+import { Controller } from "../../utils";
 
 const { prisma, handleDisconnectDB } = databaseService;
 const { user, collection } = prisma;

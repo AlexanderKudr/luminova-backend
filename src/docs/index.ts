@@ -1,3 +1,1 @@
-import { swagger } from "./swagger";
-
-export { swagger };
+export { swagger } from "./swagger";

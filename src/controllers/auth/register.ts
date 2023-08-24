@@ -1,9 +1,7 @@
-import { config } from "../../utils/config";
-import { Controller, User } from "../../utils/types";
-import { time } from "../../utils";
+import { constants, config, Controller, User } from "../../utils";
 import { databaseService, jwtService } from "../../services";
 
-const { time30days } = time;
+const { time } = constants;
 const { checkUserInDB, handleCreateUser } = databaseService;
 const { generateTokens, hashPassword } = jwtService;
 
@@ -40,7 +38,7 @@ const register: Controller = async (req, res) => {
     httpOnly: true,
     secure: true,
     // sameSite: "none",
-    maxAge: time30days,
+    maxAge: time.time30days,
   });
 
   res.send({

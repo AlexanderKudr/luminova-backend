@@ -1,6 +1,5 @@
-import { Controller } from "../../utils/types";
+import { Controller, constants, functions } from "../../utils";
 import { ResourceApiResponse, v2 as cloudinary } from "cloudinary";
-import { pagePreview } from "../../utils/lib";
 import { databaseService } from "../../services";
 
 type Payload = {
@@ -10,6 +9,8 @@ type Payload = {
 };
 
 const { prisma, handleDisconnectDB } = databaseService;
+const { pagePreview } = constants;
+const { handleImages } = functions;
 
 const imagesForUser: Controller = async (req, res) => {
   const { accessToken, category, next_cursor } = req.body as Payload;
@@ -32,29 +33,9 @@ const imagesForUser: Controller = async (req, res) => {
       },
     });
 
-    const collectionImages = getDataFromDB?.collection.map(
-      (collection) => collection.collectionImages
-    );
-    // console.log(collectionImages, "getDataFromDB");
+    const returnImages = handleImages(getImagesFromCDN, getDataFromDB);
 
-    const images = getImagesFromCDN?.resources.map((image) => {
-      const isFavorite = getDataFromDB?.favoriteImages.some(
-        ({ public_id }) => public_id === image.public_id
-      );
-      return isFavorite ? { ...image, favorite: true } : { ...image, favorite: false };
-    });
-
-    // const isImageInCollection = collectionImages?.map((collection) => {
-    //   return collection.some((item) => {
-    //     if (item.public_id === images[0].public_id) {
-    //       return true;
-    //     }
-    //     return false;
-    //   });
-    // });
-    // console.log(isImageInCollection, "isImageInCollection");
-
-    res.send({ images: images, pagePreview: pagePreview(category) });
+    res.send({ images: returnImages, pagePreview: pagePreview(category) });
   } catch (error) {
     res.status(500).send({ error: "Category images for user could not be fetched" });
   } finally {

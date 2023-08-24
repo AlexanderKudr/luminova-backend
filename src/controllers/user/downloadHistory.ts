@@ -1,4 +1,4 @@
-import { Controller } from "../../utils/types";
+import { Controller } from "../../utils";
 
 
 const downloadHistory: Controller = async (req, res) => {
