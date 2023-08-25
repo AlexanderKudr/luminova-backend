@@ -1,15 +1,16 @@
 import { ResourceApiResponse } from "cloudinary";
 
+type ImagesFromDB = {
+  favoriteImages: { public_id: string }[];
+  collection: {
+    collectionImages: { public_id: string }[];
+  }[];
+};
+
 export const handleImages =  <T>(
   imagesFromCdn: ResourceApiResponse,
   imagesFromDB: T | undefined
 ) => {
-  type ImagesFromDB = {
-    favoriteImages: { public_id: string }[];
-    collection: {
-      collectionImages: { public_id: string }[];
-    }[];
-  };
 
   return imagesFromCdn?.resources.map((image) => {
     console.log(imagesFromDB)
