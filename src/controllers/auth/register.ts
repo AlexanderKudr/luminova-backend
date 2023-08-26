@@ -37,7 +37,7 @@ const register: Controller = async (req, res) => {
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: true,
-    // sameSite: "none",
+    sameSite: "none",
     maxAge: time.time30days,
   });
 
