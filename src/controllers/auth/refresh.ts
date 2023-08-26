@@ -34,6 +34,7 @@ const refreshTokens: Controller = async (req, res) => {
       httpOnly: true,
       maxAge: time.time30days,
       secure: true,
+      sameSite: "none",
     });
 
     res.send({
