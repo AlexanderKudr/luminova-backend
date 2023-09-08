@@ -9,16 +9,31 @@ datasource db {
 }
 
 model User {
-  id             String           @id @default(uuid())
-  name           String           @unique
-  email          String           @unique
-  password       String
-  accessToken    String?          @unique(map: "unique_user_accessToken")
-  refreshToken   String?
+  id           String  @id @default(uuid())
+  name         String  @unique //change it for userName property
+  email        String  @unique
+  password     String
+  accessToken  String? @unique(map: "unique_user_accessToken")
+  refreshToken String?
+
+  personalInfo personalInfo?
+
   favoriteImages favoriteImages[]
   uploadedImages uploadedImages[]
-  collection     collection[]
+  collection     collection[] //this should be an object(change it whenever i have time)
   confirmedemail Boolean?         @default(false)
+}
+
+model personalInfo {
+  id           Int     @id @default(autoincrement())
+  user_id      String  @unique
+  firstName    String?
+  lastName     String?
+  personalSite String?
+  bio          String?
+  instagram    String?
+  twitter      String?
+  User         User    @relation(fields: [user_id], references: [id])
 }
 
 model favoriteImages {

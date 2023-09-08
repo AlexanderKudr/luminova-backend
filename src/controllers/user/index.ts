@@ -1,7 +1,7 @@
 import { updateUserData } from "./updateUserData";
-import { downloadHistory } from "./downloadHistory";
+import { getUserData } from "./getUserData";
 
 export const userControllers = {
   updateUserData,
-  downloadHistory,
+  getUserData
 };
