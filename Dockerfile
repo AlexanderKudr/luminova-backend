@@ -11,11 +11,9 @@ WORKDIR /app
 COPY . .
 
 
-RUN npm install pnpm -g
+RUN npm install
 
-RUN pnpm install
-
-RUN pnpm install typescript && pnpm tsc
+RUN npm install typescript && npm tsc
 
 # Set the command to run when the container starts
-CMD ["pnpm", "start"]
+CMD ["npm", "start"]
