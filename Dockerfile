@@ -3,16 +3,17 @@ FROM node:18.14.0-alpine
 
 RUN apk update && rm -rf /var/cache/apk/*
 
-
 # Set the working directory inside the container to /app
 WORKDIR /app
 
 # Copy the current directory (where the Dockerfile is located) into the container at /app
 COPY . .
 
-RUN npm install
+RUN npm install pnpm -g
 
-RUN npm install typescript && npm tsc
+RUN pnpm install
+
+RUN pnpm install typescript && pnpm tsc
 
 # Set the command to run when the container starts
-CMD ["npm", "start"]
+CMD ["pnpm", "start"]
