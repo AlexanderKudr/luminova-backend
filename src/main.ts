@@ -25,6 +25,5 @@ const setupRoutes = (app: Express) => {
   user(app);
 };
 
-
 setupApp(app);
 setupRoutes(app);

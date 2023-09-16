@@ -1,4 +1,3 @@
-import { baseUrl } from "./urls";
 
 const pageDescription = {
   gallery: "The internet's source for visuals. Powered by creators everywhere.",
@@ -26,8 +25,10 @@ const pageDescription = {
 };
 
 const pagePreview = (category: string | undefined) => {
+  console.log(category, "category");
   return {
-    img: `${baseUrl}/images/${category}.jpg`,
+    img: `http://localhost:8080/images/${category}.jpg`,
+    // img: `${baseUrl}/images/${category}.jpg`,
     description: pageDescription[category as keyof typeof pageDescription],
   };
 };
