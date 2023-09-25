@@ -4,8 +4,9 @@ import { constants } from "../../utils";
 const { time } = constants;
 const { time5minutes, time30days } = time;
 
+//TODO repetition sucks
 const generateTokens = (email: string, privateKey: string) => {
-  const algorithm = "RS256";//check xxhash64
+  const algorithm = "RS256"; //check xxhash64
   const payload = { userEmail: email };
 
   const accessToken = jwt.sign(payload, privateKey, {
@@ -21,8 +22,4 @@ const generateTokens = (email: string, privateKey: string) => {
   return { accessToken, refreshToken };
 };
 
-const verifyToken = (refreshToken: string, publicKey: string) => {
-  return jwt.verify(refreshToken, publicKey);
-};
-
-export { generateTokens, verifyToken };
+export { generateTokens, jwt };

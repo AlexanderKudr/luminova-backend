@@ -9,19 +9,17 @@ datasource db {
 }
 
 model User {
-  id           String  @id @default(uuid())
-  name         String  @unique //change it for userName property
-  email        String  @unique
-  password     String
-  accessToken  String? @unique(map: "unique_user_accessToken")
-  refreshToken String?
-
-  personalInfo personalInfo?
-
-  favoriteImages favoriteImages[]
-  uploadedImages uploadedImages[]
-  collection     collection[] //this should be an object(change it whenever i have time)
+  id             String           @id @default(uuid())
+  email          String           @unique
+  password       String
+  accessToken    String?          @unique(map: "unique_user_accessToken")
   confirmedemail Boolean?         @default(false)
+  refreshToken   String?
+  name           String           @unique
+  collection     collection[]
+  favoriteImages favoriteImages[]
+  personalInfo   personalInfo?
+  uploadedImages uploadedImages[]
 }
 
 model personalInfo {
@@ -37,16 +35,16 @@ model personalInfo {
 }
 
 model favoriteImages {
-  id        Int     @id @default(autoincrement())
+  id        Int    @id @default(autoincrement())
   public_id String
-  user_id   String?
-  User      User?   @relation(fields: [user_id], references: [id])
+  user_id   String
+  User      User   @relation(fields: [user_id], references: [id])
 }
 
 model uploadedImages {
   id        Int     @id @default(autoincrement())
-  user_id   String?
   public_id String
+  user_id   String?
   User      User?   @relation(fields: [user_id], references: [id])
 }
 
@@ -54,15 +52,14 @@ model collection {
   id               Int                @id @default(autoincrement())
   name             String
   description      String?
-  user_id          String?
-  User             User?              @relation(fields: [user_id], references: [id])
+  user_id          String
+  User             User               @relation(fields: [user_id], references: [id])
   collectionImages collectionImages[]
 }
 
 model collectionImages {
-  id        Int    @id @default(autoincrement())
-  public_id String
-
-  collection_id Int?
-  collection    collection? @relation(fields: [collection_id], references: [id])
+  id            Int        @id @default(autoincrement())
+  public_id     String
+  collection_id Int
+  collection    collection @relation(fields: [collection_id], references: [id])
 }

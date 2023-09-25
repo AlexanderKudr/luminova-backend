@@ -7,7 +7,6 @@ const { handleImages } = functions;
 
 const getProfileImages: Controller = async (req, res) => {
   const { userName } = req.params;
-
   try {
     if (!userName) {
       res.status(400).send({ message: "name is missing" });
@@ -26,14 +25,16 @@ const getProfileImages: Controller = async (req, res) => {
         },
       },
     });
-
     if (!getDataFromDB) {
       res.status(400).send({ message: "User not found" });
       return;
     }
-
     const publicIds = getDataFromDB.uploadedImages.map((image) => image.public_id);
 
+    if (publicIds.length === 0) {
+      res.status(400).send({ message: "No images found" });
+      return;
+    }
     const imagesFromCDN = await cloudinary.api.resources_by_ids(publicIds);
 
     const returnImages = handleImages(imagesFromCDN, getDataFromDB);

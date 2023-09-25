@@ -3,10 +3,9 @@ import { databaseService, jwtService } from "../../services";
 
 const { time } = constants;
 const { checkUserInDB, updateRefreshTokenInDB } = databaseService;
-const { verifyToken, generateTokens } = jwtService;
+const { generateTokens, jwt } = jwtService;
 
 const refreshTokens: Controller = async (req, res) => {
-  console.log("fired");
   try {
     const { refreshToken } = req.cookies as { refreshToken: string };
     const { userName } = req.body as { userName: string };
@@ -16,7 +15,7 @@ const refreshTokens: Controller = async (req, res) => {
       return res.status(401).send({ error: "Refresh token is missing" });
     }
 
-    const token = verifyToken(refreshToken, config.publicKey!);
+    const token = jwt.verify(refreshToken, config.publicKey!);
     if (!token) {
       return res.status(401).send({ error: "Invalid or expired refresh token" });
     }

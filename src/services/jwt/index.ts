@@ -1,4 +1,4 @@
-import { hashPassword } from "./hashing";
-import { generateTokens, verifyToken } from "./jwt";
+import { hashPassword, bcrypt } from "./hashing";
+import { generateTokens, jwt } from "./jwt";
 
-export const jwtService = { hashPassword, generateTokens, verifyToken };
+export const jwtService = { hashPassword, generateTokens, bcrypt, jwt };

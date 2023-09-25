@@ -1,7 +1,11 @@
-import { updateUserData } from "./updateUserData";
-import { getUserData } from "./getUserData";
+import { updateProfileData } from "./updateProfileData";
+import { getProfileData } from "./getProfileData";
+import { changePassword } from "./changePassword";
+import { closeAccount } from "./closeAccount";
 
 export const userControllers = {
-  updateUserData,
-  getUserData
+  updateProfileData,
+  getProfileData,
+  changePassword,
+  closeAccount,
 };

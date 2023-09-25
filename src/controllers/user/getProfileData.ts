@@ -4,9 +4,14 @@ import { Controller } from "../../utils";
 const { prisma, handleDisconnectDB } = databaseService;
 const { user } = prisma;
 
-export const getUserData: Controller = async (req, res) => {
+const getProfileData: Controller = async (req, res) => {
   const { refreshToken }: { refreshToken: string } = req.cookies;
 
+  if (!refreshToken) {
+    res.status(401).send({ error: "Refresh token is missing" });
+    return;
+  }
+  
   try {
     const getDataFromDb = await user.findFirst({
       where: { refreshToken },
@@ -24,3 +29,5 @@ export const getUserData: Controller = async (req, res) => {
     await handleDisconnectDB();
   }
 };
+
+export { getProfileData };
