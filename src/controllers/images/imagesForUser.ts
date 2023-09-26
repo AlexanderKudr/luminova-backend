@@ -1,5 +1,5 @@
-import { Controller, constants, functions } from "../../utils";
 import { ResourceApiResponse, v2 as cloudinary } from "cloudinary";
+import { Controller, constants, functions } from "../../utils";
 import { databaseService } from "../../services";
 
 type Payload = {

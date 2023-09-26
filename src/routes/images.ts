@@ -10,6 +10,7 @@ const {
   getCategoriesFromCDN,
   getFavoriteImages,
   getProfileImages,
+  loadImagesIntoDB
 } = imagesControllers;
 
 const images = (app: Express) => {
@@ -21,6 +22,7 @@ const images = (app: Express) => {
   app.post(`${baseURL}/getfavorites/:userName`, getFavoriteImages);
   app.post(`${baseURL}/getprofileimages/:userName`, getProfileImages);
   app.get(`${baseURL}/categories`, getCategoriesFromCDN);
+  app.post(`${baseURL}/loadimages`, loadImagesIntoDB);
 };
 
 export { images };

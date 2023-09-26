@@ -1,8 +1,9 @@
 import { v2 as cloudinary } from "cloudinary";
 import multer from "multer";
+import path from "path";
+
 import { databaseService } from "../../services";
 import { functions, Controller } from "../../utils";
-import path from "path";
 
 type UploadFiles = {
   fieldname: string;

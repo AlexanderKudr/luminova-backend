@@ -1,5 +1,4 @@
-import { constants } from "../../utils";
-import { Controller, FetchImagesFromCDN } from "../../utils";
+import { Controller, FetchImagesFromCDN, constants } from "../../utils";
 import { v2 as cloudinary } from "cloudinary";
 
 const { pagePreview } = constants;

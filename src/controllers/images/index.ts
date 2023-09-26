@@ -5,6 +5,7 @@ import { imagesForNonUser } from "./imagesForNonUser";
 import { getCategoriesFromCDN } from "./getCategories";
 import { getFavoriteImages } from "./getFavoriteImages";
 import { getProfileImages } from "./getProfileImages";
+import { loadImagesIntoDB } from "./loadImagesIntoDB";
 
 export const imagesControllers = {
   uploadToProfile,
@@ -14,4 +15,5 @@ export const imagesControllers = {
   getCategoriesFromCDN,
   getFavoriteImages,
   getProfileImages,
+  loadImagesIntoDB
 };
