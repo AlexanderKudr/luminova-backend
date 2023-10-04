@@ -5,6 +5,7 @@ const { updateProfileData, getProfileData, changePassword, closeAccount } = user
 
 const user = (app: Express) => {
   const baseURL = "/user";
+
   app.put(`${baseURL}/updateprofiledata`, updateProfileData);
   app.get(`${baseURL}/getprofiledata`, getProfileData);
   app.put(`${baseURL}/changepassword`, changePassword);

@@ -12,6 +12,7 @@ const {
 
 const collections = (app: Express) => {
   const baseURL = "/collections";
+
   app.post(`${baseURL}/create`, createCollection);
   app.get(`${baseURL}/profile`, getProfileCollections);
   app.put(`${baseURL}/edit`, editCollection);

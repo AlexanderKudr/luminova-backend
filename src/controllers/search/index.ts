@@ -1,7 +1,7 @@
-import { interactiveSearch } from "./interactiveSearch";
-import { searchSuggestions } from "./searchSuggestions";
+import { searchForNonUser } from "./searchForNonUser";
+import { retrieveSuggestions } from "./retrieveSuggestions";
 
 export const searchControllers = {
-  interactiveSearch,
-  searchSuggestions
+  searchForNonUser,
+  retrieveSuggestions
 };

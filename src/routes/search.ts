@@ -1,12 +1,16 @@
 import { Express } from "express";
 import { searchControllers } from "../controllers";
 
-const { interactiveSearch, searchSuggestions } = searchControllers;
+const { searchForNonUser, retrieveSuggestions } = searchControllers;
 
 const search = (app: Express) => {
   const baseURL = "/search";
-  // app.get(`${baseURL}/:query`, interactiveSearch);
-  app.get(`${baseURL}/suggestions`, searchSuggestions);
+
+  app.get(`${baseURL}/suggestions`, retrieveSuggestions);
+  app.get(`${baseURL}/fornonuser`, searchForNonUser);
+  app.post(`${baseURL}/foruser`, (req, res) => {
+    console.log("coming soon");
+  });
 };
 
 export { search };
