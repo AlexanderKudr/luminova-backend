@@ -3,7 +3,7 @@ import { databaseService } from "../../services";
 
 const { prisma, handleDisconnectDB } = databaseService;
 
-export const searchForNonUser: Controller = async (req, res) => {
+export const searchImages: Controller = async (req, res) => {
   const { query } = req.query;
   const url = `http://res.cloudinary.com/dkdkbllwf/image/upload/v1690037996`;
 

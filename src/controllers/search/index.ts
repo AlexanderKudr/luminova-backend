@@ -1,7 +1,7 @@
-import { searchForNonUser } from "./searchForNonUser";
+import { searchImages } from "./searchImages";
 import { retrieveSuggestions } from "./retrieveSuggestions";
 
 export const searchControllers = {
-  searchForNonUser,
-  retrieveSuggestions
+  retrieveSuggestions,
+  searchImages,
 };
