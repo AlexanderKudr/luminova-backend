@@ -24,11 +24,17 @@ const updateProfileData: Controller = async (req, res) => {
       return;
     }
 
+    const payload = { firstName, lastName, personalSite, bio, instagram, twitter };
+
     await prisma.user.update({
       where: { email },
       data: {
         personalInfo: {
-          update: { firstName, lastName, personalSite, bio, instagram, twitter },
+          upsert: {
+            // upserts(updates) the record if it exists, otherwise creates it
+            create: payload,
+            update: payload,
+          },
         },
       },
     });
