@@ -18,15 +18,15 @@ export const searchImages: Controller = async (req, res) => {
       return queryWords.every((word) => lowerCase(suggestion).includes(word));
     });
 
-    const attachUrl = filteredSuggestions.map((suggestion) => {
+    const searchedImages = filteredSuggestions.map((suggestion) => {
       const filename = suggestion.split("/")[1];
       return { public_id: suggestion, url: `${url}/${suggestion}`, filename };
     });
 
-    res.send({ suggestions: attachUrl });
+    res.send({ images: searchedImages });
   } catch (error) {
     console.log(error);
-    res.status(500).send({ error: "Could not hit interactive search" });
+    res.status(500).send({ error: "Could not receive searched images" });
   } finally {
     await handleDisconnectDB();
   }
