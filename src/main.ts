@@ -8,7 +8,7 @@ import { swagger } from "./docs";
 const app = express();
 
 const setupApp = (app: Express) => {
-  app.use(cors({ origin: "luminova.netlify.app", credentials: true }));
+  app.use(cors({ origin: "https://master--luminova.netlify.app", credentials: true }));
   app.use(express.json({ limit: "50mb" }));
   app.use(cookieParser());
   app.use(express.static("public"));
